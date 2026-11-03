@@ -1,599 +1,628 @@
 {
-  "generatedAt": "2026-11-03T16:40:26.775Z",
+  "generatedAt": "2026-11-03T19:47:40.191Z",
   "ffmpeg": true,
-  "complete": false,
-  "totalBytes": 16520585,
+  "complete": true,
+  "voiceQAComplete": true,
+  "voiceCount": 45,
+  "voiceVersion": "2026-11-03-HALO-FULL",
+  "productionReady": false,
+  "totalBytes": 18983455,
   "under20MiB": true,
+  "defectiveVoices": [],
+  "peakEffectIssues": [
+    {
+      "name": "clue_arrive.mp3",
+      "true_peak_dbfs": -2.6
+    },
+    {
+      "name": "reveal_ice.mp3",
+      "true_peak_dbfs": -2.4
+    },
+    {
+      "name": "turn_change.mp3",
+      "true_peak_dbfs": -2.9
+    }
+  ],
+  "musicDurationIssues": [
+    {
+      "name": "mus_win.mp3",
+      "duration": 7.053061
+    },
+    {
+      "name": "mus_lose.mp3",
+      "duration": 6.060408
+    }
+  ],
   "files": [
     {
       "name": "vo_title.mp3",
       "present": true,
-      "duration": 0.347166,
-      "bytes": 8403,
+      "duration": 6.556735,
+      "bytes": 131702,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "6d8340d0bcbef99f428fc91d8a21ccc1",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "a760f7ecb41c0b4c5953163304a197f9",
+      "integrated_lufs": -16.6,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_join_1.mp3",
       "present": true,
-      "duration": 0.419025,
-      "bytes": 9970,
+      "duration": 1.724082,
+      "bytes": 35049,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "1f1a7b1c9c03ff3721b79175c23dfe1b",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -6.4
+      "md5": "b2398ba01a955f9c48257fdfd2e170fe",
+      "integrated_lufs": -17.1,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_join_2.mp3",
       "present": true,
-      "duration": 0.603696,
-      "bytes": 13627,
+      "duration": 2.795102,
+      "bytes": 56469,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "c6822f3981c8c55bb81d1a2a803fb1a8",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -3.8
+      "md5": "c0d4cc62ea37ee3432c8c0b528e8f3dd",
+      "integrated_lufs": -18.9,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_join_3.mp3",
       "present": true,
-      "duration": 0.542154,
-      "bytes": 12060,
+      "duration": 1.671837,
+      "bytes": 34004,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "801d3fcfb6f58e1a94b7c77a86a318c8",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5
+      "md5": "8286737cf487ba07a4ec2f64a49cb2cf",
+      "integrated_lufs": -17.2,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_start_versus.mp3",
       "present": true,
-      "duration": 0.368821,
-      "bytes": 8925,
+      "duration": 6.452245,
+      "bytes": 129612,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "5fcd9c8d038feacbc0cd853410fec4e3",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -2
+      "md5": "a689356d0e80600e340f88af01ab3d81",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_start_coop.mp3",
       "present": true,
-      "duration": 0.620794,
-      "bytes": 13627,
+      "duration": 4.257959,
+      "bytes": 85726,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "b4e76e531dbb63958a9bb6b869a4c06f",
+      "md5": "f03a0231b5c78a29a6878d6520c0fd9b",
       "integrated_lufs": -16.4,
       "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_turn_volt.mp3",
       "present": true,
-      "duration": 0.463583,
-      "bytes": 10493,
+      "duration": 2.925714,
+      "bytes": 59081,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "9ea8a0aec81efee19e12b302acfd86b3",
-      "integrated_lufs": -16.5,
-      "true_peak_dbfs": -2.5
+      "md5": "566ff915d3fe8caef1bd2ef302b23d63",
+      "integrated_lufs": -18.6,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_turn_flare.mp3",
       "present": true,
-      "duration": 0.469252,
-      "bytes": 10493,
+      "duration": 2.795102,
+      "bytes": 56469,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "3104d31aff36addb89e119c31bb189e5",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -3.1
+      "md5": "f5020c76a1a42e6006cfb1390a742627",
+      "integrated_lufs": -18.7,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_clue_1.mp3",
       "present": true,
-      "duration": 1.388367,
-      "bytes": 29301,
+      "duration": 1.515102,
+      "bytes": 30869,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "a7141674111185573cf03c049dd8c27f",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -3.3
-    },
-    {
-      "name": "vo_clue_2.mp3",
-      "present": true,
-      "duration": 0.523605,
-      "bytes": 12060,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "5b6006d9c496ffd9c1301277fb11b3bf",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5.8
-    },
-    {
-      "name": "vo_clue_3.mp3",
-      "present": true,
-      "duration": 0.682358,
-      "bytes": 15195,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "53dba5b7c719e9fe2279447fe841ee48",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4
-    },
-    {
-      "name": "vo_correct_1.mp3",
-      "present": true,
-      "duration": 0.574535,
-      "bytes": 12582,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "3b89492b005b373b4817d2e7a5d391f6",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -6.2
-    },
-    {
-      "name": "vo_correct_2.mp3",
-      "present": true,
-      "duration": 0.690499,
-      "bytes": 15195,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "df88279bcb99cc1285d3d07d87515264",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4
-    },
-    {
-      "name": "vo_correct_3.mp3",
-      "present": true,
-      "duration": 0.318617,
-      "bytes": 7880,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "240d2be099484824915b769946fd7391",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
-    },
-    {
-      "name": "vo_correct_4.mp3",
-      "present": true,
-      "duration": 0.902245,
-      "bytes": 19374,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "0bc377dc497b4d21432084f8281f7394",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4.1
-    },
-    {
-      "name": "vo_noise_1.mp3",
-      "present": true,
-      "duration": 0.407392,
-      "bytes": 9448,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "486c620f3096b153879f1f560186628f",
-      "integrated_lufs": -16.5,
-      "true_peak_dbfs": -1.9
-    },
-    {
-      "name": "vo_noise_2.mp3",
-      "present": true,
-      "duration": 0.837392,
-      "bytes": 18329,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "492caaea297b5bdeeae2f473faa15238",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -2.2
-    },
-    {
-      "name": "vo_noise_3.mp3",
-      "present": true,
-      "duration": 0.277347,
-      "bytes": 6835,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "399a0cbbddb0ba8ce17726f4fedd18f1",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
-    },
-    {
-      "name": "vo_wrong_1.mp3",
-      "present": true,
-      "duration": 0.358254,
-      "bytes": 8403,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "840c7bf06fa52a82b41385b3b7b81819",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
-    },
-    {
-      "name": "vo_wrong_2.mp3",
-      "present": true,
-      "duration": 0.402154,
-      "bytes": 9448,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "eaef3af6e4774431660b722ec9c53101",
-      "integrated_lufs": -18.2,
-      "true_peak_dbfs": -2
-    },
-    {
-      "name": "vo_wrong_3.mp3",
-      "present": true,
-      "duration": 0.636372,
-      "bytes": 14150,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "becf5b0557150be98d7449a621138483",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5.4
-    },
-    {
-      "name": "vo_ice_wrong.mp3",
-      "present": true,
-      "duration": 0.275918,
-      "bytes": 6835,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "a8d9ea2e5c710d254e86bcb10ec18e6a",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
-    },
-    {
-      "name": "vo_ice_claim.mp3",
-      "present": true,
-      "duration": 0.669728,
-      "bytes": 14672,
-      "codec": "mp3",
-      "sample_rate": 44100,
-      "channels": 1,
-      "bit_rate": 160000,
-      "md5": "2b96d8661248652dc1823e75fd425b2a",
+      "md5": "0f60a3c0b1cd6478a4547e04039fb741",
       "integrated_lufs": -16.4,
       "true_peak_dbfs": -3.1
     },
     {
-      "name": "vo_zero.mp3",
+      "name": "vo_clue_2.mp3",
       "present": true,
-      "duration": 0.904966,
-      "bytes": 19374,
+      "duration": 1.253878,
+      "bytes": 25645,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "9c626e7828b7b35c5b6e6c5922a50891",
+      "md5": "0f02cd7503e44097f0f8bc1af35c101b",
       "integrated_lufs": -16.4,
-      "true_peak_dbfs": -2.6
+      "true_peak_dbfs": -3.1
+    },
+    {
+      "name": "vo_clue_3.mp3",
+      "present": true,
+      "duration": 3.134694,
+      "bytes": 63261,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "33d8413fd71a87365fa1bc239e423954",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_correct_1.mp3",
+      "present": true,
+      "duration": 1.123265,
+      "bytes": 23032,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "9060841452072a43c66bd07416949eef",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -4.8
+    },
+    {
+      "name": "vo_correct_2.mp3",
+      "present": true,
+      "duration": 1.253878,
+      "bytes": 25645,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "305f778d836d84b559b0ee2aefbc5e8b",
+      "integrated_lufs": -17.4,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_correct_3.mp3",
+      "present": true,
+      "duration": 1.38449,
+      "bytes": 28257,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "27ed79da8cd434fce8a3fb7cba1b03ed",
+      "integrated_lufs": -18.3,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_correct_4.mp3",
+      "present": true,
+      "duration": 1.097143,
+      "bytes": 22510,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "c85892d9c545fa47c930a5e9e8f2d591",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -3.7
+    },
+    {
+      "name": "vo_noise_1.mp3",
+      "present": true,
+      "duration": 1.253878,
+      "bytes": 25645,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "0e49b2f137afca27c6608eb25ebb7b48",
+      "integrated_lufs": -19.1,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_noise_2.mp3",
+      "present": true,
+      "duration": 1.985306,
+      "bytes": 40273,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "ab2f13ba69bf2722e6ef0fcac4989622",
+      "integrated_lufs": -17.7,
+      "true_peak_dbfs": -3
+    },
+    {
+      "name": "vo_noise_3.mp3",
+      "present": true,
+      "duration": 2.142041,
+      "bytes": 43408,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "5bbee1f6cab9cb08a12343f86d856373",
+      "integrated_lufs": -20.3,
+      "true_peak_dbfs": -3
+    },
+    {
+      "name": "vo_wrong_1.mp3",
+      "present": true,
+      "duration": 2.220408,
+      "bytes": 44975,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "105c41b24257e40eb89c1074b944e205",
+      "integrated_lufs": -17.5,
+      "true_peak_dbfs": -3
+    },
+    {
+      "name": "vo_wrong_2.mp3",
+      "present": true,
+      "duration": 2.66449,
+      "bytes": 53857,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "d0b000008b03338aa9ff538d37e51a43",
+      "integrated_lufs": -18.9,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_wrong_3.mp3",
+      "present": true,
+      "duration": 1.149388,
+      "bytes": 23555,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "45b078704a09689a7643df836a20cf60",
+      "integrated_lufs": -16.6,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_ice_wrong.mp3",
+      "present": true,
+      "duration": 1.750204,
+      "bytes": 35571,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "2f445efc494cb912b0d3b302687757e9",
+      "integrated_lufs": -16.9,
+      "true_peak_dbfs": -2.9
+    },
+    {
+      "name": "vo_ice_claim.mp3",
+      "present": true,
+      "duration": 1.854694,
+      "bytes": 37661,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "8a3457f7112a81f9c9da8124dbfd6731",
+      "integrated_lufs": -18.7,
+      "true_peak_dbfs": -3
+    },
+    {
+      "name": "vo_zero.mp3",
+      "present": true,
+      "duration": 2.716735,
+      "bytes": 54902,
+      "codec": "mp3",
+      "sample_rate": 44100,
+      "channels": 1,
+      "bit_rate": 160000,
+      "md5": "bf4216feaed952c2aeabba58e92f4eff",
+      "integrated_lufs": -17.8,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_pass.mp3",
       "present": true,
-      "duration": 0.389342,
-      "bytes": 8925,
+      "duration": 1.306122,
+      "bytes": 26689,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "1a009185882ef048b106d826a4182f44",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "3f139b9ace0ef1d5d50aa965008b35e2",
+      "integrated_lufs": -17.6,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_timeout.mp3",
       "present": true,
-      "duration": 0.742381,
-      "bytes": 16240,
+      "duration": 0.940408,
+      "bytes": 19375,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "aa730d8fe9a2c5ce8ea2d2571f56078c",
+      "md5": "f79eff15937677a4845c7cd91b8b426f",
       "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5.7
+      "true_peak_dbfs": -4.6
     },
     {
       "name": "vo_last_node.mp3",
       "present": true,
-      "duration": 1.246599,
-      "bytes": 26166,
+      "duration": 1.410612,
+      "bytes": 28779,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "9a8a683d4efebe62d016c58251fbb035",
-      "integrated_lufs": -16.6,
-      "true_peak_dbfs": -1.9
+      "md5": "0da7763ed5818de51a37b5fc314fb8ac",
+      "integrated_lufs": -18,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_volt_wins.mp3",
       "present": true,
-      "duration": 0.462789,
-      "bytes": 10493,
+      "duration": 1.619592,
+      "bytes": 32959,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "a2fd3c969bb6619c0e6db886e5b0e5a2",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -2.5
+      "md5": "7b393ea7e466d8c9209993ccef72597f",
+      "integrated_lufs": -18.6,
+      "true_peak_dbfs": -3
     },
     {
       "name": "vo_flare_wins.mp3",
       "present": true,
-      "duration": 0.654558,
-      "bytes": 14672,
+      "duration": 1.645714,
+      "bytes": 33481,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "a525422349c80660de4b35b91fcef318",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -3.5
+      "md5": "e42e66558726883733c2b3e0ac313e54",
+      "integrated_lufs": -17.8,
+      "true_peak_dbfs": -3
     },
     {
       "name": "vo_crew_wins.mp3",
       "present": true,
-      "duration": 0.873832,
-      "bytes": 18852,
+      "duration": 3.369796,
+      "bytes": 67963,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "d5fa8ece16dbc242542ce79bba3c6e92",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4.1
+      "md5": "ca40d30b5b5e4aee137fa48a98602ea1",
+      "integrated_lufs": -16.6,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_ice_wins.mp3",
       "present": true,
-      "duration": 1.297846,
-      "bytes": 27211,
+      "duration": 3.369796,
+      "bytes": 67963,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "add0aa5fa8d1ac92b6815c29ed0a8801",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -2.3
+      "md5": "ebcf14913aa38c545f07bba93425617a",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_mole_vote.mp3",
       "present": true,
-      "duration": 0.801088,
-      "bytes": 17284,
+      "duration": 3.866122,
+      "bytes": 77889,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "0f64741b59069975e72a2b531591962e",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5.2
+      "md5": "e8a7e54dee2ac4c43d777138b88bdb8e",
+      "integrated_lufs": -16.3,
+      "true_peak_dbfs": -3
     },
     {
       "name": "vo_mole_caught.mp3",
       "present": true,
-      "duration": 0.669433,
-      "bytes": 14672,
+      "duration": 1.436735,
+      "bytes": 29302,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "a2c2fdb557038a99b51b99a86145c71c",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4.9
+      "md5": "e5c39e9b1f77b4b73e355daf69a15bc2",
+      "integrated_lufs": -17.4,
+      "true_peak_dbfs": -3
     },
     {
       "name": "vo_mole_free.mp3",
       "present": true,
-      "duration": 0.671293,
-      "bytes": 14672,
+      "duration": 1.697959,
+      "bytes": 34526,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "7b67fc232e7bb03146e27b6b03354f36",
+      "md5": "e8f3e5231a0fde14256ae018c604469b",
       "integrated_lufs": -16.4,
-      "true_peak_dbfs": -7.4
+      "true_peak_dbfs": -4.9
     },
     {
       "name": "vo_tut_1.mp3",
       "present": true,
-      "duration": 0.314875,
-      "bytes": 7880,
+      "duration": 5.146122,
+      "bytes": 103489,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "5d15a7c7caae17489d84311ea2c9769c",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "05b3bd5e7706e65ea05be9cf991989ae",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_2.mp3",
       "present": true,
-      "duration": 0.356417,
-      "bytes": 8403,
+      "duration": 7.000816,
+      "bytes": 140583,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "5fc7874f5b2b500eb815b3deb719192b",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "600b975e23ac005ea568716a8fe4d88f",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_3.mp3",
       "present": true,
-      "duration": 0.950068,
-      "bytes": 20419,
+      "duration": 10.24,
+      "bytes": 205367,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "bf01958fd73aa66ea719010acc78ed1a",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4.4
+      "md5": "882694169e2cb41614b083959641651e",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_4.mp3",
       "present": true,
-      "duration": 0.552404,
-      "bytes": 12582,
+      "duration": 5.407347,
+      "bytes": 108714,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "f0fd7849eb9b9499acec7ab10e03c351",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -5.3
+      "md5": "5600ed20a2181aacd23d3aa46386169e",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_5.mp3",
       "present": true,
-      "duration": 0.383537,
-      "bytes": 8925,
+      "duration": 6.896327,
+      "bytes": 138494,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "b82057148f9c49c5173c674a2e296cbe",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "55e2283e1968d0186622eccfdcc02c66",
+      "integrated_lufs": -16.4,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_6.mp3",
       "present": true,
-      "duration": 0.493469,
-      "bytes": 11015,
+      "duration": 6.739592,
+      "bytes": 135359,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "6e5a0b1d780f142378111560773bea7e",
+      "md5": "972955e1c4902705bcdec356e6f13ad6",
       "integrated_lufs": -16.4,
-      "true_peak_dbfs": -3.8
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_7.mp3",
       "present": true,
-      "duration": 0.343175,
-      "bytes": 8403,
+      "duration": 4.91102,
+      "bytes": 98787,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "c40d25124aba5c1d94987d40df769bfc",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -2
+      "md5": "29fd51654aac25ccc827fa237bbfe393",
+      "integrated_lufs": -16.3,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_8.mp3",
       "present": true,
-      "duration": 0.269161,
-      "bytes": 6835,
+      "duration": 4.101224,
+      "bytes": 82592,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "ae08dafdcbcf28fef88b118834e1b8bb",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -2
+      "md5": "d8b72b822ffc28bb33cbd3e78ccbeeab",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_9.mp3",
       "present": true,
-      "duration": 0.252472,
-      "bytes": 6313,
+      "duration": 5.302857,
+      "bytes": 106624,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "5e4224155a2627105f54beafe816eabc",
-      "integrated_lufs": -70,
-      "true_peak_dbfs": -1.9
+      "md5": "8f9b3e186122e5dfae65e8d70379b9a1",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_10.mp3",
       "present": true,
-      "duration": 0.445556,
-      "bytes": 10493,
+      "duration": 12.643265,
+      "bytes": 253432,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "14ec16287204de7e95dd2ed8024a119f",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -6.8
+      "md5": "bed462b31c851bb1e2ae52af96f9d37f",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "vo_tut_11.mp3",
       "present": true,
-      "duration": 0.512449,
-      "bytes": 11537,
+      "duration": 4.571429,
+      "bytes": 91996,
       "codec": "mp3",
       "sample_rate": 44100,
       "channels": 1,
       "bit_rate": 160000,
-      "md5": "72c71bbbf55653b15d6bdc625c2b610e",
-      "integrated_lufs": -16.4,
-      "true_peak_dbfs": -4
+      "md5": "c4fdd59f3534c6896a83f85a3b7afa6c",
+      "integrated_lufs": -16.5,
+      "true_peak_dbfs": -2.9
     },
     {
       "name": "ui_tap.mp3",
       "present": true,
-      "duration": 0.12,
+      "duration": 0.156735,
       "bytes": 2968,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -606,7 +635,7 @@
     {
       "name": "ui_join.mp3",
       "present": true,
-      "duration": 0.4,
+      "duration": 0.444082,
       "bytes": 7566,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -619,7 +648,7 @@
     {
       "name": "ui_back.mp3",
       "present": true,
-      "duration": 0.15,
+      "duration": 0.182857,
       "bytes": 3386,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -632,7 +661,7 @@
     {
       "name": "clue_arrive.mp3",
       "present": true,
-      "duration": 0.8,
+      "duration": 0.835918,
       "bytes": 13835,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -645,7 +674,7 @@
     {
       "name": "ping.mp3",
       "present": true,
-      "duration": 0.12,
+      "duration": 0.156735,
       "bytes": 2968,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -658,7 +687,7 @@
     {
       "name": "ping_remove.mp3",
       "present": true,
-      "duration": 0.12,
+      "duration": 0.156735,
       "bytes": 2968,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -671,7 +700,7 @@
     {
       "name": "breach_start.mp3",
       "present": true,
-      "duration": 1.6,
+      "duration": 1.645714,
       "bytes": 26792,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -684,7 +713,7 @@
     {
       "name": "breach_cancel.mp3",
       "present": true,
-      "duration": 0.3,
+      "duration": 0.339592,
       "bytes": 5894,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -697,7 +726,7 @@
     {
       "name": "reveal_volt.mp3",
       "present": true,
-      "duration": 0.6,
+      "duration": 0.626939,
       "bytes": 10492,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -710,7 +739,7 @@
     {
       "name": "reveal_flare.mp3",
       "present": true,
-      "duration": 0.6,
+      "duration": 0.626939,
       "bytes": 10492,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -723,7 +752,7 @@
     {
       "name": "reveal_noise.mp3",
       "present": true,
-      "duration": 0.48,
+      "duration": 0.522449,
       "bytes": 8820,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -736,7 +765,7 @@
     {
       "name": "reveal_ice.mp3",
       "present": true,
-      "duration": 0.680249,
+      "duration": 0.731429,
       "bytes": 12163,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -749,7 +778,7 @@
     {
       "name": "reveal_zero.mp3",
       "present": true,
-      "duration": 1.2,
+      "duration": 1.227755,
       "bytes": 20105,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -762,7 +791,7 @@
     {
       "name": "turn_change.mp3",
       "present": true,
-      "duration": 0.8,
+      "duration": 0.835918,
       "bytes": 13835,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -775,7 +804,7 @@
     {
       "name": "timer_warn.mp3",
       "present": true,
-      "duration": 0.06,
+      "duration": 0.10449,
       "bytes": 2132,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -788,7 +817,7 @@
     {
       "name": "timer_end.mp3",
       "present": true,
-      "duration": 0.8,
+      "duration": 0.835918,
       "bytes": 13835,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -801,7 +830,7 @@
     {
       "name": "ice_claim.mp3",
       "present": true,
-      "duration": 0.6,
+      "duration": 0.626939,
       "bytes": 10492,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -814,7 +843,7 @@
     {
       "name": "pass.mp3",
       "present": true,
-      "duration": 0.4,
+      "duration": 0.444082,
       "bytes": 7566,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -827,7 +856,7 @@
     {
       "name": "mole_reveal.mp3",
       "present": true,
-      "duration": 1.2,
+      "duration": 1.227755,
       "bytes": 20105,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -840,7 +869,7 @@
     {
       "name": "glitch.mp3",
       "present": true,
-      "duration": 0.25,
+      "duration": 0.287347,
       "bytes": 5058,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -853,7 +882,7 @@
     {
       "name": "react.mp3",
       "present": true,
-      "duration": 0.15,
+      "duration": 0.182857,
       "bytes": 3386,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -866,7 +895,7 @@
     {
       "name": "mus_title.mp3",
       "present": true,
-      "duration": 153.626122,
+      "duration": 153.652245,
       "bytes": 3688323,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -879,7 +908,7 @@
     {
       "name": "mus_game_1.mp3",
       "present": true,
-      "duration": 137.142857,
+      "duration": 137.16898,
       "bytes": 3292725,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -892,7 +921,7 @@
     {
       "name": "mus_win.mp3",
       "present": true,
-      "duration": 7.026939,
+      "duration": 7.053061,
       "bytes": 169943,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -905,7 +934,7 @@
     {
       "name": "mus_lose.mp3",
       "present": true,
-      "duration": 6.034286,
+      "duration": 6.060408,
       "bytes": 146119,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -918,7 +947,7 @@
     {
       "name": "mus_lobby.mp3",
       "present": true,
-      "duration": 76.8,
+      "duration": 76.826122,
       "bytes": 1844496,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -931,7 +960,7 @@
     {
       "name": "mus_game_2.mp3",
       "present": true,
-      "duration": 137.142857,
+      "duration": 137.16898,
       "bytes": 3292725,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -944,7 +973,7 @@
     {
       "name": "mus_game_3.mp3",
       "present": true,
-      "duration": 137.142857,
+      "duration": 137.16898,
       "bytes": 3292725,
       "codec": "mp3",
       "sample_rate": 44100,
@@ -955,233 +984,5 @@
       "true_peak_dbfs": -16.5
     }
   ],
-  "failures": [],
-  "productionReady": false,
-  "validationStatus": "FAILED: files are present but narration and other duration/peak specifications are not met",
-  "auditDate": "2026-11-03",
-  "auditMethod": "Retrospective analysis of existing measurements against ASSET-MANIFEST.md. No audio was regenerated or re-measured in this audit.",
-  "defectiveVoices": [
-    {
-      "name": "vo_title.mp3",
-      "measured_seconds": 0.347,
-      "minimum_screen_seconds": 2.28,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_join_1.mp3",
-      "measured_seconds": 0.419,
-      "minimum_screen_seconds": 0.57,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_join_2.mp3",
-      "measured_seconds": 0.604,
-      "minimum_screen_seconds": 1.14,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_join_3.mp3",
-      "measured_seconds": 0.542,
-      "minimum_screen_seconds": 0.57,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_start_versus.mp3",
-      "measured_seconds": 0.369,
-      "minimum_screen_seconds": 2.09,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_start_coop.mp3",
-      "measured_seconds": 0.621,
-      "minimum_screen_seconds": 2.09,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_turn_volt.mp3",
-      "measured_seconds": 0.464,
-      "minimum_screen_seconds": 1.33,
-      "measured_lufs": -16.5
-    },
-    {
-      "name": "vo_turn_flare.mp3",
-      "measured_seconds": 0.469,
-      "minimum_screen_seconds": 1.33,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_clue_3.mp3",
-      "measured_seconds": 0.682,
-      "minimum_screen_seconds": 1.14,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_correct_3.mp3",
-      "measured_seconds": 0.319,
-      "minimum_screen_seconds": 0.76,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_noise_1.mp3",
-      "measured_seconds": 0.407,
-      "minimum_screen_seconds": 0.5,
-      "measured_lufs": -16.5
-    },
-    {
-      "name": "vo_noise_3.mp3",
-      "measured_seconds": 0.277,
-      "minimum_screen_seconds": 0.57,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_wrong_1.mp3",
-      "measured_seconds": 0.358,
-      "minimum_screen_seconds": 1.33,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_wrong_2.mp3",
-      "measured_seconds": 0.402,
-      "minimum_screen_seconds": 1.14,
-      "measured_lufs": -18.2
-    },
-    {
-      "name": "vo_ice_wrong.mp3",
-      "measured_seconds": 0.276,
-      "minimum_screen_seconds": 0.76,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_pass.mp3",
-      "measured_seconds": 0.389,
-      "minimum_screen_seconds": 0.5,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_volt_wins.mp3",
-      "measured_seconds": 0.463,
-      "minimum_screen_seconds": 0.76,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_flare_wins.mp3",
-      "measured_seconds": 0.655,
-      "minimum_screen_seconds": 0.76,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_crew_wins.mp3",
-      "measured_seconds": 0.874,
-      "minimum_screen_seconds": 0.95,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_ice_wins.mp3",
-      "measured_seconds": 1.298,
-      "minimum_screen_seconds": 1.33,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_mole_vote.mp3",
-      "measured_seconds": 0.801,
-      "minimum_screen_seconds": 2.09,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_mole_free.mp3",
-      "measured_seconds": 0.671,
-      "minimum_screen_seconds": 1.14,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_tut_1.mp3",
-      "measured_seconds": 0.315,
-      "minimum_screen_seconds": 2.66,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_2.mp3",
-      "measured_seconds": 0.356,
-      "minimum_screen_seconds": 3.23,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_3.mp3",
-      "measured_seconds": 0.95,
-      "minimum_screen_seconds": 4.75,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_tut_4.mp3",
-      "measured_seconds": 0.552,
-      "minimum_screen_seconds": 3.04,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_tut_5.mp3",
-      "measured_seconds": 0.384,
-      "minimum_screen_seconds": 3.42,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_6.mp3",
-      "measured_seconds": 0.493,
-      "minimum_screen_seconds": 3.99,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_tut_7.mp3",
-      "measured_seconds": 0.343,
-      "minimum_screen_seconds": 3.42,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_8.mp3",
-      "measured_seconds": 0.269,
-      "minimum_screen_seconds": 2.28,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_9.mp3",
-      "measured_seconds": 0.252,
-      "minimum_screen_seconds": 2.66,
-      "measured_lufs": -70
-    },
-    {
-      "name": "vo_tut_10.mp3",
-      "measured_seconds": 0.446,
-      "minimum_screen_seconds": 7.22,
-      "measured_lufs": -16.4
-    },
-    {
-      "name": "vo_tut_11.mp3",
-      "measured_seconds": 0.512,
-      "minimum_screen_seconds": 2.28,
-      "measured_lufs": -16.4
-    }
-  ],
-  "soundEffectsExceedingPeak": [
-    {
-      "name": "clue_arrive.mp3",
-      "measured_peak_dbfs": -2.6
-    },
-    {
-      "name": "reveal_ice.mp3",
-      "measured_peak_dbfs": -2.4
-    },
-    {
-      "name": "turn_change.mp3",
-      "measured_peak_dbfs": -2.9
-    }
-  ],
-  "musicExceedingDuration": [
-    {
-      "name": "mus_win.mp3",
-      "measured_seconds": 7.027
-    },
-    {
-      "name": "mus_lose.mp3",
-      "measured_seconds": 6.034
-    }
-  ]
+  "failures": []
 }
