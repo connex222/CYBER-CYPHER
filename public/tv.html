@@ -53,12 +53,25 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 .av{width:64px;height:64px;border-radius:12px;flex:none}
 
 /* ---------- title ---------- */
-.logo{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:1300px;height:420px;background:url('/assets/ui/logo.webp') center/contain no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.logo{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:1300px;height:420px;background:url('/assets/ui/logo.webp') center/contain no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;animation:titleLogoAssemble 2.15s cubic-bezier(.22,.68,.17,1) both}
 .logo-fallback{font-family:Orbitron,sans-serif;font-weight:900;font-size:170px;line-height:.9;letter-spacing:.06em;color:#E9FDFF;text-shadow:0 0 20px rgba(34,228,255,.9),0 0 60px rgba(34,228,255,.5),6px 0 0 rgba(255,46,91,.6),-6px 0 0 rgba(34,228,255,.6)}
 .logo-fallback small{display:block;font-size:40px;letter-spacing:.5em;color:var(--flare);text-shadow:0 0 18px rgba(255,176,32,.7);margin-top:18px}
 .has-logo .logo-fallback{visibility:hidden}
-.tagline{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:34px;color:var(--muted);letter-spacing:.2em}
-.menu{position:absolute;left:50%;top:690px;transform:translateX(-50%);display:flex;gap:24px}
+.tagline{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:34px;color:var(--muted);letter-spacing:.2em;animation:titleDetailIn .6s 1.45s ease-out both}
+.menu{position:absolute;left:50%;top:690px;transform:translateX(-50%);display:flex;gap:24px;animation:titleMenuIn .65s 1.7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes titleLogoAssemble{
+  0%{opacity:0;transform:translate(-50%,20px) scale(1.07)}
+  13%{opacity:.55;transform:translate(-49.6%,10px) scale(1.04)}
+  17%{opacity:.22;transform:translate(-50.4%,10px) scale(1.04)}
+  21%{opacity:.75;transform:translate(-50%,8px) scale(1.03)}
+  35%{opacity:.78;transform:translate(-50.25%,4px) scale(1.015)}
+  39%{opacity:.56;transform:translate(-49.8%,4px) scale(1.015)}
+  53%,100%{opacity:1;transform:translateX(-50%) scale(1)}
+}
+@keyframes titleDetailIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes titleMenuIn{from{opacity:0;transform:translate(-50%,40px)}to{opacity:1;transform:translateX(-50%)}}
+#stage.intro-done .logo,#stage.intro-done .tagline,#stage.intro-done .menu{animation:none}
+
 
 /* ---------- lobby ---------- */
 .joinp{position:absolute;left:80px;top:80px;width:520px;bottom:80px;display:flex;flex-direction:column;align-items:center;gap:18px;padding:34px;text-align:center}
@@ -909,6 +922,16 @@ var QR = (function () {
     scene.querySelectorAll('[data-range]').forEach(function (i) { i.oninput = function () { settings[i.dataset.range] = +i.value; saveSettings(); }; });
     scene.querySelectorAll('[data-seg]').forEach(function (b) { b.onclick = function () { var v = b.dataset.val; settings[b.dataset.seg] = v === 'true' ? true : v === 'false' ? false : +v; saveSettings(); S.lastKey = ''; render(); }; });
   }
+  // One-off skippable title treatment. No route, role or gameplay state changes.
+  var titleIntroDone=false;
+  function finishTitleIntro(){if(titleIntroDone)return;titleIntroDone=true;stage.classList.add('intro-done');}
+  setTimeout(finishTitleIntro,2500);
+  function skipTitleIntro(e){
+    if(titleIntroDone||S.screen!=='title')return;
+    AUDIO.unlock();finishTitleIntro();e.preventDefault();e.stopImmediatePropagation();
+  }
+  addEventListener('click',skipTitleIntro,true);
+  addEventListener('keydown',skipTitleIntro,true);
   addEventListener('pointerdown', function first() { removeEventListener('pointerdown', first, true); AUDIO.unlock(); if (S.screen === 'title') { AUDIO.playMusic('title'); setTimeout(function () { AUDIO.say('vo_title'); }, 500); } }, true);
   addEventListener('keydown', function (e) {
     AUDIO.unlock();
