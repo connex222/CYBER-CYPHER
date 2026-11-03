@@ -1,28 +1,31 @@
-# HALO narration — repaired and verified
+# CYBER CYPHER — HALO and final audio repair
 
-**Date:** 3 November 2026  
-**Status:** 45/45 HALO recordings rebuilt and committed to GitHub `main`.  
-**Verification:** [Successful GitHub Actions repair run](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522), plus [HALO-VOICE-QA.json](production/HALO-VOICE-QA.json).
+**Updated 3 November 2026 — full audio automated QA passed.**
 
-## Cause and correction
+## Fault and completed repair
 
-The earlier FFmpeg `silenceremove=stop_periods=1` command stopped processing at the first pause inside a sentence. The old repository had **33 suspiciously short or silent HALO files**, of which **13 measured around −70 LUFS**. This caused the tutorial narrator to speak only an opening word or fragment.
+The old audio installation contained an FFmpeg `silenceremove=stop_periods=1` bug: it discarded narration after the first pause. This originally left 33/45 HALO takes suspiciously short or silent, including all tutorial chapters.
 
-The repair downloads all **45 existing approved HALO Voice 1 sources** and remasters them without removing pauses between words. It checks each source before use, writes each new MP3 to a separate temporary file, rejects incomplete/quiet results and replaces the original atomically. All 45 outputs now meet script-length screening, 44.1 kHz mono MP3 format, measured audible loudness and safe true-peak limits.
+[HALO restoration workflow](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522) rebuilt **45/45 HALO Voice 1 MP3s** from the previously generated Creative Claw source files, preserving natural speech pauses and committing them to `main` after checking format, duration, loudness and peak levels. This cost **zero Creative Claw credits**.
 
-The TV narration player was also corrected to stop interrupted playback, reject stale asynchronously decoded clips and bypass previous browser-cached voice URLs.
+The TV voice player now stops an interrupted voice clip, suppresses stale asynchronous audio starts and bypasses browser cache for revised MP3 URLs.
 
-## Verified outcomes
+## Final SFX and music corrections
 
-- **45/45** files validated; **0** defective voice files remain.
-- `vo_tut_1.mp3`: **5.146 seconds** (previously 0.315 seconds).
-- `vo_tut_2.mp3`: **7.001 seconds**; `vo_tut_3.mp3`: **10.240 seconds**; `vo_tut_10.mp3`: **12.643 seconds**.
-- All original 11 automated game tests passed. The TV script-parsing check and standard build passed.
-- Only 45 voice binary files, `AUDIO-QA.json` and `production/HALO-VOICE-QA.json` changed in the final repair commit; no gameplay code was touched by the generated-asset commit.
-- **Zero new Creative Claw credits** spent: old approved source recordings reused.
+[Final audio workflow](https://github.com/connex222/CYBER-CYPHER/actions/runs/41709949429) repaired the three remaining SFX peak violations, trimmed the two overlong music stings with fades, and independently rechecked **all 73 MP3s**. Only these five MP3s and `AUDIO-QA.json` were changed in the final repair commit; every other audio file, including all 45 HALO recordings, was preserved byte-for-byte.
 
-## Remaining separate release checks
+| File | Measured duration | Measured true peak |
+|---|---:|---:|
+| `clue_arrive.mp3` | 0.836s | −6.1 dBFS |
+| `reveal_ice.mp3` | 0.731s | −5.1 dBFS |
+| `turn_change.mp3` | 0.836s | −6.6 dBFS |
+| `mus_win.mp3` | 6.792s | −8.5 dBFS |
+| `mus_lose.mp3` | 5.799s | −5.7 dBFS |
 
-`AUDIO-QA.json` correctly reports `productionReady: false` because **three sound effects exceed their −3 dBFS true-peak limit and two music stings exceed their duration specification**. These are *not* HALO voice failures. Real TV/phone listening, live WebSocket smoke testing and any Render production rollout still require separate confirmation.
+Result: `AUDIO-QA.json` records 73 files, zero failures, zero missing voices, zero effect peak failures, zero sting duration violations and **18,970,922 total audio bytes**. The workflow also passed the existing 11 game tests and build.
 
-The earlier GitHub audit and previous Windows-only instructions are superseded by the completed GitHub run linked above.
+## Scope limitations
+
+Technical audio QA is **complete**; live device listening and multiplayer tests are **not**. A person should still listen to the entire tutorial on TV and check chapter transitions, play/pause and voice mute controls. Audio and artwork commercial licensing is separately required before selling the game.
+
+No paid voice/music/effect generation was needed for either repair.
