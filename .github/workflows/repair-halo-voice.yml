@@ -1,0 +1,95 @@
+name: Repair and validate all HALO recordings
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "tools/install-audio.js"
+      - ".github/workflows/repair-halo-voice.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cyber-cypher-halo-voice-repair
+  cancel-in-progress: false
+
+jobs:
+  repair-and-commit-halo:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify FFmpeg is installed
+        shell: bash
+        run: |
+          command -v ffmpeg
+          command -v ffprobe
+          ffmpeg -version | head -1
+      - name: Restore the exact approved 45 HALO source recordings and master without cutting pauses
+        run: node tools/install-audio.js --repair-voices
+      - name: Independent verify-only pass
+        run: node tools/install-audio.js --verify-only
+      - name: Assert all 45 HALO recordings meet duration loudness and peak constraints
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const v = JSON.parse(fs.readFileSync('production/HALO-VOICE-QA.json','utf8'));
+          const all = JSON.parse(fs.readFileSync('AUDIO-QA.json','utf8'));
+          const assert = require('node:assert/strict');
+          assert.equal(v.complete, true, 'Voice QA is incomplete');
+          assert.equal(v.voiceCount, 45, 'Expected 45 HALO takes');
+          assert.equal(v.files.length, 45, 'Voice report has wrong number of files');
+          assert.equal(v.files.filter(x=>x.passed).length, 45, 'At least one voice file is invalid');
+          assert.equal(v.defectiveVoices.length, 0, 'There are defective voice files');
+          assert.equal(all.voiceQAComplete, true, 'Audio report must identify voice QA pass');
+          assert.equal(all.under20MiB,true,'Audio budget exceeded');
+          for(const file of v.files){
+            assert.equal(file.channels,1,'Not mono: '+file.name);
+            assert.equal(file.sample_rate,44100,'Not 44.1 kHz: '+file.name);
+            assert.ok(file.duration>=file.minimumSeconds,'Truncated: '+file.name);
+            assert.ok(file.integrated_lufs>=-21&&file.integrated_lufs<=-12,'Silent or clipped loudness: '+file.name);
+            assert.ok(file.true_peak_dbfs<=-1.35,'Peak violation: '+file.name);
+          }
+          console.log('PASS: 45/45 independent HALO recording checks.');
+          console.log('Non-voice productionReady:',all.productionReady,'(tracked separately).');
+          NODE
+      - name: Run game build and original 11 rule tests
+        run: |
+          npm test
+          npm run build
+      - name: Parse all TV inline JavaScript after build
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+          const html=fs.readFileSync('public/tv.html','utf8');
+          const blocks=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
+          assert.ok(blocks.length>=1,'No TV scripts found');
+          for(const [index,block] of blocks.entries())if(block[1].trim())new vm.Script(block[1],{filename:'tv-script-'+index+'.js'});
+          assert.ok(html.includes('currentVoice.stop()'),'Voice interruption guard missing');
+          assert.ok(html.includes('?rev=halo-full-20261103'),'Cached narration revision missing');
+          console.log('PASS TV script parsing and repaired voice playback controls.');
+          NODE
+      - name: Commit repaired voice binaries and evidence to GitHub main
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add AUDIO-QA.json production/HALO-VOICE-QA.json public/audio/vo_*.mp3
+          if git diff --cached --quiet; then
+            echo "No changed HALO files; all checks passed."
+          else
+            git commit -m "audio: replace 45 truncated HALO recordings with verified full narration"
+            git push origin HEAD:main
+          fi
