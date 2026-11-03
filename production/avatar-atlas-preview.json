@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "approvalStatus": "awaiting-avatar-visual-review",
+  "sourceModel": "Creative Claw Nano Banana 2 (2K 3:2)",
+  "generationCredits": 24,
+  "source": "https://cdn.creativeclaw.co/u/049bef39/images/c749d040-4ad4-4f97-8450-1edc9d843dd9.png",
+  "layout": {
+    "columns": 3,
+    "rows": 2
+  },
+  "outputPrefix": "production/avatar-preview/",
+  "names": [
+    "Static",
+    "Cipher",
+    "Neon",
+    "Glitch",
+    "Vector",
+    "Pixel"
+  ],
+  "ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "style": "Original AAA rendered adult spy operatives, cyan #22E4FF, amber #FFB020, dark titanium; visually distinct face, hair, clothing and silhouette.",
+  "note": "PROOF ONLY. Keep public/assets/avatars empty until all 24 identities pass QA. Game detects existence of agent-00.webp and switches all portrait slots on globally."
+}
