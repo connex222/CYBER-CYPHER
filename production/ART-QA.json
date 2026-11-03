@@ -1,0 +1,185 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "assetCount": 16,
+  "totalBytes": 869960,
+  "under3MiB": true,
+  "avatarFilesTouched": 0,
+  "files": [
+    {
+      "path": "public/assets/ui/emblem-volt.webp",
+      "bytes": 51130,
+      "width": 512,
+      "height": 512,
+      "webpQuality": 88,
+      "sha256": "6a36f8c0ca1b9de7f2059e1e989e65b7dcdb9beceea658674bb4727e902766df",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/22ec86f4-8e4d-4db3-b576-88c798230a9e.png",
+      "transparent": true
+    },
+    {
+      "path": "public/assets/ui/emblem-flare.webp",
+      "bytes": 43172,
+      "width": 512,
+      "height": 512,
+      "webpQuality": 88,
+      "sha256": "f4280e32de7a8cb99531ddbe25a2aff7c6cd436923dcdd397e998f463dcf8a92",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/ca3139ff-ae71-4d3b-99d1-84b41ecd2ccf.png",
+      "transparent": true
+    },
+    {
+      "path": "public/assets/ui/emblem-ice.webp",
+      "bytes": 53938,
+      "width": 512,
+      "height": 512,
+      "webpQuality": 88,
+      "sha256": "0adfe6bcc69ac91105be73e7cfd58d8055521cf45410578e343123ac90b3e2e7",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/afeaab16-c665-41ca-b22a-8ba00253ed0b.png",
+      "transparent": true
+    },
+    {
+      "path": "public/assets/ui/halo.webp",
+      "bytes": 73194,
+      "width": 512,
+      "height": 512,
+      "webpQuality": 88,
+      "sha256": "b97b3a15a69f9ad2bccb256926f0a9a1d397dde3c197d153c732ebdfc61a527c",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/628f98d3-d6f7-4bd7-a281-e2f084ba8b22.png",
+      "transparent": true
+    },
+    {
+      "path": "public/assets/bg/title.webp",
+      "bytes": 102906,
+      "width": 1920,
+      "height": 1080,
+      "webpQuality": 88,
+      "sha256": "a41486ab0d83e165dcf272ca11fc9c6c32fa46a90a149669e0b058d361454920",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/96262037-5596-48bf-9263-de1abce10bc8.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/bg/lobby.webp",
+      "bytes": 167638,
+      "width": 1920,
+      "height": 1080,
+      "webpQuality": 88,
+      "sha256": "5a7892ab679d1491234f8773540afd4e054d43f83eb31494e8b5e0e93de57dba",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/8abdd166-59f7-487b-beb3-90eab0cfc797.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/bg/grid.webp",
+      "bytes": 106278,
+      "width": 1920,
+      "height": 1080,
+      "webpQuality": 88,
+      "sha256": "6e0171e85649d5ea951e16e5a62a1fd552fe2f58e760c40a017ac87745024108",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/97b7fb27-52ca-489c-bc06-44ed62cda69b.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/bg/result.webp",
+      "bytes": 170910,
+      "width": 1920,
+      "height": 1080,
+      "webpQuality": 88,
+      "sha256": "0c119c9039d9ebf2da456154a0c5e4d1e75cd95583a27bc28bd532ef02e3fcd9",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/5b1952f0-2efe-4ab3-9a52-33ad84a57387.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/bg/phone.webp",
+      "bytes": 24790,
+      "width": 1080,
+      "height": 2400,
+      "webpQuality": 88,
+      "sha256": "68d847f08809f12d615780f863618e13c1e7d86c2b51bbef54751d369da198b1",
+      "whiteWordContrast": null,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/47c12b45-1aa4-40fc-8910-5112e8a1b836.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/node.webp",
+      "bytes": 2978,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "36ae2b32c555b6a3e7219852a96413cf4b5e2fe8ce6475ff2d1b4457bbcdee06",
+      "whiteWordContrast": 18.73,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/4e133648-cf23-498e-ac5e-10f4a9fa7868.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/volt.webp",
+      "bytes": 3166,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "e31703747787b94395082eced47a48932c22d1d5d00e543553f459a3ee13af8a",
+      "whiteWordContrast": 18.6,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/c07d8974-ff14-4b4f-bb4b-c6627a64a208.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/flare.webp",
+      "bytes": 6562,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "bfacff86029b17212b3c9eac5a45fd40644ddbe1226362c768de8902919f1eff",
+      "whiteWordContrast": 17.99,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/232c955f-f5e0-4459-8e88-17714ca42653.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/noise.webp",
+      "bytes": 3762,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "3cb9867190a511d6ab9fbf203edd87eb1e987c7fe42c329af5f2533aa37a2c79",
+      "whiteWordContrast": 17.6,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/eaf5e22d-1500-48e4-adee-ec3131cc021b.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/zero.webp",
+      "bytes": 5506,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "34bd3c6d16ebb9fa6a9e108f65147a41f2abe54f5f48876a2adf46235371a470",
+      "whiteWordContrast": 18.58,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/510c2985-602c-4f64-8e25-2fb81d1167bc.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/cards/ice.webp",
+      "bytes": 5916,
+      "width": 474,
+      "height": 300,
+      "webpQuality": 88,
+      "sha256": "6632944be36f31f11ef554fbb81f4fdccecdaa24c432dbe5f719d6834c12648f",
+      "whiteWordContrast": 18.58,
+      "source": "https://cdn.creativeclaw.co/u/049bef39/images/33536b7b-c30c-4bdc-abec-d8f22a266028.png",
+      "transparent": false
+    },
+    {
+      "path": "public/assets/ui/logo.webp",
+      "bytes": 48114,
+      "width": 1600,
+      "height": 520,
+      "webpQuality": 88,
+      "sha256": "aa70913105e7e7c243154b12bc740fd181355770964e77cf6bd482df14344a33",
+      "source": "deterministic bundled Orbitron",
+      "transparent": true
+    }
+  ]
+}
