@@ -1,27 +1,26 @@
-> **GitHub audit update — 3 November 2026:** All 73 audio filenames now exist in the GitHub repository, but 33 HALO clips are flagged as short or inaudible, three effects exceed their peak ceiling, and two stings slightly exceed their duration limits. The current live files must not be treated as audio-certified. See [AUDIO-REPAIR.md](AUDIO-REPAIR.md) and [AUDIO-QA.json](AUDIO-QA.json). This is a newer repository observation than the original ZIP packaging notes below.
+# CYBER CYPHER — current production status
 
-# Package status — Audio staging, not final commercial release
+**Updated:** 3 November 2026
 
-**Date:** 3 November 2026
+## HALO narration — repaired
 
-## Finished and in this ZIP
+All **45 HALO Voice 1 recordings** have been rebuilt from existing approved Creative Claw recordings, remastered without removing internal pauses, independently verified and committed to `main`.
 
-- Original, integrated stereo MP3 files: `mus_lobby.mp3`, `mus_game_1.mp3`, `mus_game_2.mp3`, `mus_game_3.mp3`.
-- All three game stems are additive, exactly 137.143 seconds and decode to 6,048,000 samples each. Their combined measured loudness is −18.4 LUFS, below the −16 LUFS ceiling.
-- Original game source, rules, test files, protocol and front end are unchanged.
-- `AUDIO-SOURCES.json` maps all 45 HALO recordings, 21 sound effects and four additional Creative Claw music candidates to the original service URLs.
-- `INSTALL-AUDIO.cmd` downloads the 45 lines and 21 effects and installs the accepted three additional music files, with a mastering stage when FFmpeg is installed.
-- `AUDIO-LOCAL-QA.json` measures the four included local tracks.
+- 45/45 voice files passed; 0 truncated or silent remaining.
+- The TV player now stops interrupted chapter narration and bypasses stale cached MP3s.
+- All 11 automated game tests and the build passed.
+- No new Creative Claw credits were spent.
 
-## Pending, and not falsely reported as finished
+Evidence: [HALO voice QA](production/HALO-VOICE-QA.json), [full audio QA](AUDIO-QA.json), [successful GitHub run](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522).
 
-- Cloud-generated recordings cannot be downloaded by the production environment used to assemble this ZIP; consequently these **69 files are not yet physically bundled**. On a Windows computer with internet, `INSTALL-AUDIO.cmd` completes that step. `mus_game_1` from Creative Claw is listed as an audition alternative but is intentionally not substituted for the precisely synchronised local base.
-- The Windows downloader has not been run against the external CDN here. After installation, verify every download and complete loudness measurements before commercial distribution.
-- At the current stage the original image placeholders remain; 40 WebP assets and front-end motion polish are outstanding.
-- Real WebSocket smoke test was attempted but cannot start in this sandbox because the `ws` npm dependency is not installed; npm is unavailable offline (`ENOTCACHED`). Run `npm install` on the user's Windows PC and then follow the original smoke instructions.
-- The original 11 automated rules tests pass, and the build command passes.
-- No statement of successful live phone/TV gameplay, Fire Stick frame-rate testing, or final copyright clearance is made.
+## Artwork and gameplay
 
-## Why the source URLs, not fake audio
+- 16 approved non-avatar AAA WebP images installed and validated.
+- All 24 player avatars remain unchanged by request.
+- Protected server, rules, secret data and network protocol remain unchanged.
 
-The service returns permanent audio URLs, but this file-building environment cannot fetch their bytes. Rather than create silent files or claim audio was installed, the package provides the actual proven source URLs and a downloader that uses them unchanged.
+## Outstanding non-voice release checks
+
+The entire audio package is **not yet production-certified** because 3 effects (`clue_arrive.mp3`, `reveal_ice.mp3`, `turn_change.mp3`) exceed the -3 dBFS peak ceiling and 2 music stings (`mus_win.mp3`, `mus_lose.mp3`) slightly exceed their maximum durations.
+
+Live TV/phone listening, multiplayer smoke, licensing and any Render deployment still require separate verification. These remaining matters do not negate the 45-file voice repair.

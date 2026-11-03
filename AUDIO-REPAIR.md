@@ -1,35 +1,28 @@
-# CYBER CYPHER — HALO narration repair
+# HALO narration — repaired and verified
 
-**Audit:** 3 November 2026  
-**Status:** Audio delivery blocked until the recordings are repaired and validated.
+**Date:** 3 November 2026  
+**Status:** 45/45 HALO recordings rebuilt and committed to GitHub `main`.  
+**Verification:** [Successful GitHub Actions repair run](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522), plus [HALO-VOICE-QA.json](production/HALO-VOICE-QA.json).
 
-## What was found
+## Cause and correction
 
-The repository already contains all 73 requested audio filenames. Presence does not mean that their content is usable. Analysis of the committed `AUDIO-QA.json` measurements against `ASSET-MANIFEST.md` identified:
+The earlier FFmpeg `silenceremove=stop_periods=1` command stopped processing at the first pause inside a sentence. The old repository had **33 suspiciously short or silent HALO files**, of which **13 measured around −70 LUFS**. This caused the tutorial narrator to speak only an opening word or fragment.
 
-- **33 of 45 HALO files flagged as short or inaudible** under a conservative minimum speaking-time screen (0.19 seconds per spoken word, at least 0.5 seconds per file).
-- **13 HALO files measured at approximately −70 LUFS**, consistent with almost-silent output.
-- **3 effects** exceed the requested −3 dBFS peak ceiling: `clue_arrive.mp3`, `reveal_ice.mp3`, `turn_change.mp3`.
-- **2 music stings** slightly exceed their stated limits: `mus_win.mp3` (7.027 s), `mus_lose.mp3` (6.034 s).
-- The full audio folder is within the specified 20 MiB maximum.
+The repair downloads all **45 existing approved HALO Voice 1 sources** and remasters them without removing pauses between words. It checks each source before use, writes each new MP3 to a separate temporary file, rejects incomplete/quiet results and replaces the original atomically. All 45 outputs now meet script-length screening, 44.1 kHz mono MP3 format, measured audible loudness and safe true-peak limits.
 
-The previous two-pass FFmpeg voice pre-filter contained `silenceremove=...:stop_periods=1`. This stops processing **at the first natural pause**, truncating the rest of the speech. The fix trims silence at the *beginning and end* by reversing audio temporarily, without removing pauses between words.
+The TV narration player was also corrected to stop interrupted playback, reject stale asynchronously decoded clips and bypass previous browser-cached voice URLs.
 
-A deterministic regression fixture with a 0.6-second tone, 0.4-second silence and 1.1-second tone measured **2.1 seconds**. The old filter truncated it to **0.72 seconds**, whereas the new filter preserves **2.20 seconds**, including 50 milliseconds of padding at each end.
+## Verified outcomes
 
-## Repair using Windows CMD
+- **45/45** files validated; **0** defective voice files remain.
+- `vo_tut_1.mp3`: **5.146 seconds** (previously 0.315 seconds).
+- `vo_tut_2.mp3`: **7.001 seconds**; `vo_tut_3.mp3`: **10.240 seconds**; `vo_tut_10.mp3`: **12.643 seconds**.
+- All original 11 automated game tests passed. The TV script-parsing check and standard build passed.
+- Only 45 voice binary files, `AUDIO-QA.json` and `production/HALO-VOICE-QA.json` changed in the final repair commit; no gameplay code was touched by the generated-asset commit.
+- **Zero new Creative Claw credits** spent: old approved source recordings reused.
 
-1. Download the updated repository as a ZIP using GitHub **Code → Download ZIP**, then extract it.
-2. Install Node.js LTS and FFmpeg if not already installed. In CMD: `winget install --id Gyan.FFmpeg --exact`.
-3. Open the extracted `CYBER-CYPHER` folder and double-click `INSTALL-AUDIO.cmd`. The corrected installer automatically detects and replaces suspiciously short voice recordings.
-4. For a full forced HALO rebuild, open CMD in that folder and run `node tools\\install-audio.js --repair-voices`. The generator does **not** charge additional credits: this downloads the existing Creative Claw recordings and remasters them locally.
-5. Run `node tools\\install-audio.js --verify-only`, then review `AUDIO-QA.json` for `complete: true`, `defectiveVoices: []`, no failures and under 20 MiB.
-6. Upload the repaired MP3 files to this repository before promoting the release.
+## Remaining separate release checks
 
-This is **not** evidence of successful re-mastering on GitHub. The committed MP3 files remain in their previous state until they are actually replaced.
+`AUDIO-QA.json` correctly reports `productionReady: false` because **three sound effects exceed their −3 dBFS true-peak limit and two music stings exceed their duration specification**. These are *not* HALO voice failures. Real TV/phone listening, live WebSocket smoke testing and any Render production rollout still require separate confirmation.
 
-## Restrictions preserved
-
-No changes to `server.js`, `src/`, `test/`, `tools/smoke.js`, `tools/qr.js`, `tools/build.js`, network messages, timers or gameplay. No new credits consumed.
-
-Before commercial distribution, confirm licensing terms for the selected speech, music and effects models.
+The earlier GitHub audit and previous Windows-only instructions are superseded by the completed GitHub run linked above.
