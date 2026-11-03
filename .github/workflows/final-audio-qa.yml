@@ -1,0 +1,96 @@
+name: Finalise CYBER CYPHER audio QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "tools/finalise-audio.js"
+      - ".github/workflows/final-audio-qa.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cyber-cypher-final-audio
+  cancel-in-progress: false
+
+jobs:
+  validate-and-commit:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install FFmpeg when absent
+        shell: bash
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
+          fi
+          command -v ffmpeg
+          command -v ffprobe
+      - name: Validate repair code syntax
+        run: node --check tools/finalise-audio.js
+      - name: Correct remaining SFX peak levels and sting durations
+        run: node tools/finalise-audio.js
+      - name: Run second independent QA of all 73 audio files
+        run: node tools/finalise-audio.js --verify-only
+      - name: Assert measured full audio package is within its release limits
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const q=JSON.parse(fs.readFileSync('AUDIO-QA.json','utf8'));
+          const halo=JSON.parse(fs.readFileSync('production/HALO-VOICE-QA.json','utf8'));
+          assert.equal(q.complete,true,'Audio QA not complete');
+          assert.equal(q.productionReady,true,'Audio is not production ready');
+          assert.equal(q.voiceQAComplete,true,'HALO voice QA failed');
+          assert.equal(q.files.length,73,'Missing audio files');
+          assert.equal(q.files.filter(f=>f.name.startsWith('vo_')).length,45,'Lost HALO voice files');
+          assert.equal(q.files.filter(f=>f.name.startsWith('mus_')).length,7,'Missing music');
+          assert.equal(q.files.filter(f=>!f.name.startsWith('vo_')&&!f.name.startsWith('mus_')).length,21,'Missing SFX');
+          assert.equal(q.peakEffectIssues.length,0,'SFX peak failure');
+          assert.equal(q.musicDurationIssues.length,0,'Sting duration failure');
+          assert.equal(q.failures.length,0,'Audio processing failure');
+          assert.equal(q.under20MiB,true,'Audio size budget exceeded');
+          assert.equal(halo.complete,true,'The approved HALO narration has changed');
+          for(const filename of ['clue_arrive.mp3','reveal_ice.mp3','turn_change.mp3']){
+            const f=q.files.find(f=>f.name===filename);
+            assert.ok(f.true_peak_dbfs <= -3,'SFX peak violation: '+filename);
+          }
+          const win=q.files.find(f=>f.name==='mus_win.mp3');
+          const lose=q.files.find(f=>f.name==='mus_lose.mp3');
+          assert.ok(win.duration>=5&&win.duration<=7,'Victory sting must last 5-7 seconds');
+          assert.ok(lose.duration>=4&&lose.duration<=6,'Defeat sting must last 4-6 seconds');
+          console.log('PASS: 45 HALO recordings, 21 SFX and 7 music tracks, under 20 MiB.');
+          NODE
+      - name: Run unchanged game build and unit tests
+        run: |
+          npm test
+          npm run build
+      - name: Commit ONLY five corrected audio files and measured QA report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add AUDIO-QA.json \
+            public/audio/clue_arrive.mp3 \
+            public/audio/reveal_ice.mp3 \
+            public/audio/turn_change.mp3 \
+            public/audio/mus_win.mp3 \
+            public/audio/mus_lose.mp3
+          if git diff --cached --quiet; then
+            echo "Five corrected files already match GitHub; no commit required."
+          else
+            git commit -m "audio: certify final SFX peaks and music sting durations"
+            git push origin HEAD:main
+          fi
