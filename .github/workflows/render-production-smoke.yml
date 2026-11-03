@@ -1,0 +1,57 @@
+name: CYBER CYPHER Render production remote smoke
+
+on:
+  push:
+    branches: [qa/render-production-remote-smoke]
+    paths:
+      - ".github/workflows/render-production-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-websocket-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      LIVE_URL: https://cyber-cypher-j2ry.onrender.com
+    steps:
+      - name: Check out CYBER CYPHER
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked WebSocket library
+        run: npm ci --ignore-scripts
+      - name: Verify production HTTP endpoints (allow Render cold start)
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=0
+          for i in $(seq 1 24); do
+            if curl -fLsS --max-time 20 "$LIVE_URL/healthz" -o /tmp/cc-health && grep -qx 'ok' /tmp/cc-health; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          test "$ok" -eq 1 || { echo "FAILED live /healthz"; exit 1; }
+          echo "PASS production healthz"
+          curl --fail --location --silent --show-error --max-time 30 -o /dev/null "$LIVE_URL/"
+          curl --fail --location --silent --show-error --max-time 30 -o /dev/null "$LIVE_URL/play"
+          curl --fail --location --silent --show-error --max-time 30 -o /dev/null "$LIVE_URL/assets/ui/logo.webp"
+          curl --fail --location --silent --show-error --max-time 30 -o /dev/null "$LIVE_URL/audio/vo_tut_1.mp3"
+          echo "PASS production TV, phone, logo and HALO tutorial MP3"
+      - name: Run production-hosted real TV, two-phone and spectator WebSocket acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          CC_ACCEPTANCE_HTTP="$LIVE_URL" CC_ACCEPTANCE_TIMEOUT=15000 node tools/live-acceptance.js
+      - name: Explain test scope
+        run: |
+          echo "PASS: isolated test room on existing live Render service; no deployment performed."
+          echo "No existing player room was accessed or modified."
+          echo "Still requires visual device and physical narration playback sign-off."
