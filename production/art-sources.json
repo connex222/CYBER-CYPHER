@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "generatedWith": "Creative Claw image/nano-banana-2",
+  "approvedSamples": 4,
+  "premiumBatch": 11,
+  "avatarGeneration": false,
+  "assetBudgetBytes": 3145728,
+  "assets": [
+    {
+      "path": "public/assets/ui/emblem-volt.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/22ec86f4-8e4d-4db3-b576-88c798230a9e.png",
+      "width": 512,
+      "height": 512,
+      "maxBytes": 120000,
+      "kind": "alpha"
+    },
+    {
+      "path": "public/assets/ui/emblem-flare.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/ca3139ff-ae71-4d3b-99d1-84b41ecd2ccf.png",
+      "width": 512,
+      "height": 512,
+      "maxBytes": 120000,
+      "kind": "alpha"
+    },
+    {
+      "path": "public/assets/ui/emblem-ice.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/afeaab16-c665-41ca-b22a-8ba00253ed0b.png",
+      "width": 512,
+      "height": 512,
+      "maxBytes": 120000,
+      "kind": "alpha"
+    },
+    {
+      "path": "public/assets/ui/halo.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/628f98d3-d6f7-4bd7-a281-e2f084ba8b22.png",
+      "width": 512,
+      "height": 512,
+      "maxBytes": 120000,
+      "kind": "alpha"
+    },
+    {
+      "path": "public/assets/bg/title.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/96262037-5596-48bf-9263-de1abce10bc8.png",
+      "width": 1920,
+      "height": 1080,
+      "maxBytes": 300000,
+      "kind": "background"
+    },
+    {
+      "path": "public/assets/bg/lobby.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/8abdd166-59f7-487b-beb3-90eab0cfc797.png",
+      "width": 1920,
+      "height": 1080,
+      "maxBytes": 300000,
+      "kind": "background"
+    },
+    {
+      "path": "public/assets/bg/grid.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/97b7fb27-52ca-489c-bc06-44ed62cda69b.png",
+      "width": 1920,
+      "height": 1080,
+      "maxBytes": 300000,
+      "kind": "background"
+    },
+    {
+      "path": "public/assets/bg/result.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/5b1952f0-2efe-4ab3-9a52-33ad84a57387.png",
+      "width": 1920,
+      "height": 1080,
+      "maxBytes": 300000,
+      "kind": "background"
+    },
+    {
+      "path": "public/assets/bg/phone.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/47c12b45-1aa4-40fc-8910-5112e8a1b836.png",
+      "width": 1080,
+      "height": 2400,
+      "maxBytes": 250000,
+      "kind": "background"
+    },
+    {
+      "path": "public/assets/cards/node.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/4e133648-cf23-498e-ac5e-10f4a9fa7868.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    },
+    {
+      "path": "public/assets/cards/volt.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/c07d8974-ff14-4b4f-bb4b-c6627a64a208.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    },
+    {
+      "path": "public/assets/cards/flare.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/232c955f-f5e0-4459-8e88-17714ca42653.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    },
+    {
+      "path": "public/assets/cards/noise.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/eaf5e22d-1500-48e4-adee-ec3131cc021b.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    },
+    {
+      "path": "public/assets/cards/zero.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/510c2985-602c-4f64-8e25-2fb81d1167bc.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    },
+    {
+      "path": "public/assets/cards/ice.webp",
+      "url": "https://cdn.creativeclaw.co/u/049bef39/images/33536b7b-c30c-4bdc-abec-d8f22a266028.png",
+      "width": 474,
+      "height": 300,
+      "maxBytes": 60000,
+      "kind": "card"
+    }
+  ]
+}
