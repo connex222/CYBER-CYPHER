@@ -1,27 +1,24 @@
-> **GitHub audit update — 3 November 2026:** All 73 audio filenames now exist in the GitHub repository, but 33 HALO clips are flagged as short or inaudible, three effects exceed their peak ceiling, and two stings slightly exceed their duration limits. The current live files must not be treated as audio-certified. See [AUDIO-REPAIR.md](AUDIO-REPAIR.md) and [AUDIO-QA.json](AUDIO-QA.json). This is a newer repository observation than the original ZIP packaging notes below.
+# CYBER CYPHER — current production status
 
-# Package status — Audio staging, not final commercial release
+**Updated:** 3 November 2026
 
-**Date:** 3 November 2026
+## HALO audio
 
-## Finished and in this ZIP
+**REPAIRED:** All 45 HALO Voice 1 recordings have been remastered from their existing Creative Claw sources and committed directly to `main`. The fixed mastering chain preserves natural pauses inside sentences. The TV player also handles chapter interruption and stale caching. The voice QA file reports 45/45 passed and 0 defective.
 
-- Original, integrated stereo MP3 files: `mus_lobby.mp3`, `mus_game_1.mp3`, `mus_game_2.mp3`, `mus_game_3.mp3`.
-- All three game stems are additive, exactly 137.143 seconds and decode to 6,048,000 samples each. Their combined measured loudness is −18.4 LUFS, below the −16 LUFS ceiling.
-- Original game source, rules, test files, protocol and front end are unchanged.
-- `AUDIO-SOURCES.json` maps all 45 HALO recordings, 21 sound effects and four additional Creative Claw music candidates to the original service URLs.
-- `INSTALL-AUDIO.cmd` downloads the 45 lines and 21 effects and installs the accepted three additional music files, with a mastering stage when FFmpeg is installed.
-- `AUDIO-LOCAL-QA.json` measures the four included local tracks.
+Evidence: [HALO-VOICE-QA.json](production/HALO-VOICE-QA.json) and [successful GitHub workflow](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522). The audio folder remains under 20 MiB.
 
-## Pending, and not falsely reported as finished
+## Game and artwork
 
-- Cloud-generated recordings cannot be downloaded by the production environment used to assemble this ZIP; consequently these **69 files are not yet physically bundled**. On a Windows computer with internet, `INSTALL-AUDIO.cmd` completes that step. `mus_game_1` from Creative Claw is listed as an audition alternative but is intentionally not substituted for the precisely synchronised local base.
-- The Windows downloader has not been run against the external CDN here. After installation, verify every download and complete loudness measurements before commercial distribution.
-- At the current stage the original image placeholders remain; 40 WebP assets and front-end motion polish are outstanding.
-- Real WebSocket smoke test was attempted but cannot start in this sandbox because the `ws` npm dependency is not installed; npm is unavailable offline (`ENOTCACHED`). Run `npm install` on the user's Windows PC and then follow the original smoke instructions.
-- The original 11 automated rules tests pass, and the build command passes.
-- No statement of successful live phone/TV gameplay, Fire Stick frame-rate testing, or final copyright clearance is made.
+- 16 approved non-avatar AAA WebP images are installed at local game paths, with the original placeholder fallbacks retained.
+- All 24 player avatars remain untouched by request.
+- Original 11 automated game tests and build pass.
+- HALO repair did not modify server-side rules, hidden Operator data or multiplayer protocol.
 
-## Why the source URLs, not fake audio
+## Still outstanding before final release
 
-The service returns permanent audio URLs, but this file-building environment cannot fetch their bytes. Rather than create silent files or claim audio was installed, the package provides the actual proven source URLs and a downloader that uses them unchanged.
+- **Three** sound effects exceed the stated peak ceiling: `clue_arrive.mp3`, `reveal_ice.mp3`, `turn_change.mp3`.
+- **Two** stings slightly exceed their specified duration ceilings: `mus_win.mp3`, `mus_lose.mp3`.
+- Live TV/phone narration audition, end-to-end multiplayer smoke, commercial licensing check and verified Render deployment are not covered by the recorded automated QA.
+
+See [AUDIO-QA.json](AUDIO-QA.json) for measured remaining defects. Its `productionReady` status remains false until the other audio categories meet their specifications.
