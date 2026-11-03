@@ -1,0 +1,63 @@
+name: CYBER CYPHER live TV + phone acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [qa/real-websocket-acceptance, main]
+    paths:
+      - "tools/live-acceptance.js"
+      - ".github/workflows/live-acceptance.yml"
+  pull_request:
+    paths:
+      - "tools/live-acceptance.js"
+      - ".github/workflows/live-acceptance.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  real-websocket-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out current game code
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install locked WebSocket dependency
+        run: npm ci --ignore-scripts
+      - name: Run existing game unit tests and build
+        run: |
+          npm test
+          npm run build
+          node --check tools/live-acceptance.js
+      - name: Start isolated local real-WebSocket server and run acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BOTS=1 CC_SPEED=10 PORT=3123
+          node server.js > /tmp/cyber-cypher-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cyber-cypher-server.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS "http://127.0.0.1:3123/healthz" >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          curl --fail --silent --show-error "http://127.0.0.1:3123/healthz"
+          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
+      - name: Run existing full game bot and spectator WebSocket smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BOTS=1 CC_SPEED=10 PORT=3123
+          node server.js > /tmp/cyber-cypher-bots.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cyber-cypher-bots.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS "http://127.0.0.1:3123/healthz" >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          URL=ws://127.0.0.1:3123 npm run smoke
