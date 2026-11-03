@@ -1,0 +1,50 @@
+[
+  {
+    "filename": "mus_game_1.mp3",
+    "bytes": 3292725,
+    "decoded_samples": 6048000,
+    "decoded_seconds": 137.143,
+    "rms_start_0_5s": 0.068632,
+    "rms_end_0_5s": 0.058217,
+    "rms_delta_db": 1.43,
+    "integrated_lufs": -20.3,
+    "decoded_peak_dbfs": -9.8,
+    "md5": "6ee573c87d238ff4cd555eda5e384e2a"
+  },
+  {
+    "filename": "mus_game_2.mp3",
+    "bytes": 3292725,
+    "decoded_samples": 6048000,
+    "decoded_seconds": 137.143,
+    "rms_start_0_5s": 0.045267,
+    "rms_end_0_5s": 0.044632,
+    "rms_delta_db": 0.123,
+    "integrated_lufs": -27.3,
+    "decoded_peak_dbfs": -12.17,
+    "md5": "ca97138ae1788fa383cafddf15aae7b3"
+  },
+  {
+    "filename": "mus_game_3.mp3",
+    "bytes": 3292725,
+    "decoded_samples": 6048000,
+    "decoded_seconds": 137.143,
+    "rms_start_0_5s": 0.034621,
+    "rms_end_0_5s": 0.030913,
+    "rms_delta_db": 0.984,
+    "integrated_lufs": -27.2,
+    "decoded_peak_dbfs": -16.5,
+    "md5": "c1e02947e5beaa8a1f4a0e7eca4a4e29"
+  },
+  {
+    "filename": "mus_lobby.mp3",
+    "bytes": 1844496,
+    "decoded_samples": 3386880,
+    "decoded_seconds": 76.8,
+    "rms_start_0_5s": 0.072056,
+    "rms_end_0_5s": 0.058315,
+    "rms_delta_db": 1.838,
+    "integrated_lufs": -20.3,
+    "decoded_peak_dbfs": -9.55,
+    "md5": "cc89666f86609a35a9ea53610c1fd54c"
+  }
+]

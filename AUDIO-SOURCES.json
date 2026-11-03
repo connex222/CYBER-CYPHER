@@ -1,0 +1,282 @@
+{
+  "vo_title.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/b89f0977-c027-4c83-a8e4-4e2b6dbe9703.mp3",
+    "kind": "voice"
+  },
+  "vo_join_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/dfa758b6-4fd3-484d-a896-f0f194da1986.mp3",
+    "kind": "voice"
+  },
+  "vo_join_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/fbe99119-b707-49db-b82a-1a449f0236cf.mp3",
+    "kind": "voice"
+  },
+  "vo_join_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/f0491d3a-f2dd-4ea3-b9d6-291746d397b6.mp3",
+    "kind": "voice"
+  },
+  "vo_start_versus.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/8afe2236-4342-4f7b-a308-83e90b1b9fb8.mp3",
+    "kind": "voice"
+  },
+  "vo_start_coop.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/3dd37cc4-44ec-4942-bc3b-5db469b65de0.mp3",
+    "kind": "voice"
+  },
+  "vo_turn_volt.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/4f14e82c-2ade-4dc4-ab25-ba26a0ae8804.mp3",
+    "kind": "voice"
+  },
+  "vo_turn_flare.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/6123192d-6134-4ced-81b7-2a7c8d60e3ed.mp3",
+    "kind": "voice"
+  },
+  "vo_clue_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/66fca764-7b0b-44ae-8e66-50424b5ce794.mp3",
+    "kind": "voice"
+  },
+  "vo_clue_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/4574939b-d95c-4e25-a515-b2c06f1191a9.mp3",
+    "kind": "voice"
+  },
+  "vo_clue_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/44900422-78a6-4ad4-8272-e353e1b0e68e.mp3",
+    "kind": "voice"
+  },
+  "vo_correct_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/40a92d26-bdc8-4302-a55c-f84f37623dff.mp3",
+    "kind": "voice"
+  },
+  "vo_correct_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/00197526-effb-421b-82c8-7ab8eaa923ef.mp3",
+    "kind": "voice"
+  },
+  "vo_correct_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/a124cf2b-26ef-48e2-9990-15709ea84b04.mp3",
+    "kind": "voice"
+  },
+  "vo_correct_4.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/a554476a-fa14-4216-af0b-4a8fc88f1575.mp3",
+    "kind": "voice"
+  },
+  "vo_noise_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/4d4da6d8-3b06-479c-ba1a-894f01b6364c.mp3",
+    "kind": "voice"
+  },
+  "vo_noise_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/64ae72a7-ffb8-4cbf-9f5e-d262c68db135.mp3",
+    "kind": "voice"
+  },
+  "vo_noise_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/74492e08-7706-4a17-a249-9440f3367c18.mp3",
+    "kind": "voice"
+  },
+  "vo_wrong_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/f2d82e22-f0ff-4ef7-8c65-eddba6251914.mp3",
+    "kind": "voice"
+  },
+  "vo_wrong_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/25ccb6c5-6039-4e51-8cf1-35b4eb56d5bb.mp3",
+    "kind": "voice"
+  },
+  "vo_wrong_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/ac40176b-3ba9-4b35-b9a8-9a3956607e6f.mp3",
+    "kind": "voice"
+  },
+  "vo_ice_wrong.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/56056525-e128-48b5-bf41-ba1d118af290.mp3",
+    "kind": "voice"
+  },
+  "vo_ice_claim.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/ee8d2a7d-4616-407f-9897-ac6636443d5a.mp3",
+    "kind": "voice"
+  },
+  "vo_zero.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/76b97481-4b22-440f-adf1-fefebce4dff0.mp3",
+    "kind": "voice"
+  },
+  "vo_pass.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/654aef7b-2299-4b87-bf89-e7e7e469f282.mp3",
+    "kind": "voice"
+  },
+  "vo_timeout.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/20ed131f-8753-4d64-9479-d10056658979.mp3",
+    "kind": "voice"
+  },
+  "vo_last_node.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/d4957594-b66d-4eff-b9c3-1f9af4bf8049.mp3",
+    "kind": "voice"
+  },
+  "vo_volt_wins.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/7ba79190-bccc-409d-ae10-7637def7cdf9.mp3",
+    "kind": "voice"
+  },
+  "vo_flare_wins.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/9556011f-4817-4ff5-a9c4-8be626b62636.mp3",
+    "kind": "voice"
+  },
+  "vo_crew_wins.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/644f7867-5dbc-4748-a813-1594cff4a519.mp3",
+    "kind": "voice"
+  },
+  "vo_ice_wins.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/936b6b70-ecd6-422c-8257-9e9ae3c75f4c.mp3",
+    "kind": "voice"
+  },
+  "vo_mole_vote.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/ce4cd1bc-34cd-4cde-8e8b-61f19e74d44d.mp3",
+    "kind": "voice"
+  },
+  "vo_mole_caught.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/51da94fa-1a35-4091-8231-76f3e6f81454.mp3",
+    "kind": "voice"
+  },
+  "vo_mole_free.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/389b37f4-5c5d-4345-b62f-c48b72e55139.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/319c329f-ca6c-416a-ab35-b7a102d551ef.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_2.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/68984383-7078-415a-a901-d96f096192da.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_3.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/94623ec8-2c7a-40ba-9663-9eaced4776e8.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_4.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/a41030c0-952f-4724-9341-d935f14fe811.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_5.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/a9cb0463-c33d-4af2-bb9b-ec3ddfcf7008.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_6.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/c32b1b25-6ef2-4b72-b716-9abc514b5a86.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_7.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/1d98170b-dab5-433f-9237-d91dfb53b2d2.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_8.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/5e43b89a-54c9-4b88-8187-5ac3f8e55134.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_9.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/1653c9ef-7a70-4eb9-9223-3ea24c51a00b.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_10.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/c2ea663d-c743-40ff-ad57-d90ad23b92fe.mp3",
+    "kind": "voice"
+  },
+  "vo_tut_11.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/154f577f-4ed6-4f88-8049-b8a53a9acc8f.mp3",
+    "kind": "voice"
+  },
+  "ui_tap.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/ddd0bdb0-c7e8-4ffa-a4ec-65c86784788b.mp3",
+    "kind": "sfx"
+  },
+  "ui_join.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/1ff64efe-dbb8-4996-acbd-4ac0d670bf56.mp3",
+    "kind": "sfx"
+  },
+  "ui_back.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/8c3b5574-ca58-4340-b018-e2a482eed6dd.mp3",
+    "kind": "sfx"
+  },
+  "clue_arrive.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/7846541d-dfce-4b32-bb0f-0654ae3b85c1.mp3",
+    "kind": "sfx"
+  },
+  "ping.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/f21ffa3a-6579-44d1-ad88-676aad94555a.mp3",
+    "kind": "sfx"
+  },
+  "ping_remove.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/b84bffe9-f026-4ce6-9d1c-8178621d16b3.mp3",
+    "kind": "sfx"
+  },
+  "breach_start.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/fd06d853-5de9-4fbd-a2f0-be14e58cb40c.mp3",
+    "kind": "sfx"
+  },
+  "breach_cancel.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/bb6d2dbe-7746-49b4-88ff-8bf0d44448d6.mp3",
+    "kind": "sfx"
+  },
+  "reveal_volt.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/02267538-a81f-4d42-9b45-ac9dd870218a.mp3",
+    "kind": "sfx"
+  },
+  "reveal_flare.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/aa3ca626-a9e2-4ba5-99f2-ce838b4bdc85.mp3",
+    "kind": "sfx"
+  },
+  "reveal_noise.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/17ca7a88-1fd4-4d81-b758-162950bfdb2c.mp3",
+    "kind": "sfx"
+  },
+  "reveal_ice.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/70c5c3f5-6269-481a-95f1-77772aa37ff9.mp3",
+    "kind": "sfx"
+  },
+  "reveal_zero.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/d359d7a6-3a52-4a15-a39e-ebfabe65f426.mp3",
+    "kind": "sfx"
+  },
+  "turn_change.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/94062aea-79bf-48c8-9c65-55d9744bb3bd.mp3",
+    "kind": "sfx"
+  },
+  "timer_warn.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/c50df05c-98bc-4c01-9ffd-00a254db1c8b.mp3",
+    "kind": "sfx"
+  },
+  "timer_end.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/69547130-acc1-4ffc-91cf-d42dc7085275.mp3",
+    "kind": "sfx"
+  },
+  "ice_claim.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/47a51af4-12c3-4d19-8a56-8b912828fd8a.mp3",
+    "kind": "sfx"
+  },
+  "pass.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/60c0801b-2801-458b-84d2-cfcfc31d9d1a.mp3",
+    "kind": "sfx"
+  },
+  "mole_reveal.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/a9d7c744-be6c-4456-833a-7f6de35d6dc2.mp3",
+    "kind": "sfx"
+  },
+  "glitch.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/65dd5c5c-e003-414d-a337-ef60b92543d8.mp3",
+    "kind": "sfx"
+  },
+  "react.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/59e17749-4cee-4bf5-8ef7-bc02235328e1.mp3",
+    "kind": "sfx"
+  },
+  "mus_title.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/ba869d73-fc69-44c5-a600-12b2a604966b.mp3",
+    "kind": "music"
+  },
+  "mus_game_1.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/3b4c1072-f660-4a09-a836-b17ebf453c8b.mp3",
+    "kind": "music"
+  },
+  "mus_win.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/8b09ff22-2c49-4e4b-91ea-c7c54efa592e.mp3",
+    "kind": "music"
+  },
+  "mus_lose.mp3": {
+    "url": "https://cdn.creativeclaw.co/u/049bef39/audio/622e9fda-c737-4785-aa6b-5714180752ad.mp3",
+    "kind": "music"
+  }
+}
