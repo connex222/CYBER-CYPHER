@@ -1,0 +1,79 @@
+{
+  "source": "https://cdn.creativeclaw.co/u/049bef39/images/c749d040-4ad4-4f97-8450-1edc9d843dd9.png",
+  "sourcePixels": [
+    2528,
+    1696
+  ],
+  "generated": 6,
+  "totalBytes": 57986,
+  "gameAvatarFilesChanged": 0,
+  "approvalStatus": "awaiting visual inspection: faces, crops, identities, consistency",
+  "files": [
+    {
+      "id": 0,
+      "name": "Static",
+      "path": "production/avatar-preview/agent-00.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 9536,
+      "sha256": "bbdf007523bbbfb1d709e9492d6557ea54e40aa74fa5690d369d83a8d9f14879"
+    },
+    {
+      "id": 1,
+      "name": "Cipher",
+      "path": "production/avatar-preview/agent-01.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 8792,
+      "sha256": "bb180d6b091b053035f3f327af5d854eca270f773147c795830bfa8f7eb2e00e"
+    },
+    {
+      "id": 2,
+      "name": "Neon",
+      "path": "production/avatar-preview/agent-02.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 11254,
+      "sha256": "431c889a5d963325575c27a67e1fd66899592a3fdee610d4c72cd627acbda0e6"
+    },
+    {
+      "id": 3,
+      "name": "Glitch",
+      "path": "production/avatar-preview/agent-03.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 8604,
+      "sha256": "f6ac5ee3c5d3eb11beaa38b897722abacb23e3e11e32bea9b63b1ecb749873da"
+    },
+    {
+      "id": 4,
+      "name": "Vector",
+      "path": "production/avatar-preview/agent-04.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 10382,
+      "sha256": "f5585b7c1df7839a95c29c647f053939fa3c54fc302708f6de512fa5d86042e9"
+    },
+    {
+      "id": 5,
+      "name": "Pixel",
+      "path": "production/avatar-preview/agent-05.webp",
+      "dimensions": [
+        256,
+        256
+      ],
+      "bytes": 9418,
+      "sha256": "240145e0a9f5ef33302a4c81a1b0148f4154cf61e1a4810ffecf498655bbe8c1"
+    }
+  ]
+}
