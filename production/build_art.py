@@ -218,6 +218,10 @@ def verify(assets, budget):
                 raise RuntimeError("Bad output image: " + rel)
             if meta["transparent"] and im.mode != "RGBA":
                 raise RuntimeError("Expected transparent WebP: " + rel)
+            if meta["transparent"] and im.getchannel("A").getextrema()[0] == 255:
+                raise RuntimeError("Alpha isolation failed; icon has no transparent pixels: " + rel)
+            if rel.startswith("public/assets/cards/") and worst_card_contrast(im) < 7:
+                raise RuntimeError("Shipped WebP fails 7:1 card-label contrast: " + rel)
         total += len(raw)
         report.append(meta)
     if total > budget:
@@ -243,6 +247,8 @@ def main():
                                       "width":1600,"height":520, "kind":"alpha"}]:
             path = ROOT / item["path"]
             raw = path.read_bytes()
+            if len(raw) > item.get("maxBytes", 120000):
+                raise RuntimeError("Existing file exceeds per-file image budget: " + item["path"])
             assets.append((item["path"], raw, {
                 "path": item["path"], "width": item["width"], "height": item["height"],
                 "transparent": item["kind"] == "alpha", "bytes": len(raw),
