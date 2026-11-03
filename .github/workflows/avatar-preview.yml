@@ -1,0 +1,55 @@
+name: Build six premium avatar review portraits
+
+on:
+  push:
+    branches: [feature/lobby-music-and-avatar-art-direction]
+    paths:
+      - "production/avatar-atlas-preview.json"
+      - "production/build_avatar_preview.py"
+      - ".github/workflows/avatar-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  avatar-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Pillow
+        run: python -m pip install Pillow
+      - name: Generate six cropped proof portraits
+        run: python production/build_avatar_preview.py
+      - name: Inspect proof structure and avoid touching the game assets
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          from PIL import Image
+          root=pathlib.Path('production/avatar-preview')
+          q=json.loads((root/'QA.json').read_text())
+          assert q['generated']==6 and q['gameAvatarFilesChanged']==0
+          for i in range(6):
+              path=root/f'agent-{i:02d}.webp'
+              with Image.open(path) as im:
+                  assert im.format=='WEBP' and im.size==(256,256)
+          assert not list(pathlib.Path('public/assets/avatars').glob('agent-*.webp')), 'Game avatars must remain off until full 24 are certified'
+          print('PASS: six 256px portraits, review only, zero gameplay avatar replacements')
+          PY
+      - name: Save review-only assets to GitHub branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add production/avatar-preview/
+          if ! git diff --cached --quiet; then
+            git commit -m "art: prepare six premium avatar previews for review (no runtime changes)"
+            git push origin HEAD:feature/lobby-music-and-avatar-art-direction
+          fi
