@@ -542,7 +542,7 @@ var QR = (function () {
     function setVolumes() { if (!ctx) return; bus.music.gain.value = settings.music * 0.5; bus.sfx.gain.value = settings.sfx; bus.voice.gain.value = settings.voice; }
     function load(id) {
       if (buffers[id] || missing[id] || !ctx) return Promise.resolve(buffers[id] || null);
-      return fetch('/audio/' + id + '.mp3').then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(function (b) { return ctx.decodeAudioData(b); })
+      return fetch('/audio/' + id + '.mp3' + (id.indexOf('vo_') === 0 ? '?rev=halo-full-20261103' : ''), { cache: id.indexOf('vo_') === 0 ? 'no-store' : 'default' }).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(function (b) { return ctx.decodeAudioData(b); })
         .then(function (buf) { buffers[id] = buf; return buf; }).catch(function () { missing[id] = true; return null; });
     }
     function play(buf, b, vol, loop, when) { var s = ctx.createBufferSource(), g = ctx.createGain(); s.buffer = buf; s.loop = !!loop; g.gain.value = vol == null ? 1 : vol; s.connect(g); g.connect(bus[b]); s.start(when || 0); return { src: s, gain: g }; }
@@ -572,17 +572,27 @@ var QR = (function () {
       var f = SYN[id] || SYN[id.replace(/_\w+$/, '')]; if (f) try { f(); } catch (e) { /* ignore */ }
     }
     function variant(base, n) { var v; do { v = 1 + Math.floor(Math.random() * n); } while (n > 1 && v === lastVar[base]); lastVar[base] = v; return base + '_' + v; }
-    var queue = [], speaking = false;
+    var queue = [], speaking = false, currentVoice = null, voiceGeneration = 0;
     function say(id, priority) {
       if (!VO[id]) return;
       if (speaking && !priority) { if (queue.length < 2) queue.push(id); return; }
-      if (priority) { queue = []; try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+      if (priority) {
+        queue = []; voiceGeneration++;
+        if (currentVoice) { try { currentVoice.stop(); } catch (e) { /* already ended */ } currentVoice = null; }
+        try { speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+      }
+      var generation = ++voiceGeneration;
       speaking = true; subtitle(VO[id]);
-      var done = function () { speaking = false; duck(false); if (queue.length) say(queue.shift()); };
+      var done = function () {
+        if (generation !== voiceGeneration) return;
+        speaking = false; currentVoice = null; duck(false);
+        if (queue.length) say(queue.shift());
+      };
       if (!ctx || !unlocked) { setTimeout(done, 1500 + VO[id].length * 40); return; }
       duck(true);
       load(id).then(function (buf) {
-        if (buf) { var p = play(buf, 'voice', 1); p.src.onended = done; return; }
+        if (generation !== voiceGeneration) return;
+        if (buf) { var p = play(buf, 'voice', 1); currentVoice = p.src; p.src.onended = done; return; }
         if (settings.tts && settings.voice > 0 && 'speechSynthesis' in window) {
           try {
             var u = new SpeechSynthesisUtterance(VO[id]), vs = speechSynthesis.getVoices();
