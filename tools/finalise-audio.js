@@ -130,8 +130,8 @@ function main(){
  try{
    for(const spec of FIXES)convert(spec,path.join(temp,spec.name));
    // Replace only once every candidate has passed independent checks.
+   written=true; // Roll back even if only the first of five renames succeeded.
    for(const spec of FIXES)fs.renameSync(path.join(temp,spec.name),path.join(AUDIO,spec.name));
-   written=true;
    const report=fullAudit(original);
    if(!report.productionReady)throw Error('Full 73-file QA failed: '+JSON.stringify({failures:report.failures,peaks:report.peakEffectIssues,durations:report.musicDurationIssues,bytes:report.totalBytes}));
    // Publishing this updated report is the last step; the workflow commits it with the 5 MP3s.
