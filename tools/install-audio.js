@@ -7,6 +7,7 @@ const sources=require(path.join(root,'AUDIO-SOURCES.json'));
 const temp=path.join(os.tmpdir(),'CYBER-CYPHER-AUDIO-'+process.pid);
 const args=new Set(process.argv.slice(2));
 const verifyOnly=args.has('--verify-only'); const remaster=args.has('--remaster'); const repairVoices=args.has('--repair-voices');
+const VOICE_VERSION='2026-11-03-HALO-FULL';
 const compactNames=['mus_lobby.mp3','mus_game_1.mp3','mus_game_2.mp3','mus_game_3.mp3'];
 const fxTime={ui_tap:.12,ui_join:.4,ui_back:.15,clue_arrive:.8,ping:.12,ping_remove:.12,breach_start:1.6,breach_cancel:.3,reveal_volt:.6,reveal_flare:.6,reveal_noise:.5,reveal_ice:.7,reveal_zero:1.2,turn_change:.8,timer_warn:.06,timer_end:.8,ice_claim:.6,pass:.4,mole_reveal:1.2,glitch:.25,react:.15};
 const musTime={mus_title:153.6,mus_lobby:76.8,mus_game_1:6048000/44100,mus_game_2:6048000/44100,mus_game_3:6048000/44100,mus_win:6,mus_lose:5};
@@ -49,8 +50,9 @@ function makeVoiceFilter(input){
 function masterTwoPass(inp,dst,kind){
  const loud=kind==='voice'?-16:-20;const rate=kind==='voice'?'160k':'192k';
  const prep=kind==='voice'?makeVoiceFilter(inp):'aformat=channel_layouts=stereo,aresample=44100';
- const base=`loudnorm=I=${loud}:TP=-1.5:LRA=10`;
+ const base=`loudnorm=I=${loud}:TP=${kind==='voice'?'-2.5':'-1.5'}:LRA=10`;
  const first=proc('ffmpeg',['-hide_banner','-nostdin','-y','-i',inp,'-vn','-af',prep+','+base+':print_format=json','-f','null',os.devNull]);
+ if(first.status!==0)throw new Error('First-pass loudness analysis failed: '+(first.stderr||'Unknown FFmpeg error'));
  const text=(first.stderr||''); const parts=[...text.matchAll(/\{\s*"input_i"[\s\S]*?\}/g)];
  let filter=prep+','+base;
  if(parts.length){
@@ -77,6 +79,16 @@ function measure(filepath){
  let val=null;if(pk){const m=pk[1].match(/(-?[\d.]+)\s*$/);if(m)val=Number(m[1]);}
  return {integrated_lufs:I?Number(I[1]):null,true_peak_dbfs:val};
 }
+function voiceCheck(name,file){
+ const p=parseProbe(file),min=minVoiceDuration(name);
+ const m=p?measure(file):{integrated_lufs:null,true_peak_dbfs:null};
+ const issues=[];
+ if(!p||p.codec!=='mp3'||p.channels!==1||p.sample_rate!==44100)issues.push('Not valid mono 44.1kHz MP3');
+ if(!p||p.duration<min)issues.push('Truncated: '+(p?p.duration.toFixed(3):'missing')+'s; minimum '+min.toFixed(2)+'s');
+ if(!Number.isFinite(m.integrated_lufs)||m.integrated_lufs<-21||m.integrated_lufs>-12)issues.push('Inaudible or loudness outside -16 LUFS target');
+ if(!Number.isFinite(m.true_peak_dbfs)||m.true_peak_dbfs>-1.35)issues.push('Unsafe true-peak measurement');
+ return {name,passed:issues.length===0,issues,...p,...m,minimumSeconds:min};
+}
 function rmsHalf(filepath){
  const data=proc('ffmpeg',['-hide_banner','-loglevel','error','-nostdin','-i',filepath,'-f','f32le','-acodec','pcm_f32le','-ac','1','-ar','44100','-']);
  if(data.error||data.status!==0)return null;
@@ -89,8 +101,11 @@ async function main(){
  fs.mkdirSync(target,{recursive:true});fs.mkdirSync(temp,{recursive:true});
  const ffmpeg=has('ffmpeg'),ffprobe=has('ffprobe');
  console.log('FFmpeg detected:',ffmpeg?'YES — full mastering enabled':'NO — source recordings will be installed without mastering');
+ if(repairVoices&&(!ffmpeg||!ffprobe))throw new Error('Full HALO restoration requires FFmpeg + FFprobe; refusing unmastered replacements');
+ const voiceNames=Object.entries(sources).filter(([n,r])=>r.kind==='voice').map(([n])=>n);
+ if(voiceNames.length!==45||Object.keys(voiceLines).length!==45||voiceNames.some(n=>!voiceLines[n]))throw new Error('Source-to-script mismatch: expected exactly 45 HALO files');
  if(!ffmpeg)console.log('To install FFmpeg: open CMD and run: winget install --id Gyan.FFmpeg --exact');
- const job=Object.entries(sources).filter(([name])=>!compactNames.includes(name));
+ const job=Object.entries(sources).filter(([name,record])=>!compactNames.includes(name)&&(!repairVoices||record.kind==='voice'));
  let failures=[],processed=0;
  for(const [name,record] of job){
   const out=path.join(target,name);
@@ -99,14 +114,24 @@ async function main(){
   try{
    await download(record.url,incoming);
    if(fs.statSync(incoming).size<300)throw new Error('Downloaded file unexpectedly small');
+   if(record.kind==='voice'&&ffprobe){
+    const original=parseProbe(incoming);
+    if(!original||original.duration<minVoiceDuration(name))throw new Error('The Creative Claw ORIGINAL for '+name+' is too short; refusing to install it');
+   }
+   const tmpOutput=path.join(temp,'mastered-'+name);
    if(ffmpeg){
-    if(record.kind==='voice')masterTwoPass(incoming,out,'voice');
-    else if(record.kind==='sfx')masterEffect(incoming,out,name.replace(/\.mp3$/,''));
-    else masterTwoPass(incoming,out,'music');
-   }else fs.copyFileSync(incoming,out);
+    if(record.kind==='voice')masterTwoPass(incoming,tmpOutput,'voice');
+    else if(record.kind==='sfx')masterEffect(incoming,tmpOutput,name.replace(/\.mp3$/,''));
+    else masterTwoPass(incoming,tmpOutput,'music');
+   }else fs.copyFileSync(incoming,tmpOutput);
+   if(record.kind==='voice'&&ffmpeg){
+    const qc=voiceCheck(name,tmpOutput);
+    if(!qc.passed)throw new Error('Mastered voice failed: '+qc.issues.join('; '));
+   }
+   fs.renameSync(tmpOutput,out);
    processed++;console.log('OK',name,'('+Math.round(fs.statSync(out).size/1024)+' KB)');
   }catch(e){failures.push({name,error:String(e)});console.error('FAILED',name,String(e));}
-  finally{try{fs.unlinkSync(incoming)}catch{}}
+  finally{try{fs.unlinkSync(incoming)}catch{}try{fs.unlinkSync(path.join(temp,'mastered-'+name))}catch{}}
  }
  const rows=[];for(const name of [...Object.keys(sources),'mus_lobby.mp3','mus_game_2.mp3','mus_game_3.mp3']){
   if(rows.some(x=>x.name===name))continue;
@@ -118,12 +143,24 @@ async function main(){
   rows.push(item);
  }
  const bytes=fs.readdirSync(target).filter(f=>f.endsWith('.mp3')).reduce((n,f)=>n+fs.statSync(path.join(target,f)).size,0);
- const defectiveVoices=rows.filter(x=>x.present&&x.name.startsWith('vo_')&&(!x.duration||x.duration<minVoiceDuration(x.name)||(Number.isFinite(x.integrated_lufs)&&x.integrated_lufs<-25))).map(x=>({name:x.name,duration:x.duration,minimum:minVoiceDuration(x.name),integrated_lufs:x.integrated_lufs}));
- const result={generatedAt:new Date().toISOString(),ffmpeg,complete:rows.every(x=>x.present)&&defectiveVoices.length===0,totalBytes:bytes,under20MiB:bytes<=20*1024*1024,defectiveVoices,files:rows,failures};
+ const voiceResults=voiceNames.map(name=>{
+  const row=rows.find(x=>x.name===name);
+  if(!row||!row.present)return {name,passed:false,issues:['Missing voice MP3']};
+  if(!ffmpeg||!ffprobe)return {name,passed:false,issues:['FFmpeg analysis unavailable']};
+  return voiceCheck(name,path.join(target,name));
+ });
+ const defectiveVoices=voiceResults.filter(x=>!x.passed);
+ const voiceQAComplete=voiceResults.length===45&&defectiveVoices.length===0;
+ const peakEffectIssues=rows.filter(x=>x.present&&!x.name.startsWith('vo_')&&!x.name.startsWith('mus_')&&Number.isFinite(x.true_peak_dbfs)&&x.true_peak_dbfs>-3).map(x=>({name:x.name,true_peak_dbfs:x.true_peak_dbfs}));
+ const musicDurationIssues=rows.filter(x=>(x.name==='mus_win.mp3'&&x.duration>7)||(x.name==='mus_lose.mp3'&&x.duration>6)).map(x=>({name:x.name,duration:x.duration}));
+ const complete=rows.every(x=>x.present)&&voiceQAComplete&&failures.length===0&&bytes<=20*1024*1024;
+ const result={generatedAt:new Date().toISOString(),ffmpeg,complete,voiceQAComplete,voiceCount:voiceResults.length,voiceVersion:VOICE_VERSION,productionReady:complete&&peakEffectIssues.length===0&&musicDurationIssues.length===0,totalBytes:bytes,under20MiB:bytes<=20*1024*1024,defectiveVoices,peakEffectIssues,musicDurationIssues,files:rows,failures};
  fs.writeFileSync(path.join(root,'AUDIO-QA.json'),JSON.stringify(result,null,2)+'\n');
+ if(repairVoices)fs.writeFileSync(path.join(root,'production','HALO-VOICE-QA.json'),JSON.stringify({generatedAt:result.generatedAt,voiceVersion:VOICE_VERSION,complete:voiceQAComplete,voiceCount:voiceResults.length,defectiveVoices,files:voiceResults},null,2)+'\n');
  console.log('\nFiles:',rows.filter(x=>x.present).length,'/',rows.length,'— audio MiB:',(bytes/1024/1024).toFixed(2));
  console.log('Report: AUDIO-QA.json');
- if(defectiveVoices.length)console.error('FAILED VOICE QUALITY:',defectiveVoices.length,'short or inaudible files — rerun with --repair-voices and FFmpeg.');
+ if(defectiveVoices.length)console.error('FAILED VOICE QUALITY:',defectiveVoices.length,'HALO files remain invalid.');
+ if(peakEffectIssues.length||musicDurationIssues.length)console.log('Separate non-voice issues:',peakEffectIssues.length,'SFX peak violations,',musicDurationIssues.length,'music sting overruns.');
  if(!ffmpeg||!result.complete||!result.under20MiB||failures.length){console.error('WARNING: QA not complete. Review AUDIO-QA.json before deploying.');process.exitCode=1;}
  try{fs.rmSync(temp,{recursive:true,force:true})}catch{}
 }
