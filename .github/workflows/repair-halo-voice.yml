@@ -29,9 +29,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify FFmpeg is installed
+      - name: Install and verify FFmpeg and FFprobe
         shell: bash
         run: |
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
+          fi
           command -v ffmpeg
           command -v ffprobe
           ffmpeg -version | head -1
