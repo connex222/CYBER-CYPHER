@@ -749,7 +749,9 @@ var QR = (function () {
       scene.innerHTML = html(sc); bind();
       flipNew();
       if (sc === 'title' && AUDIO.unlocked) AUDIO.playMusic('title');
-      if (sc === 'lobby') AUDIO.playMusic('lobby');
+      // Screen two begins as 'opening' while the room code is allocated.
+      // Start the same lobby track here, not only after the server replies.
+      if (sc === 'opening' || sc === 'lobby') AUDIO.playMusic('lobby');
     }
     overlay(); update();
   }
@@ -912,7 +914,12 @@ var QR = (function () {
   // ================= binding =================
   function go(w) {
     AUDIO.unlock(); AUDIO.sfx('ui_tap');
-    if (w === 'start') { if (S.session) { S.screen = 'room'; } else { S.screen = 'opening'; net.send('tvCreate', {}); } }
+    if (w === 'start') {
+      // The first user gesture unlocks audio. Crossfade off title immediately.
+      AUDIO.playMusic('lobby');
+      if (S.session) { S.screen = 'room'; }
+      else { S.screen = 'opening'; net.send('tvCreate', {}); }
+    }
     else if (w === 'tutorial') { S.prevScreen = S.screen; S.screen = 'tutorial'; S.tut = 0; AUDIO.say(TUT[0].vo, true); }
     else if (w === 'room') S.screen = 'room';
     else S.screen = w;
