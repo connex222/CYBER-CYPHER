@@ -1,26 +1,29 @@
-# CYBER CYPHER — current production status
+# CYBER CYPHER — production status
 
-**Updated:** 3 November 2026
+**Updated: 3 November 2026**
 
-## HALO narration — repaired
+## Audio: automated certification passed
 
-All **45 HALO Voice 1 recordings** have been rebuilt from existing approved Creative Claw recordings, remastered without removing internal pauses, independently verified and committed to `main`.
+All **73 local game audio files** are present in GitHub and have passed the latest recorded-format and loudness/peak/duration checks:
 
-- 45/45 voice files passed; 0 truncated or silent remaining.
-- The TV player now stops interrupted chapter narration and bypasses stale cached MP3s.
-- All 11 automated game tests and the build passed.
-- No new Creative Claw credits were spent.
+- **45 HALO Voice 1 recordings** — remastered without cutting speech at internal pauses. All pass the recorded-voice checks; previous 33 truncated/silent files replaced.
+- **21 gameplay sound effects** — three previously excessive true peaks corrected: `clue_arrive.mp3`, `reveal_ice.mp3`, `turn_change.mp3`. All SFX peaks now at or below −3 dBFS.
+- **7 music tracks** — victory and defeat stings shortened into the specified durations. Three additive game layers remain unchanged.
+- Total audio size: **18,970,922 bytes**, below the 20 MiB cap. `AUDIO-QA.json` reports `productionReady: true`, no defective voices, no SFX peak violations and no sting duration violations.
+- The most recent audio workflow also passed **11/11 game tests** and the build. No audio was regenerated with Creative Claw and no generation credits were used.
 
-Evidence: [HALO voice QA](production/HALO-VOICE-QA.json), [full audio QA](AUDIO-QA.json), [successful GitHub run](https://github.com/connex222/CYBER-CYPHER/actions/runs/41706095522).
+Evidence: [full audio QA report](AUDIO-QA.json), [45-file HALO QA report](production/HALO-VOICE-QA.json), [successful audio finalisation workflow](https://github.com/connex222/CYBER-CYPHER/actions/runs/41709949429).
 
 ## Artwork and gameplay
 
-- 16 approved non-avatar AAA WebP images installed and validated.
-- All 24 player avatars remain unchanged by request.
-- Protected server, rules, secret data and network protocol remain unchanged.
+- The approved 16 non-avatar AAA WebP assets are installed locally and passed artwork packaging checks.
+- All 24 avatars remain untouched by request.
+- No changes to server rules, secret game data, multiplayer protocol or tests during audio finalisation.
 
-## Outstanding non-voice release checks
+## Still required before declaring the entire game release-tested
 
-The entire audio package is **not yet production-certified** because 3 effects (`clue_arrive.mp3`, `reveal_ice.mp3`, `turn_change.mp3`) exceed the -3 dBFS peak ceiling and 2 music stings (`mus_win.mp3`, `mus_lose.mp3`) slightly exceed their maximum durations.
+- A human listening pass on the TV tutorial and all chapter navigation, including pauses, skipping and narration interruptions.
+- Live TV plus two-phone WebSocket/multiplayer acceptance; Render deployment availability must be checked separately.
+- Commercial audio/art licensing review and final responsive PC/TV/tablet/phone visual inspection.
 
-Live TV/phone listening, multiplayer smoke, licensing and any Render deployment still require separate verification. These remaining matters do not negate the 45-file voice repair.
+**Important:** `productionReady: true` in the audio QA report means the *measured audio technical specifications* passed. It is not evidence that live-device playback, multiplayer or commercial licensing has been completed.
