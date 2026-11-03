@@ -1,0 +1,68 @@
+name: Validate and lock security-patched WebSocket library
+
+on:
+  push:
+    branches: [security/ws-8-22-1]
+    paths:
+      - ".github/workflows/security-ws-update.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-ws-and-regress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out isolated security branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Update only WebSocket dependency and lockfile
+        run: |
+          npm install ws@8.22.1 --save-exact --package-lock-only --ignore-scripts --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          node - <<'NODE'
+          const assert=require('node:assert/strict');
+          const pkg=require('./package.json');
+          const lock=require('./package-lock.json');
+          assert.equal(pkg.dependencies.ws,'8.22.1');
+          assert.equal(lock.packages['node_modules/ws'].version,'8.22.1');
+          console.log('PASS exact ws 8.22.1 and lockfile agree');
+          NODE
+      - name: Audit direct production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Run unchanged game tests and build
+        run: |
+          npm test
+          npm run build
+      - name: Verify real TV + two-phone WebSockets with patched ws
+        shell: bash
+        run: |
+          set -euo pipefail
+          export BOTS=1 CC_SPEED=10 PORT=3123
+          node server.js > /tmp/cyber-cypher-ws-patched.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cyber-cypher-ws-patched.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
+          URL=ws://127.0.0.1:3123 npm run smoke
+      - name: Commit tested dependency-only changes to security branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git diff --cached --exit-code >/dev/null && { echo "Already patched"; exit 0; } || true
+          git commit -m "security: update ws to audited 8.22.1"
+          git push origin HEAD:security/ws-8-22-1
+          echo "Security dependency prepared on a branch; live Render main unchanged."
