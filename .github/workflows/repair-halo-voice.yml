@@ -74,7 +74,7 @@ jobs:
           node - <<'NODE'
           const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
           const html=fs.readFileSync('public/tv.html','utf8');
-          const blocks=[...html.matchAll(/<script\\b[^>]*>([\\s\\S]*?)<\\/script>/gi)];
+          const blocks=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
           assert.ok(blocks.length>=1,'No TV scripts found');
           for(const [index,block] of blocks.entries())if(block[1].trim())new vm.Script(block[1],{filename:'tv-script-'+index+'.js'});
           assert.ok(html.includes('currentVoice.stop()'),'Voice interruption guard missing');
