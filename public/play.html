@@ -102,7 +102,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .numpick{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
 .numpick button{min-height:50px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-family:Orbitron,sans-serif;font-weight:800;font-size:20px}
 .numpick button.on{background:var(--tc);color:#021018;border-color:var(--tc)}
-:root[data-theme="day"] .teamsel button.on,:root[data-theme="day"] .seg button.on,:root[data-theme="day"] .numpick button.on{color:#fff}
+:root[data-theme="day"] .teamsel button:not(.on){color:color-mix(in srgb,var(--c) 35%,black)}
+:root[data-theme="day"] .seg button.on{color:#fff}
+:root[data-theme="day"] .numpick button.on{background:color-mix(in srgb,var(--tc) 75%,black);color:#fff}
+:root[data-theme="day"] .hdr .t,:root[data-theme="day"] .cluebox .n,:root[data-theme="day"] .node.mates::after{color:color-mix(in srgb,var(--tc) 75%,black)}
 [data-act="sendClue"]{position:relative;overflow:hidden}
 [data-act="sendClue"]:active{animation:transmitPulse .3s ease-out both}
 @keyframes transmitPulse{0%{transform:scale(1)}45%{transform:scale(.965)}100%{transform:scale(1)}}
