@@ -6,10 +6,27 @@ const root=path.resolve(__dirname,'..'); const target=path.join(root,'public','a
 const sources=require(path.join(root,'AUDIO-SOURCES.json'));
 const temp=path.join(os.tmpdir(),'CYBER-CYPHER-AUDIO-'+process.pid);
 const args=new Set(process.argv.slice(2));
-const verifyOnly=args.has('--verify-only'); const remaster=args.has('--remaster');
+const verifyOnly=args.has('--verify-only'); const remaster=args.has('--remaster'); const repairVoices=args.has('--repair-voices');
 const compactNames=['mus_lobby.mp3','mus_game_1.mp3','mus_game_2.mp3','mus_game_3.mp3'];
 const fxTime={ui_tap:.12,ui_join:.4,ui_back:.15,clue_arrive:.8,ping:.12,ping_remove:.12,breach_start:1.6,breach_cancel:.3,reveal_volt:.6,reveal_flare:.6,reveal_noise:.5,reveal_ice:.7,reveal_zero:1.2,turn_change:.8,timer_warn:.06,timer_end:.8,ice_claim:.6,pass:.4,mole_reveal:1.2,glitch:.25,react:.15};
 const musTime={mus_title:153.6,mus_lobby:76.8,mus_game_1:6048000/44100,mus_game_2:6048000/44100,mus_game_3:6048000/44100,mus_win:6,mus_lose:5};
+ // The source manifest is the authority for spoken wording. This catches the old
+ // silenceremove bug, which truncated a full sentence at its first natural pause.
+ const voiceLines=Object.create(null);
+ for(const line of fs.readFileSync(path.join(root,'ASSET-MANIFEST.md'),'utf8').split(/\r?\n/)){
+  const m=line.match(/^\|\s*public\/audio\/(vo_[\w]+\.mp3)\s*\|\s*(.*?)\s*\|/);
+  if(m)voiceLines[m[1]]=m[2];
+ }
+ function minVoiceDuration(name){
+  const words=(voiceLines[name]||'').match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu)||[];
+  return words.length?Math.max(.5,words.length*.19):.5;
+ }
+ function suspectVoice(name,file){
+  if(!name.startsWith('vo_'))return false;
+  const p=fs.existsSync(file)?parseProbe(file):null;
+  return !p||p.duration<minVoiceDuration(name);
+ }
+
 function proc(cmd,a){let r=cp.spawnSync(cmd,a,{encoding:'utf8',maxBuffer:32*1024*1024});return r;}
 function has(cmd){let r=proc(cmd,['-version']);return !r.error&&r.status===0;}
 function download(url,dest,redirs=0){return new Promise((resolve,reject)=>{
@@ -26,7 +43,7 @@ function runFfmpeg(inp,dst,filter,codecBitRate,channels){
  let r=proc('ffmpeg',command);if(r.status!==0)throw new Error(r.stderr||'FFmpeg failure');
 }
 function makeVoiceFilter(input){
- const prep='aformat=channel_layouts=mono,aresample=44100,silenceremove=start_periods=1:start_silence=0:start_threshold=-50dB:stop_periods=1:stop_silence=0:stop_threshold=-50dB,adelay=50,apad=pad_dur=0.05';
+ const prep='aformat=channel_layouts=mono,aresample=44100,silenceremove=start_periods=1:start_silence=0:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_silence=0:start_threshold=-50dB,areverse,adelay=50,apad=pad_dur=0.05';
  return prep;
 }
 function masterTwoPass(inp,dst,kind){
@@ -77,7 +94,7 @@ async function main(){
  let failures=[],processed=0;
  for(const [name,record] of job){
   const out=path.join(target,name);
-  if(verifyOnly||(fs.existsSync(out)&&!remaster)){if(!verifyOnly)console.log('EXISTS',name);continue;}
+  if(verifyOnly||(fs.existsSync(out)&&!remaster&&!(record.kind==='voice'&&(repairVoices||suspectVoice(name,out))))){if(!verifyOnly)console.log('EXISTS',name);continue;}
   const incoming=path.join(temp,name);
   try{
    await download(record.url,incoming);
@@ -101,11 +118,13 @@ async function main(){
   rows.push(item);
  }
  const bytes=fs.readdirSync(target).filter(f=>f.endsWith('.mp3')).reduce((n,f)=>n+fs.statSync(path.join(target,f)).size,0);
- const result={generatedAt:new Date().toISOString(),ffmpeg,complete:rows.every(x=>x.present),totalBytes:bytes,under20MiB:bytes<=20*1024*1024,files:rows,failures};
+ const defectiveVoices=rows.filter(x=>x.present&&x.name.startsWith('vo_')&&(!x.duration||x.duration<minVoiceDuration(x.name)||(Number.isFinite(x.integrated_lufs)&&x.integrated_lufs<-25))).map(x=>({name:x.name,duration:x.duration,minimum:minVoiceDuration(x.name),integrated_lufs:x.integrated_lufs}));
+ const result={generatedAt:new Date().toISOString(),ffmpeg,complete:rows.every(x=>x.present)&&defectiveVoices.length===0,totalBytes:bytes,under20MiB:bytes<=20*1024*1024,defectiveVoices,files:rows,failures};
  fs.writeFileSync(path.join(root,'AUDIO-QA.json'),JSON.stringify(result,null,2)+'\n');
  console.log('\nFiles:',rows.filter(x=>x.present).length,'/',rows.length,'— audio MiB:',(bytes/1024/1024).toFixed(2));
  console.log('Report: AUDIO-QA.json');
- if(!ffmpeg||!result.complete||!result.under20MiB||failures.length)console.log('WARNING: QA not complete. Review missing files, limits and/or FFmpeg installation.');
+ if(defectiveVoices.length)console.error('FAILED VOICE QUALITY:',defectiveVoices.length,'short or inaudible files — rerun with --repair-voices and FFmpeg.');
+ if(!ffmpeg||!result.complete||!result.under20MiB||failures.length){console.error('WARNING: QA not complete. Review AUDIO-QA.json before deploying.');process.exitCode=1;}
  try{fs.rmSync(temp,{recursive:true,force:true})}catch{}
 }
 main().catch(e=>{console.error(e.stack||String(e));process.exitCode=1;});

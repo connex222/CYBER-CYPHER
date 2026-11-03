@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-11-03T16:40:26.775Z",
   "ffmpeg": true,
-  "complete": true,
+  "complete": false,
   "totalBytes": 16520585,
   "under20MiB": true,
   "files": [
@@ -955,5 +955,233 @@
       "true_peak_dbfs": -16.5
     }
   ],
-  "failures": []
+  "failures": [],
+  "productionReady": false,
+  "validationStatus": "FAILED: files are present but narration and other duration/peak specifications are not met",
+  "auditDate": "2026-11-03",
+  "auditMethod": "Retrospective analysis of existing measurements against ASSET-MANIFEST.md. No audio was regenerated or re-measured in this audit.",
+  "defectiveVoices": [
+    {
+      "name": "vo_title.mp3",
+      "measured_seconds": 0.347,
+      "minimum_screen_seconds": 2.28,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_join_1.mp3",
+      "measured_seconds": 0.419,
+      "minimum_screen_seconds": 0.57,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_join_2.mp3",
+      "measured_seconds": 0.604,
+      "minimum_screen_seconds": 1.14,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_join_3.mp3",
+      "measured_seconds": 0.542,
+      "minimum_screen_seconds": 0.57,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_start_versus.mp3",
+      "measured_seconds": 0.369,
+      "minimum_screen_seconds": 2.09,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_start_coop.mp3",
+      "measured_seconds": 0.621,
+      "minimum_screen_seconds": 2.09,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_turn_volt.mp3",
+      "measured_seconds": 0.464,
+      "minimum_screen_seconds": 1.33,
+      "measured_lufs": -16.5
+    },
+    {
+      "name": "vo_turn_flare.mp3",
+      "measured_seconds": 0.469,
+      "minimum_screen_seconds": 1.33,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_clue_3.mp3",
+      "measured_seconds": 0.682,
+      "minimum_screen_seconds": 1.14,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_correct_3.mp3",
+      "measured_seconds": 0.319,
+      "minimum_screen_seconds": 0.76,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_noise_1.mp3",
+      "measured_seconds": 0.407,
+      "minimum_screen_seconds": 0.5,
+      "measured_lufs": -16.5
+    },
+    {
+      "name": "vo_noise_3.mp3",
+      "measured_seconds": 0.277,
+      "minimum_screen_seconds": 0.57,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_wrong_1.mp3",
+      "measured_seconds": 0.358,
+      "minimum_screen_seconds": 1.33,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_wrong_2.mp3",
+      "measured_seconds": 0.402,
+      "minimum_screen_seconds": 1.14,
+      "measured_lufs": -18.2
+    },
+    {
+      "name": "vo_ice_wrong.mp3",
+      "measured_seconds": 0.276,
+      "minimum_screen_seconds": 0.76,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_pass.mp3",
+      "measured_seconds": 0.389,
+      "minimum_screen_seconds": 0.5,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_volt_wins.mp3",
+      "measured_seconds": 0.463,
+      "minimum_screen_seconds": 0.76,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_flare_wins.mp3",
+      "measured_seconds": 0.655,
+      "minimum_screen_seconds": 0.76,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_crew_wins.mp3",
+      "measured_seconds": 0.874,
+      "minimum_screen_seconds": 0.95,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_ice_wins.mp3",
+      "measured_seconds": 1.298,
+      "minimum_screen_seconds": 1.33,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_mole_vote.mp3",
+      "measured_seconds": 0.801,
+      "minimum_screen_seconds": 2.09,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_mole_free.mp3",
+      "measured_seconds": 0.671,
+      "minimum_screen_seconds": 1.14,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_tut_1.mp3",
+      "measured_seconds": 0.315,
+      "minimum_screen_seconds": 2.66,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_2.mp3",
+      "measured_seconds": 0.356,
+      "minimum_screen_seconds": 3.23,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_3.mp3",
+      "measured_seconds": 0.95,
+      "minimum_screen_seconds": 4.75,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_tut_4.mp3",
+      "measured_seconds": 0.552,
+      "minimum_screen_seconds": 3.04,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_tut_5.mp3",
+      "measured_seconds": 0.384,
+      "minimum_screen_seconds": 3.42,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_6.mp3",
+      "measured_seconds": 0.493,
+      "minimum_screen_seconds": 3.99,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_tut_7.mp3",
+      "measured_seconds": 0.343,
+      "minimum_screen_seconds": 3.42,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_8.mp3",
+      "measured_seconds": 0.269,
+      "minimum_screen_seconds": 2.28,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_9.mp3",
+      "measured_seconds": 0.252,
+      "minimum_screen_seconds": 2.66,
+      "measured_lufs": -70
+    },
+    {
+      "name": "vo_tut_10.mp3",
+      "measured_seconds": 0.446,
+      "minimum_screen_seconds": 7.22,
+      "measured_lufs": -16.4
+    },
+    {
+      "name": "vo_tut_11.mp3",
+      "measured_seconds": 0.512,
+      "minimum_screen_seconds": 2.28,
+      "measured_lufs": -16.4
+    }
+  ],
+  "soundEffectsExceedingPeak": [
+    {
+      "name": "clue_arrive.mp3",
+      "measured_peak_dbfs": -2.6
+    },
+    {
+      "name": "reveal_ice.mp3",
+      "measured_peak_dbfs": -2.4
+    },
+    {
+      "name": "turn_change.mp3",
+      "measured_peak_dbfs": -2.9
+    }
+  ],
+  "musicExceedingDuration": [
+    {
+      "name": "mus_win.mp3",
+      "measured_seconds": 7.027
+    },
+    {
+      "name": "mus_lose.mp3",
+      "measured_seconds": 6.034
+    }
+  ]
 }

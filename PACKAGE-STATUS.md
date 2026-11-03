@@ -1,3 +1,5 @@
+> **GitHub audit update — 3 November 2026:** All 73 audio filenames now exist in the GitHub repository, but 33 HALO clips are flagged as short or inaudible, three effects exceed their peak ceiling, and two stings slightly exceed their duration limits. The current live files must not be treated as audio-certified. See [AUDIO-REPAIR.md](AUDIO-REPAIR.md) and [AUDIO-QA.json](AUDIO-QA.json). This is a newer repository observation than the original ZIP packaging notes below.
+
 # Package status — Audio staging, not final commercial release
 
 **Date:** 3 November 2026
