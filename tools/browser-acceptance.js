@@ -24,6 +24,14 @@ async function main() {
     tv.on('pageerror', e => errors.push(e.message));
     await tv.addInitScript(() => {
       window.__ccAudioQA = { starts: 0, stops: 0, longestBuffer: 0 };
+      // HTMLAudioElement used by the tutorial is not attached to the DOM.
+      window.__tutorialMedia = [];
+      const NativeAudio = window.Audio;
+      window.Audio = function (src) {
+        const media = new NativeAudio(src);
+        window.__tutorialMedia.push(media);
+        return media;
+      };
       const proto = AudioContext.prototype;
       const original = proto.createBufferSource;
       proto.createBufferSource = function () {
@@ -53,25 +61,25 @@ async function main() {
       assert.equal(await pause.isVisible(), true);
       assert.equal(await replay.isVisible(), true);
       await tv.waitForFunction(() => {
-        const m = document.querySelector('audio');
+        const m = window.__tutorialMedia[window.__tutorialMedia.length - 1];
         return m && m.currentTime > 0 && !m.paused;
       }, null, { timeout: 15000 });
       await pause.click();
       await tv.waitForFunction(() => {
-        const m = document.querySelector('audio');
+        const m = window.__tutorialMedia[window.__tutorialMedia.length - 1];
         return m && m.paused;
       });
-      const position = await tv.evaluate(() => document.querySelector('audio').currentTime);
+      const position = await tv.evaluate(() => window.__tutorialMedia[window.__tutorialMedia.length - 1].currentTime);
       await play.click();
       await tv.waitForFunction(() => {
-        const m = document.querySelector('audio');
+        const m = window.__tutorialMedia[window.__tutorialMedia.length - 1];
         return m && !m.paused;
       });
-      const resumed = await tv.evaluate(() => document.querySelector('audio').currentTime);
+      const resumed = await tv.evaluate(() => window.__tutorialMedia[window.__tutorialMedia.length - 1].currentTime);
       assert.ok(resumed >= position - 0.1, 'resume restarted instead of continuing');
       await replay.click();
       await tv.waitForFunction(() => {
-        const m = document.querySelector('audio');
+        const m = window.__tutorialMedia[window.__tutorialMedia.length - 1];
         return m && !m.paused && m.currentTime < 1;
       });
     });
