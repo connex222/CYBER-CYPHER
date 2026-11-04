@@ -55,7 +55,7 @@ async function phoneCase(browser,width){
    portraitCount:document.querySelectorAll('[data-av] svg image').length,
   }));
   assert.ok(dims.scrollWidth<=dims.viewport+2,'Horizontal page overflow: '+width+': '+JSON.stringify(dims));
-  await page.screenshot({path:path.join(ROOT,'phone-'+width+'-night.webp'),fullPage:true,type:'webp',quality:83});
+  await page.screenshot({path:path.join(ROOT,'phone-'+width+'-night.png'),fullPage:true,type:'png'});
   // Choosing the final avatar must retain the correct index and visible codename.
   await page.locator('[data-av="23"]').click();
   assert.ok(await page.locator('[data-av="23"]').evaluate(e=>e.classList.contains('on')));
@@ -65,7 +65,7 @@ async function phoneCase(browser,width){
   // Contrast/accessibility theme: portraits stay present without losing IDs.
   await page.evaluate(()=>document.documentElement.setAttribute('data-theme','day'));
   assert.equal(await page.locator('[data-av] svg image').count(),24);
-  await page.screenshot({path:path.join(ROOT,'phone-'+width+'-day.webp'),fullPage:true,type:'webp',quality:80});
+  await page.screenshot({path:path.join(ROOT,'phone-'+width+'-day.png'),fullPage:true,type:'png'});
   // Request the actual images from production, not just DOM placeholders.
   if(width===375){
    for(const av of avs){
@@ -101,7 +101,7 @@ async function tvCase(browser,width,height){
   assert.ok(info.image&&info.image.includes('logo.webp'),'TV premium logo image missing');
   assert.ok(info.stage.left>=-3&&info.stage.right<=width+3&&info.stage.top>=-3&&info.stage.bottom<=height+3,
    'Scaled TV stage off-screen: '+JSON.stringify(info));
-  await page.screenshot({path:path.join(ROOT,'tv-'+width+'x'+height+'-title.webp'),fullPage:false,type:'webp',quality:83});
+  await page.screenshot({path:path.join(ROOT,'tv-'+width+'x'+height+'-title.png'),fullPage:false,type:'png'});
   // Test tutorial visual navigation and caption, not audio audibility.
   await page.locator('[data-go="tutorial"]').click();
   await page.locator('[data-tut="1"]').waitFor();
@@ -109,7 +109,7 @@ async function tvCase(browser,width,height){
    assert.ok(await page.locator('.caption').count()>0,'Missing chapter caption '+n);
    assert.ok(await page.locator('[data-tut="-1"]').count()>0,'Missing Previous in chapter '+n);
    assert.ok(await page.locator('[data-tut="1"]').count()>0,'Missing Next in chapter '+n);
-   if(n===0||n===10)await page.screenshot({path:path.join(ROOT,'tv-'+width+'x'+height+'-tutorial-'+n+'.webp'),type:'webp',quality:85});
+   if(n===0||n===10)await page.screenshot({path:path.join(ROOT,'tv-'+width+'x'+height+'-tutorial-'+n+'.png'),type:'png'});
    if(n<10)await page.locator('[data-tut="1"]').click();
   }
   await page.locator('[data-tut="-1"]').click();
