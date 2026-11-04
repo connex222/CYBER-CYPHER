@@ -1,47 +1,37 @@
-# CYBER CYPHER — native individual avatar replacement
+# CYBER CYPHER — 24 native avatar release
 
-> **4 November 2026 production update:** All three groups of eight have now been prepared locally. There are **24 individual 256×256 WebP output files** (448,072 bytes total) with no repeated file hashes or near-identical average-hash matches. User preview downloads include Batch 3 and a single ZIP containing all 24, a review sheet, and a one-click Windows Git staging script. **These binary artwork files are still NOT in GitHub**. This branch is documentation-only until someone stages the ZIP artwork; live avatar fallbacks remain unchanged. Batches 2–3 were cropped into separate files from ChatGPT-generated character sheets; do not falsely claim sixteen separate image generation source calls. Some names need visual identity sign-off. Creative Claw credits used: **0**.
+**Updated: 4 November 2026 — all 24 production portrait files committed on staging branch.**
 
+## Production status
 
-**Current direction (4 November 2026): ChatGPT-native images only. Do not use Creative Claw for avatars.**
+The 24 individually numbered, local 256 × 256 WebP files are now uploaded to `public/assets/avatars/` in one atomic GitHub commit, `b7cac821f28dad090ec7483b4de0d509338e08a5`. They total **448,072 bytes**.
 
-This specification **supersedes** the previous Creative Claw six-character atlas plan in `production/AVATAR-PRODUCTION.md`. The user's approved final direction is **24 individual, uniquely recognisable portraits**, produced and reviewed in **three batches of eight**.
+The image binary data was compared byte-for-byte to the generated WebPs using Git blob SHA-1. GitHub Actions [run #41806921309](https://github.com/connex222/CYBER-CYPHER/actions/runs/41806921309) passed:
+- all 24 contiguous avatar filenames, file sizes, valid WebP encoding, 256 × 256 dimensions and exact name mapping;
+- zero binary/perceptual duplicates according to the automated image check;
+- original `npm test` suite and `npm run build`;
+- real WebSocket multiplayer acceptance and 24 live local HTTP routes serving exact image bytes.
 
-## Current review status
+The game client checks whether `agent-00.webp` exists before displaying portraits. **All 24 are committed together**; no partial upload activates broken avatar slots.
 
-| Batch | IDs | Characters | Current status |
+## Authoritative order (do not change)
+
+| Batch | IDs | Names | Production state |
 |---|---|---|---|
-| 1 | 00–07 | Static, Cipher, Neon, Glitch, Vector, Pixel, Nova, Rook | **Eight separate original full-resolution ChatGPT-generated portraits; user approved** |
-| 2 | 08–15 | Echo, Flux, Kestrel, Onyx, Juno, Halcyon, Quark, Raven | **Eight separate 256×256 WebPs prepared from ChatGPT-generated character sheets; not yet independently approved** |
-| 3 | 16–23 | Siren, Tango, Umbra, Volta, Wraith, Xeno, Yara, Zephyr | Not created |
+| 1 | 00–07 | Static, Cipher, Neon, Glitch, Vector, Pixel, Nova, Rook | Eight individually generated ChatGPT portraits, accepted by user |
+| 2 | 08–15 | Echo, Flux, Kestrel, Onyx, Juno, Halcyon, Quark, Raven | Eight individually deliverable WebP crops from ChatGPT-created sheets, technically validated |
+| 3 | 16–23 | Siren, Tango, Umbra, Volta, Wraith, Xeno, Yara, Zephyr | Eight individually deliverable WebP crops from ChatGPT-created sheets, technically validated |
 
-**Important fidelity note:** Batch 2 consists of individual deliverable files, but they were cropped from two generated grids rather than individually generated as unique original source canvases. **Onyx, Halcyon and Quark do not yet fully match their character descriptions and should not be approved for production as-is.** No Creative Claw credits were used for Batch 1 or 2.
+**Creation method:** Creative Claw was **not** used for avatars. Batches 2 and 3 were cropped from generated contact sheets into 16 separate portrait files; they were not 16 individually generated source images. All runtime portraits are distinct files.
 
-**Artifacts:** The Batch 2 eight individual PNG/WebP files and the first-16 WebP bundle are available as conversation downloads. These binary files are **not yet uploaded to this GitHub repository**. Do not mark the game art as fully deployed or claim otherwise.
+## Art direction
 
-## Identity and numbering lock
+London 2035 premium cyber-noir with believable adult faces and distinct ages, skin, hair and fashion. Dark rain-glass and black titanium, restrained cyan `#22E4FF` and amber `#FFB020` rim lighting. Portraits must stay readable as 48px phone avatars and larger lobby portraits. Maintain the existing numeric ID mapping and stored player selections.
 
-Preserve the authoritative `AVATAR_NAMES` ordering from `tools/shared.js` and client `public/tv.html` / `public/play.html`. Never reorder IDs or change player storage/rejoin keys.
+## Remaining visual sign-off
 
-`agent-00.webp` through `agent-23.webp` are all mandatory, each **256×256**, as one complete set. Filenames must be exact, and `public/assets/avatars/` should contain none of them until all 24 pass visual and technical QA.
+Automated validation is not a human review. The final review contact sheet shows that the appearance of a few Batch 2 portraits — particularly Onyx, Halcyon and Quark — differs from the original character-description brief. These are **visual editorial issues, not broken files**. Correct individual portraits where necessary, preserving the ID and filename.
 
-The existing clients use `detectArt('/assets/avatars/agent-00.webp')` to enable every portrait slot. **Uploading only one or eight to the runtime assets would activate missing images**, so the switch happens once in a single complete production commit.
+Run direct browser checks on phone, tablet, desktop and TV for image sizing, borders, colour matching, popup/picker positions, avatar cropping and tap targets. Any future binary replacement should include the entire affected set in the tested branch and retain a working fallback.
 
-## Visual style lock
-
-Premium photorealistic game-character render, London 2035 midnight cyber-noir, smoked titanium clothing, dark rain-glass background, convincing skin/hair materials, restrained cyan `#22E4FF` and amber `#FFB020` highlights, varied ages, shapes, hair and wardrobe. Faces must be recognisable at 48px on phones and on a 4K TV lobby; keep eyes unobstructed and shoulders visible. No typography, logos, HUD frames, signs or character names in the delivered portrait images.
-
-Batch 2's interim portrait crops should be visually reviewed for cut-off hair, previous grid borders and baked-in nameplate fragments. Where a source portrait is inconsistent with the character bible, replace that individual artwork, not the full batch.
-
-## Final integration checklist
-
-- [ ] 24 unique character identities and all mappings approved.
-- [ ] All 24 files available together, valid WebP 256×256, each under 60 KB.
-- [ ] No near-identical faces and no inadvertently shared generated reference imagery.
-- [ ] No remaining UI text or frame fragments baked into files.
-- [ ] Preserve CSS/SVG fallback until the complete pack is installed.
-- [ ] Install the complete group in a **single GitHub commit** and validate on phone and TV.
-- [ ] Run `npm test`, `npm run build`, browser picker and remote WebSocket acceptance after integration.
-- [ ] Do not merge the unrelated WebSocket security PR #13 during active multiplayer games.
-
-Remaining costs for avatars using ChatGPT-native generation: **zero Creative Claw credits**.
+**Credits:** Zero Creative Claw avatar generation credits. The unrelated `security/ws-8-22-1` PR must still be deployed separately during a quiet game window.
