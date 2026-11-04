@@ -105,6 +105,8 @@ async function main() {
     });
     await check('TV stage fits 16:9 viewport', async () => {
       await tv.setViewportSize({ width: 1366, height: 768 });
+      // The TV fit() handler updates --k asynchronously on browser resize.
+      await tv.waitForFunction(() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--k')) - Math.min(innerWidth / 1920, innerHeight / 1080)) < 0.001);
       const bounds = await tv.locator('#stage').boundingBox();
       assert.ok(bounds && bounds.x >= -2 && bounds.y >= -2 && bounds.x + bounds.width <= 1368 && bounds.y + bounds.height <= 770,
         'TV stage overflows viewport: ' + JSON.stringify(bounds));
