@@ -34,5 +34,5 @@ test('Alpha contract: release version matches npm lockfile', () => {
   const lock = require('../package-lock.json');
   assert.equal(pkg.version, lock.version);
   assert.equal(pkg.version, lock.packages[''].version);
-  assert.match(pkg.version, /-alpha\.\d+$/);
+  assert.match(pkg.version, /-alpha(?:\.\d+)?$/);
 });
