@@ -1,52 +1,33 @@
-# CYBER CYPHER — Alpha Final Sign-off Report
+# CYBER CYPHER Alpha — Final Sign-off
 
-**Date:** 4 November 2026
-**Candidate:** 1.0.0-alpha.1
-**Branch/PR:** qa/stage25-multiplayer-acceptance / #23
-**Decision:** **CONDITIONAL — NOT FINAL ALPHA SIGNED OFF**
+**Release:** `1.0.0-alpha`  
+**Sign-off date:** 4 November 2026  
+**Acceptance decision:** **APPROVED BY PROJECT OWNER** (user-confirmed all testing completed)  
+**Source of manual acceptance:** Project owner's explicit confirmation in the development conversation: "everything has tested. Merge, Push and consolidate All to CYBER CYPHER Alpha."
 
-## Verified automated evidence
+## Automated evidence (verified independently)
 
-| Gate | Result | Evidence |
-|---|---|---|
-| Game-rule/unit and build | PASS | Stage 25 GitHub Actions #41829659068 |
-| Exact 5 × 5 = 25 board | PASS | Stage 24 invariant suite and Stage 25 25-card WebSocket assertions |
-| 2, 3, 4, 6 and 10 independent WebSocket clients | PASS | 26 of 26 Stage 25 matrix assertions |
-| Co-op, versus and Mole mode setup | PASS | Stage 25 matrix |
-| Private operator keys / spectator permissions | PASS | Stage 25 matrix plus existing live-acceptance |
-| Phone reconnect and TV reconnect | PASS (simulated clients) | Stage 25 matrix |
-| HALO MP3 files and Chromium playback controls | PASS (automated) | Stage 25 workflow |
-| Native avatar image integrity | PASS (automated) | Stage 25 workflow |
-| Render Alpha RC1 deployment | LIVE | Render deploy dep-dbli4517lnhs739onotg, 4 Nov 2026 |
+- Stage 25 technical gate: **PASS**, GitHub Actions run [41831245222](https://github.com/connex222/CYBER-CYPHER/actions/runs/41831245222) on commit `a5cd5858ef5c967d972b27aefa4b9eb4ac5b26da` (the sign-off documentation update).
+- Previous 26/26 Stage 25 independent real WebSocket-client test matrix: 2, 3, 4, 6 and 10 clients; correct co-op/versus setup; privacy, spectator access, reconnect.
+- Existing tests cover the 5 × 5 / 25-card game, core rules, 24 portraits, 11 HALO audio files, browser playback and layout.
+- **Important:** The final version and documentation commits must have their own successful workflow run before merge, rather than relying solely on the earlier pass.
 
-Successful automated workflow: https://github.com/connex222/CYBER-CYPHER/actions/runs/41829659068
+## Human acceptance (project-owner attestation)
 
-## Required physical acceptance — NOT YET VERIFIED
+The owner states that **all testing is completed**, and has expressly instructed final Alpha promotion. This replaces the earlier "physical testing pending" acceptance blocker. Individual device details, screenshots, listening measurements and test scripts were not supplied in the conversation; **do not manufacture detailed test evidence**.
 
-| Gate | Status | What a human must confirm |
-|---|---|---|
-| 1920×1080 real TV and QR readability | PENDING | Picture fits safe margins; all controls/buttons legible; QR scan on real phone |
-| Phone UI on Android/iPhone and tablet | PENDING | Avatar crop, room code, button touch size, portrait/landscape, voting |
-| HALO narration, all 11 chapters | PENDING | Listen to complete chapters; pause/resume/replay; ducking; no overlap or first-word cutoff |
-| Complete real game, not just synthetic clients | PENDING | Operator clues, vote majority, team wins, Zero Day, rematch |
-| Real Wi-Fi/network disconnect | PENDING | Rejoin same seat and team, avoid duplicate players; TV recovers |
-| 2–10 real people/player-device load | PENDING | At least 2 real phones + TV; larger player counts as available |
-| Commercial sound/image licensing | PENDING | Verify provenance before any paid distribution |
+The accepted release covers the existing premium front end, 5 × 5 board, 24 avatars, HALO's 11-chapter tutorial, WebSocket multiplayer for 2–10 players and rematch/rejoin features.
 
-## Sign-off procedure
+## Operational constraints (unchanged)
 
-1. Open https://cyber-cypher-j2ry.onrender.com on the TV. Scan its displayed QR with two physical phones.
-2. Use the tutorial: hear chapter 1 all the way through, test pause/resume/replay, step through all 11.
-3. Choose agents, join and start co-op; finish a full game, return to lobby and start another.
-4. Repeat with four phones for versus and, where available, six for Mole; test a temporary phone Wi-Fi disconnection and TV reconnect.
-5. Record PASS/FAIL for the pending items, actual device/browser and any defects. Do not declare final sign-off merely from automated GitHub checks.
-6. Only after all required gates pass: promote Alpha RC1 to a final named Alpha release, document the accepted commit and deployed Render ID and create a release/tag if desired.
+- Live game: https://cyber-cypher-j2ry.onrender.com
+- Render service is linked to `main`; merges automatically start a new deploy.
+- **Active rooms are not restart-durable**: a Render restart replaces the Node process and any in-memory rooms. Avoid merging or redeploying while players are actively playing.
+- Render free instances may sleep while idle.
+- Confirm rights to every sound and image before paid distribution. Alpha approval is **not** a commercial licensing clearance.
+- Production deployment status and merge SHA should be recorded after the deployment has completed.
+- Keep rollback possible through the previous known-good Render deployment or a GitHub revert.
 
-## Release and operations risks
+## Release verdict
 
-- **Rooms are stored in process memory**: any Render restart/deployment loses active sessions. No resilient restart recovery is implemented.
-- The service is on a free Render instance and may sleep while idle.
-- CI is browser-automated; it cannot confirm actual speakers, TV overscan, handheld behaviour or real human playability.
-- Do not merge a QA-only PR or redeploy during an ongoing game-night session.
-
-**Final verdict: NOT YET SIGNED OFF.** The automated technical gate is passed; physical-device evidence is missing. This is a truthful release-blocking status, not an assessment that the game is broken.
+**CYBER CYPHER Alpha accepted by the project owner.** Technical acceptance is subject to final commit CI and successful deployment. No game rules, artwork, audio assets or the 5 × 5 board were changed during this sign-off.
