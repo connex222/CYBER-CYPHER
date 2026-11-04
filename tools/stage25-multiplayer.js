@@ -105,7 +105,7 @@ async function scenario(n) {
   const restored=await returned.wait('joined',x=>x.playerId===identity.playerId,m);
   assert.equal(restored.token,identity.token);
   const restoredSecret=await returned.wait('secret',()=>true,m);
-  assert.equal(restoredSecret.operator,false);
+  assert.ok(!restoredSecret.operator,'Runner was incorrectly elevated to Operator');
   assert.equal(restoredSecret.key,undefined);
   const updated=await tv.wait('room',r=>r.players.length===n && r.players.some(p=>p.id===identity.playerId && p.connected));
   assert.equal(updated.players.length,n);
