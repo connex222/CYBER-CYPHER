@@ -1,6 +1,6 @@
-# CYBER CYPHER — Alpha RC1
+# CYBER CYPHER Alpha
 
-**Current candidate version:** `1.0.0-alpha.1` (Stage 24). See [`production/STAGE-24-ALPHA-RC1.md`](production/STAGE-24-ALPHA-RC1.md) for the acceptance gates, known limits and rollback. Automated tests are not a substitute for real TV/phone testing.
+**Signed-off Alpha version:** `1.0.0-alpha` (4 November 2026). Real-device testing is reported complete by the project owner. See [`production/ALPHA-FINAL-SIGNOFF.md`](production/ALPHA-FINAL-SIGNOFF.md) for the acceptance record, constraints and rollback guidance.
 
 A 2035 cyberpunk team word-spy party game for a TV and phones, for 2–10 players. Two hacker crews race to find their own words on a **5 × 5 grid of 25**. Only each crew's Operator knows which word is which, and they may say just one word and a number. Hit the Zero Day and you lose.
 
