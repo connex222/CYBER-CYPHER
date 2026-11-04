@@ -40,6 +40,8 @@ async function main() {
       };
     });
     await tv.goto(base + '/', { waitUntil: 'domcontentloaded' });
+    // Title intro intercepts initial clicks for 2.5 seconds.
+    await tv.waitForTimeout(2700);
     await check('TV training entry point', async () => {
       await tv.locator('[data-go="tutorial"]').first().click();
       await assert.equal(await tv.locator('.tut .caption').count(), 1);
