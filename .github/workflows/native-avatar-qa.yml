@@ -23,6 +23,7 @@ on:
       - 'public/tv.html'
       - 'public/play.html'
       - 'production/verify_native_avatars.py'
+      - 'production/verify_halo_audio.py'
       - '.github/workflows/native-avatar-qa.yml'
   workflow_dispatch:
 
@@ -78,5 +79,21 @@ jobs:
           done
           echo 'PASS: All 24 WebP routes serve the exact committed image bytes.'
           CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
-      - name: Install Chromium browser QA dependencies\n        run: |\n          npm install --no-save --package-lock=false playwright\n          npx playwright install --with-deps chromium\n      - name: Run local Chromium tutorial and responsive acceptance\n        shell: bash\n        run: |\n          set -euo pipefail\n          PORT=3123 node server.js >/tmp/cc-browser-server.log 2>&1 &\n          SERVER_PID=$!\n          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cc-browser-server.log' EXIT\n          for i in $(seq 1 60); do\n            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi\n            sleep 0.5\n          done\n          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/browser-acceptance.js\n      - name: Declare human QA requirement
+      - name: Install Chromium browser QA dependencies
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Run local Chromium tutorial and responsive acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          PORT=3123 node server.js >/tmp/cc-browser-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cc-browser-server.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/browser-acceptance.js
+      - name: Declare human QA requirement
         run: echo "Automated acceptance does not prove portrait identity, cropping, browser visuals, audio playback, or real-device multiplayer."
