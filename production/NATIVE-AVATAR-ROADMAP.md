@@ -1,5 +1,8 @@
 # CYBER CYPHER — native individual avatar replacement
 
+> **4 November 2026 production update:** All three groups of eight have now been prepared locally. There are **24 individual 256×256 WebP output files** (448,072 bytes total) with no repeated file hashes or near-identical average-hash matches. User preview downloads include Batch 3 and a single ZIP containing all 24, a review sheet, and a one-click Windows Git staging script. **These binary artwork files are still NOT in GitHub**. This branch is documentation-only until someone stages the ZIP artwork; live avatar fallbacks remain unchanged. Batches 2–3 were cropped into separate files from ChatGPT-generated character sheets; do not falsely claim sixteen separate image generation source calls. Some names need visual identity sign-off. Creative Claw credits used: **0**.
+
+
 **Current direction (4 November 2026): ChatGPT-native images only. Do not use Creative Claw for avatars.**
 
 This specification **supersedes** the previous Creative Claw six-character atlas plan in `production/AVATAR-PRODUCTION.md`. The user's approved final direction is **24 individual, uniquely recognisable portraits**, produced and reviewed in **three batches of eight**.
