@@ -1,0 +1,62 @@
+name: Native 24-avatar production acceptance
+
+on:
+  push:
+    branches: [art/native-avatares-batches-2-3]
+    paths: ['public/assets/avatars/**']
+  pull_request:
+    paths: ['public/assets/avatars/**', 'production/verify_native_avatars.py']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  certify-complete-pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out complete 24-avatar staging branch
+        uses: actions/checkout@v4
+      - name: Set up Python and WebP decoder
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check Pillow
+      - name: Verify image count, name mapping, dimensions and uniqueness
+        run: python production/verify_native_avatars.py --report /tmp/cyber-avatar-qa.json
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Run original unit tests and build
+        run: |
+          npm test
+          npm run build
+      - name: Serve all 24 WebPs and test independent real WebSockets
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PORT=3123 BOTS=1 CC_SPEED=10
+          node server.js >/tmp/cc-avatar-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cc-avatar-server.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          curl -fsS http://127.0.0.1:3123/healthz
+          for i in $(seq -w 0 23); do
+            file="agent-$i.webp"
+            status=$(curl -sS --max-time 12 -o "/tmp/$file" -w '%{http_code}' "http://127.0.0.1:3123/assets/avatars/$file")
+            test "$status" = "200" || { echo "Failed $file: $status"; exit 1; }
+            cmp "/tmp/$file" "public/assets/avatars/$file" || { echo "Mismatch HTTP file: $file"; exit 1; }
+          done
+          echo 'PASS: All 24 WebP routes serve the exact committed image bytes.'
+          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
+      - name: Explain remaining human QA
+        run: echo "Automated QA passes do not replace visual/identity checks on phone and TV."
