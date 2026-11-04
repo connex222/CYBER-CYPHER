@@ -103,6 +103,7 @@ async function tvCase(browser,width,height){
    'Scaled TV stage off-screen: '+JSON.stringify(info));
   await page.screenshot({path:path.join(ROOT,'tv-'+width+'x'+height+'-title.png'),fullPage:false,type:'png'});
   // Test tutorial visual navigation and caption, not audio audibility.
+  await page.locator('#stage.intro-done').waitFor({timeout:8000});
   await page.locator('[data-go="tutorial"]').click();
   await page.locator('[data-tut="1"]').waitFor();
   for(let n=0;n<11;n++){
