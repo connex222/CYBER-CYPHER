@@ -47,11 +47,33 @@ async function main() {
       await assert.equal(await tv.locator('.tut .caption').count(), 1);
       assert.match(await tv.locator('.tut .caption').innerText(), /Welcome, operative/);
     });
-    await check('HALO audio begins in real browser after user gesture', async () => {
-      await tv.waitForFunction(() => window.__ccAudioQA.starts > 0, null, { timeout: 10000 });
-      await tv.waitForTimeout(1200);
-      assert.ok(await tv.evaluate(() => window.__ccAudioQA.longestBuffer > 2),
-        'No decoded audio buffer over 2 seconds started');
+    await check('HALO playback controls and real browser media', async () => {
+      const play = tv.locator('[data-tut-play]'), pause = tv.locator('[data-tut-pause]'), replay = tv.locator('[data-tut-replay]');
+      assert.equal(await play.isVisible(), true);
+      assert.equal(await pause.isVisible(), true);
+      assert.equal(await replay.isVisible(), true);
+      await tv.waitForFunction(() => {
+        const m = document.querySelector('audio');
+        return m && m.currentTime > 0 && !m.paused;
+      }, null, { timeout: 15000 });
+      await pause.click();
+      await tv.waitForFunction(() => {
+        const m = document.querySelector('audio');
+        return m && m.paused;
+      });
+      const position = await tv.evaluate(() => document.querySelector('audio').currentTime);
+      await play.click();
+      await tv.waitForFunction(() => {
+        const m = document.querySelector('audio');
+        return m && !m.paused;
+      });
+      const resumed = await tv.evaluate(() => document.querySelector('audio').currentTime);
+      assert.ok(resumed >= position - 0.1, 'resume restarted instead of continuing');
+      await replay.click();
+      await tv.waitForFunction(() => {
+        const m = document.querySelector('audio');
+        return m && !m.paused && m.currentTime < 1;
+      });
     });
     await check('All 11 tutorial chapters and button navigation', async () => {
       const seen = new Set();
