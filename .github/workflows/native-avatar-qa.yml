@@ -7,6 +7,7 @@ on:
       - 'public/assets/avatars/**'
       - 'tools/shared.js'
       - 'tools/live-acceptance.js'
+      - 'tools/stage25-multiplayer.js'
       - 'tools/browser-acceptance.js'
       - 'public/tv.html'
       - 'public/play.html'
@@ -23,6 +24,7 @@ on:
       - 'public/assets/avatars/**'
       - 'tools/shared.js'
       - 'tools/live-acceptance.js'
+      - 'tools/stage25-multiplayer.js'
       - 'tools/browser-acceptance.js'
       - 'public/tv.html'
       - 'public/play.html'
@@ -87,6 +89,19 @@ jobs:
           done
           echo 'PASS: All 24 WebP routes serve the exact committed image bytes.'
           CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
+      - name: Stage 25 independent multiplayer WebSocket matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PORT=3123 BOTS=0 CC_SPEED=1
+          node server.js >/tmp/cc-stage25-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cc-stage25-server.log' EXIT
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi
+            sleep 0.5
+          done
+          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/stage25-multiplayer.js
       - name: Install Chromium browser QA dependencies
         run: |
           npm install --no-save --package-lock=false playwright
