@@ -150,7 +150,13 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 .tut .demo{position:absolute;left:50%;top:150px;transform:translateX(-50%)}
 .mini{display:grid;grid-template-columns:repeat(3,260px);gap:14px}
 .mini .card{height:150px}
-.tut .nav{position:absolute;right:160px;top:40px;display:flex;gap:14px}
+.tut .nav{position:absolute;right:100px;top:40px;display:flex;gap:14px}
+.tut .controls{position:absolute;left:90px;top:38px;display:flex;gap:12px;align-items:center;z-index:8}
+.tut .controls .btn,.tut .nav .btn{min-height:68px;font-size:25px;padding:10px 22px}
+.tut .exit{position:absolute;left:90px;bottom:32px;z-index:8;min-height:52px;font-size:22px}
+.tut .caption{bottom:105px}
+.tut .steps{top:123px}
+.tut .demo{top:185px}
 
 /* ---------- overlays ---------- */
 #subs{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);max-width:1400px;padding:12px 26px;border-radius:12px;background:rgba(3,6,12,.88);border:1px solid rgba(34,228,255,.4);font-size:calc(30px*var(--ts));text-align:center;opacity:0;transition:opacity .3s;z-index:20;pointer-events:none}
@@ -669,7 +675,13 @@ var QR = (function () {
         notes.forEach(function (f, i) { tone(f, .5, 'square', .06, t + i * .16, null, 'music'); });
       });
     }
-    return { unlock: unlock, sfx: sfx, say: say, variant: variant, playMusic: playMusic, setTension: setTension, sting: sting, setVolumes: setVolumes, get unlocked() { return unlocked; } };
+    function stopVoice() {
+      queue = []; voiceGeneration++;
+      if (currentVoice) { try { currentVoice.stop(); } catch (e) {} currentVoice = null; }
+      try { speechSynthesis.cancel(); } catch (e) {}
+      speaking = false; duck(false);
+    }
+    return { unlock: unlock, sfx: sfx, say: say, stopVoice: stopVoice, tutorialDuck: duck, variant: variant, playMusic: playMusic, setTension: setTension, sting: sting, setVolumes: setVolumes, get unlocked() { return unlocked; } };
   })();
   window.AUDIO = AUDIO; applySettings();
 
@@ -829,6 +841,60 @@ var QR = (function () {
     { vo: 'vo_tut_5', demo: 'clue' }, { vo: 'vo_tut_6', demo: 'ping' }, { vo: 'vo_tut_7', demo: 'own' }, { vo: 'vo_tut_8', demo: 'noise' },
     { vo: 'vo_tut_9', demo: 'zero' }, { vo: 'vo_tut_10', demo: 'modes' }, { vo: 'vo_tut_11', demo: 'go' }
   ];
+  // Separate HTMLMediaElement preserves true pause/resume and audio position.
+  // The existing game SFX/music/VO pipeline is left unchanged.
+  var TUTORIAL_AUDIO = (function () {
+    var player = null, sequence = 0, chapter = -1, paused = true;
+    function stop() {
+      sequence++;
+      if (player) { player.onended = null; player.onerror = null; player.pause(); player.removeAttribute('src'); player.load(); player = null; }
+      chapter = -1; paused = true;
+      AUDIO.tutorialDuck(false);
+    }
+    function update() {
+      if (S.screen !== 'tutorial') return;
+      var play = scene.querySelector('[data-tut-play]'), pause = scene.querySelector('[data-tut-pause]');
+      if (play) { play.disabled = !paused; play.setAttribute('aria-pressed', String(!paused)); }
+      if (pause) pause.disabled = paused;
+    }
+    function play(index, resume) {
+      if (resume && player && chapter === index) {
+        player.play().then(function () { paused = false; AUDIO.tutorialDuck(true); update(); }).catch(function () { paused = true; AUDIO.tutorialDuck(false); update(); });
+        return;
+      }
+      stop();
+      chapter = index;
+      var ticket = sequence;
+      player = new window.Audio('/audio/' + TUT[index].vo + '.mp3?rev=halo-full-20261103');
+      player.preload = 'auto'; player.volume = Math.max(0, Math.min(1, settings.voice));
+      player.onended = function () {
+        if (ticket !== sequence || S.screen !== 'tutorial') return;
+        paused = true; AUDIO.tutorialDuck(false);
+        if (S.tut < TUT.length - 1) {
+          S.tut++; S.lastKey = ''; render(); play(S.tut, false);
+        } else update();
+      };
+      player.onerror = function () {
+        if (ticket !== sequence) return;
+        paused = true; AUDIO.tutorialDuck(false);
+        toast('HALO recording unavailable. Use NEXT to continue.');
+        update();
+      };
+      player.play().then(function () {
+        if (ticket !== sequence) return;
+        paused = false; AUDIO.tutorialDuck(true); update();
+      }).catch(function () {
+        if (ticket !== sequence) return;
+        paused = true; AUDIO.tutorialDuck(false); update();
+      });
+      update();
+    }
+    function pause() {
+      if (!player) return;
+      player.pause(); paused = true; AUDIO.tutorialDuck(false); update();
+    }
+    return { play: play, pause: pause, stop: stop, update: update };
+  })();
   var DEMO_WORDS = ['WHALE', 'ANCHOR', 'ROCKET', 'PEARL', 'TORCH', 'SHARK', 'CROWN', 'DESERT', 'PIANO'];
   var DEMO_KEY = ['volt', 'flare', 'noise', 'volt', 'noise', 'volt', 'flare', 'zero', 'flare'];
   function miniCard(i, opts) {
@@ -857,7 +923,7 @@ var QR = (function () {
     } else if (d === 'modes') demo = '<div style="display:flex;gap:40px;margin-top:40px"><div class="panel" style="padding:30px;width:600px;--tc:var(--ice)"><h2 class="orb" style="color:var(--ice);margin:0 0 10px">CO-OP vs ICE</h2><p style="margin:0">2\u20133 players. One crew. ICE grabs one of its 8 nodes every turn. Find your 9 first.</p></div><div class="panel" style="padding:30px;width:600px"><h2 class="orb" style="color:var(--zero);margin:0 0 10px">MOLE MODE</h2><p style="margin:0">One Runner per crew is secretly sabotaging. After the game, each crew votes to unmask them.</p></div></div>';
     else demo = '<div class="orb" style="font-size:110px;margin-top:120px;color:var(--volt);text-shadow:0 0 30px var(--volt)">READY?</div>';
     var steps = TUT.map(function (x, i) { return '<i class="' + (i <= S.tut ? 'on' : '') + '"></i>'; }).join('');
-    return '<div class="tut"><div class="steps">' + steps + '</div><div class="nav"><button class="btn" data-tut="-1"' + (S.tut ? '' : ' disabled') + '>BACK</button><button class="btn primary" data-tut="1">' + (S.tut === TUT.length - 1 ? 'FINISH' : 'NEXT') + '</button></div>' +
+    return '<div class="tut"><div class="steps">' + steps + '</div><div class="controls"><button class="btn primary" data-tut-play aria-label="Play or resume HALO narration">PLAY</button><button class="btn" data-tut-pause aria-label="Pause HALO narration">PAUSE</button><button class="btn" data-tut-replay aria-label="Replay this HALO chapter">REPLAY</button></div><button class="btn exit" data-tut-exit>BACK TO ' + (S.session ? 'LOBBY' : 'TITLE') + '</button><div class="nav"><button class="btn" data-tut="-1"' + (S.tut ? '' : ' disabled') + '>BACK</button><button class="btn primary" data-tut="1">' + (S.tut === TUT.length - 1 ? 'FINISH' : 'NEXT') + '</button></div>' +
       '<div class="demo enter">' + demo + '</div><div class="caption panel enter2">' + esc(VO[st.vo]) + '</div></div>';
   }
 
@@ -949,10 +1015,12 @@ var QR = (function () {
       if (S.session) { S.screen = 'room'; }
       else { S.screen = 'opening'; net.send('tvCreate', {}); }
     }
-    else if (w === 'tutorial') { S.prevScreen = S.screen; S.screen = 'tutorial'; S.tut = 0; AUDIO.say(TUT[0].vo, true); }
+    else if (w === 'tutorial') { AUDIO.stopVoice(); TUTORIAL_AUDIO.stop(); S.prevScreen = S.screen; S.screen = 'tutorial'; S.tut = 0; }
     else if (w === 'room') S.screen = 'room';
     else S.screen = w;
+    if (w !== 'tutorial') TUTORIAL_AUDIO.stop();
     S.lastKey = ''; render();
+    if (w === 'tutorial') TUTORIAL_AUDIO.play(0, false);
   }
   function bind() {
     scene.querySelectorAll('[data-go]').forEach(function (b) { b.onclick = function () { go(b.dataset.go); }; });
@@ -960,11 +1028,18 @@ var QR = (function () {
     scene.querySelectorAll('[data-tut]').forEach(function (b) {
       b.onclick = function () {
         AUDIO.unlock(); var n = S.tut + Number(b.dataset.tut);
-        if (n >= TUT.length) { S.screen = S.session ? 'room' : 'title'; S.tut = 0; }
-        else { S.tut = Math.max(0, n); AUDIO.sfx(Number(b.dataset.tut) < 0 ? 'ui_back' : 'ui_tap'); AUDIO.say(TUT[S.tut].vo, true); }
-        S.lastKey = ''; render();
+        if (n >= TUT.length) { TUTORIAL_AUDIO.stop(); S.screen = S.session ? 'room' : 'title'; S.tut = 0; S.lastKey = ''; render(); }
+        else { S.tut = Math.max(0, n); AUDIO.sfx(Number(b.dataset.tut) < 0 ? 'ui_back' : 'ui_tap'); S.lastKey = ''; render(); TUTORIAL_AUDIO.play(S.tut, false); }
       };
     });
+    var playBtn = scene.querySelector('[data-tut-play]'), pauseBtn = scene.querySelector('[data-tut-pause]'), replayBtn = scene.querySelector('[data-tut-replay]'), exitBtn = scene.querySelector('[data-tut-exit]');
+    if (playBtn) playBtn.onclick = function () { AUDIO.unlock(); TUTORIAL_AUDIO.play(S.tut, true); };
+    if (pauseBtn) pauseBtn.onclick = function () { TUTORIAL_AUDIO.pause(); };
+    if (replayBtn) replayBtn.onclick = function () { AUDIO.unlock(); TUTORIAL_AUDIO.play(S.tut, false); };
+    if (exitBtn) exitBtn.onclick = function () {
+      TUTORIAL_AUDIO.stop(); S.screen = S.session ? 'room' : 'title'; S.tut = 0; S.lastKey = ''; render();
+    };
+    TUTORIAL_AUDIO.update();
     scene.querySelectorAll('[data-range]').forEach(function (i) { i.oninput = function () { settings[i.dataset.range] = +i.value; saveSettings(); }; });
     scene.querySelectorAll('[data-seg]').forEach(function (b) { b.onclick = function () { var v = b.dataset.val; settings[b.dataset.seg] = v === 'true' ? true : v === 'false' ? false : +v; saveSettings(); S.lastKey = ''; render(); }; });
   }
