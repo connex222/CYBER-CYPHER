@@ -238,8 +238,37 @@ var CC = (function () {
   /** Calls back once if an image file exists (used to swap placeholders for real art). */
   function artReady(url, cb) { var im = new Image(); im.onload = function () { cb(true); }; im.onerror = function () { cb(false); }; im.src = url; }
 
-  /** Checks for avatar art once; calls back so the page can redraw with real portraits. */
-  function detectArt(cb) { artReady('/assets/avatars/agent-00.webp', function (ok) { art.avatars = ok; if (ok && cb) cb(); }); }
+  /** Preload all 24 portraits before enabling any, so no half-silhouette picker appears.
+   * Missing or slow images keep all SVG fallbacks instead of displaying broken portraits.
+   */
+  var avatarPreload = null;
+  function detectArt(cb) {
+    if (art.avatars) { if (cb) cb(); return; }
+    if (!avatarPreload) {
+      var tasks = AVATAR_NAMES.map(function (_name, i) {
+        return new Promise(function (resolve) {
+          var im = new Image(), settled = false;
+          function done(ok) { if (settled) return; settled = true; resolve(ok); }
+          im.onload = function () {
+            if (typeof im.decode === 'function') im.decode().then(function () { done(im.naturalWidth > 0); }, function () { done(false); });
+            else done(im.naturalWidth > 0);
+          };
+          im.onerror = function () { done(false); };
+          im.src = '/assets/avatars/agent-' + String(i).padStart(2, '0') + '.webp';
+        });
+      });
+      var timeout;
+      avatarPreload = Promise.race([
+        Promise.all(tasks).then(function (states) { return states.every(function (ok) { return ok; }); }),
+        new Promise(function (resolve) { timeout = setTimeout(function () { resolve(false); }, 15000); })
+      ]).then(function (complete) {
+        clearTimeout(timeout);
+        art.avatars = complete;
+        return complete;
+      });
+    }
+    if (cb) avatarPreload.then(function (complete) { if (complete) cb(); });
+  }
   /* Splits a long word over two lines at a natural syllable break (e.g. LUNCH-BOX, HAM-MOCK, OMNI-SHAMBLES). */
   var SPLIT = (function () {
     var V = /[AEIOUY]/;
