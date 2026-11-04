@@ -2,10 +2,28 @@ name: Native 24-avatar production acceptance
 
 on:
   push:
-    branches: [art/native-avatares-batches-2-3]
-    paths: ['public/assets/avatars/**']
+    branches: [main]
+    paths:
+      - 'public/assets/avatars/**'
+      - 'tools/shared.js'
+      - 'tools/live-acceptance.js'
+      - 'tools/browser-acceptance.js'
+      - 'public/tv.html'
+      - 'public/play.html'
+      - 'production/verify_native_avatars.py'
+      - 'production/verify_halo_audio.py'
+      - 'public/audio/vo_tut_*.mp3'
+      - '.github/workflows/native-avatar-qa.yml'
   pull_request:
-    paths: ['public/assets/avatars/**', 'production/verify_native_avatars.py']
+    paths:
+      - 'public/assets/avatars/**'
+      - 'tools/shared.js'
+      - 'tools/live-acceptance.js'
+      - 'tools/browser-acceptance.js'
+      - 'public/tv.html'
+      - 'public/play.html'
+      - 'production/verify_native_avatars.py'
+      - '.github/workflows/native-avatar-qa.yml'
   workflow_dispatch:
 
 permissions:
@@ -14,18 +32,20 @@ permissions:
 jobs:
   certify-complete-pack:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
-      - name: Check out complete 24-avatar staging branch
+      - name: Check out candidate commit
         uses: actions/checkout@v4
       - name: Set up Python and WebP decoder
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install Pillow
-        run: python -m pip install --disable-pip-version-check Pillow
-      - name: Verify image count, name mapping, dimensions and uniqueness
+        run: python -m pip install --disable-pip-version-check Pillow mutagen
+      - name: Verify image count, mapping, dimensions and uniqueness
         run: python production/verify_native_avatars.py --report /tmp/cyber-avatar-qa.json
+      - name: Check all 11 HALO tutorial recordings
+        run: python production/verify_halo_audio.py
       - name: Set up Node 22
         uses: actions/setup-node@v4
         with:
@@ -58,5 +78,5 @@ jobs:
           done
           echo 'PASS: All 24 WebP routes serve the exact committed image bytes.'
           CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/live-acceptance.js
-      - name: Explain remaining human QA
-        run: echo "Automated QA passes do not replace visual/identity checks on phone and TV."
+      - name: Install Chromium browser QA dependencies\n        run: |\n          npm install --no-save --package-lock=false playwright\n          npx playwright install --with-deps chromium\n      - name: Run local Chromium tutorial and responsive acceptance\n        shell: bash\n        run: |\n          set -euo pipefail\n          PORT=3123 node server.js >/tmp/cc-browser-server.log 2>&1 &\n          SERVER_PID=$!\n          trap 'kill "$SERVER_PID" 2>/dev/null || true; cat /tmp/cc-browser-server.log' EXIT\n          for i in $(seq 1 60); do\n            if curl -fsS http://127.0.0.1:3123/healthz >/dev/null 2>&1; then break; fi\n            sleep 0.5\n          done\n          CC_ACCEPTANCE_HTTP=http://127.0.0.1:3123 node tools/browser-acceptance.js\n      - name: Declare human QA requirement
+        run: echo "Automated acceptance does not prove portrait identity, cropping, browser visuals, audio playback, or real-device multiplayer."
