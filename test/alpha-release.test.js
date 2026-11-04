@@ -26,7 +26,7 @@ test('Alpha contract: TV and phone grids both use five columns', () => {
   const phone = fs.readFileSync(path.join(root, 'public/play.html'), 'utf8');
   assert.match(tv, /\.grid\s*\{[^}]*grid-template-columns:\s*repeat\(5\s*,\s*1fr\)/s);
   assert.match(tv, /\.grid\s*\{[^}]*grid-template-rows:\s*repeat\(5\s*,\s*1fr\)/s);
-  assert.match(phone, /\\.board\\s*\\{[^}]*grid-template-columns:\\s*repeat\\(5\\s*,\\s*1fr\\)/s);
+  assert.match(phone, /\.board\s*\{[^}]*grid-template-columns:\s*repeat\(5\s*,\s*1fr\)/s);
 });
 
 test('Alpha contract: release version matches npm lockfile', () => {
