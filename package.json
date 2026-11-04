@@ -1,6 +1,6 @@
 {
   "name": "cyber-cypher",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha",
   "description": "Cyber Cypher — a 2035 team word-spy party game for TV and phones",
   "main": "server.js",
   "directories": {
