@@ -8,6 +8,8 @@ on:
       - 'tools/shared.js'
       - 'tools/live-acceptance.js'
       - 'production/verify_native_avatars.py'
+      - 'production/verify_halo_audio.py'
+      - 'public/audio/vo_tut_*.mp3'
       - '.github/workflows/native-avatar-qa.yml'
   pull_request:
     paths:
@@ -33,9 +35,11 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install Pillow
-        run: python -m pip install --disable-pip-version-check Pillow
+        run: python -m pip install --disable-pip-version-check Pillow mutagen
       - name: Verify image count, mapping, dimensions and uniqueness
         run: python production/verify_native_avatars.py --report /tmp/cyber-avatar-qa.json
+      - name: Check all 11 HALO tutorial recordings
+        run: python production/verify_halo_audio.py
       - name: Set up Node 22
         uses: actions/setup-node@v4
         with:
