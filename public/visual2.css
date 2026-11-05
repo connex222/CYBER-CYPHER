@@ -1,0 +1,51 @@
+/* CYBER CYPHER Visual 2.0 — optional additive artwork skin.
+   Activated only after all four approved assets load; original assets are never overwritten.
+   All room codes, QR, tile content, scores and tutorial controls remain live elements. */
+:root.visual2-ready { --v2-black:#0B0E14; --v2-navy:#121826; --v2-cyan:#00F0FF; --v2-magenta:#FF2E88; --v2-danger:#FF3B1F; }
+:root.visual2-ready #stage[data-screen="lobby"] {
+  background-image:linear-gradient(90deg,rgba(5,8,18,.54),rgba(5,8,18,.39)),url('/assets/visual2/lobby.webp');
+  background-position:center;
+  background-size:cover;
+}
+:root.visual2-ready #stage[data-screen="game"] {
+  background-image:linear-gradient(rgba(3,6,12,.08),rgba(3,6,12,.16)),url('/assets/visual2/board.webp');
+  background-position:center;
+  background-size:cover;
+}
+:root.visual2-ready #stage[data-screen="result"] {
+  background-image:linear-gradient(rgba(3,6,12,.1),rgba(3,6,12,.2)),url('/assets/visual2/results.webp');
+  background-position:center;
+  background-size:cover;
+}
+:root.visual2-ready #stage[data-screen="lobby"] .panel,
+:root.visual2-ready #stage[data-screen="game"] .panel,
+:root.visual2-ready #stage[data-screen="result"] .panel {
+  background:rgba(8,13,26,.92); border-color:rgba(0,240,255,.35);
+  box-shadow:0 15px 36px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.07);
+}
+:root.visual2-ready #stage .member .av,
+:root.visual2-ready #stage .side .op .av {
+  border:2px solid rgba(0,240,255,.7);
+  box-shadow:0 0 0 2px rgba(255,46,136,.20),0 0 14px rgba(0,240,255,.28);
+  object-fit:cover;
+}
+:root.visual2-ready #stage .card.o-zero .back {
+  background:url('/assets/visual2/zero-day.webp') center/cover no-repeat;
+  --oc:var(--zero); border-color:var(--v2-danger);
+  box-shadow:0 0 18px rgba(255,59,31,.38);
+}
+/* The red X is already drawn at right on the approved card. Don't duplicate the original central glyph. */
+:root.visual2-ready #stage .card.o-zero .back .ico {visibility:hidden}
+:root.visual2-ready #stage .card.o-zero .back .w {
+  align-self:flex-start;max-width:72%;font-size:22px;
+  text-shadow:0 2px 6px #000,0 0 6px #000;
+}
+:root.visual2-ready .avbtn .av {object-fit:cover}
+:root.visual2-ready .avbtn.on {box-shadow:inset 0 0 0 2px var(--accent),0 0 18px rgba(0,240,255,.35)}
+@media (prefers-contrast:more){
+  :root.visual2-ready #stage .panel {background:#09111e}
+  :root.visual2-ready #stage .card.o-zero .back .w {text-shadow:0 0 5px #000}
+}
+@media (prefers-reduced-motion:reduce){
+  :root.visual2-ready #stage .card {transition:none!important}
+}

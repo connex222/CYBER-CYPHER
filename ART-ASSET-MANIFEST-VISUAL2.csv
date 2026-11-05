@@ -1,0 +1,5 @@
+path,role,width,height,alpha,bytes,sha256,source,approval,production_note
+public/assets/visual2/lobby.webp,TV lobby environment,1920,1080,False,300460,a8e70daf1f75ebfce89d36fcc5b455c442388ee504b3bed3954d43158cddfd1f,01-operations-lobby.png,approved Sample #1,ambient padded at native-centre
+public/assets/visual2/board.webp,TV game environment,1920,1080,False,92752,7bf270021bbf1e00847045f7adf1df14e99072298e457221fb594285e5a5d24a,02-board-environment.png,approved Sample #2,native resolution or downsampled
+public/assets/visual2/results.webp,TV results environment,1920,1080,False,226248,d48fa50e896c497e1a25f2781187da23afee844b4607c3da602b478b6e3ecd0c,cyber_noir_command_chamber.png,approved Sample #5,ambient padded at native-centre
+public/assets/visual2/zero-day.webp,Zero Day revealed card,474,300,False,7262,990d91bd59772b58ccc3d3cce9333e5bc2018308bee5c9454cf0eb9fd711a539,04-zero-day-node.png,approved Sample #4,native resolution or downsampled
