@@ -1,15 +1,23 @@
-# Visual 2.0 — current QA gate (5 November 2026)
+# Visual 2.0 — post-upload QA gate (5 November 2026)
 
-- Original source provenance: ZIP commit 299e690 matches current GitHub main commit at start.
-- Local npm test + build: PASS (22/22 tests, 0 failures).
-- Local asset path and preservation QA: PASS (6 checks).
-- Asset dimensions and file decoding: PASS in local package.
-- Original 24 avatar files unchanged: PASS.
-- 5×5 grid CSS, rule source and audio files preserved: PASS by file hash + source inspection.
-- Live host + WebSocket smoke: NOT RUN — npm `ws` dependency unavailable in sandbox; offline npm install failed.
-- Browser screenshots (TV, desktop, tablet, phone): NOT RUN — browser navigation blocked by sandbox restrictions.
-- Full human/multiplayer session: NOT RUN.
-- Branch binary media upload: PENDING; local download kit includes all approved files.
-- Merge: NOT AUTHORISED. Render deployment: NOT AUTHORISED.
+- Original source provenance: supplied ZIP matched GitHub main at `299e6901bf958c09c60242dc3e7ff1f0c6425af3` at baseline.
+- GitHub media upload: **VERIFIED** on `visual-2.0/approved-art-integration`:
+  - `public/assets/visual2/lobby.webp` — 300,460 bytes
+  - `public/assets/visual2/board.webp` — 92,752 bytes
+  - `public/assets/visual2/results.webp` — 226,248 bytes
+  - `public/assets/visual2/zero-day.webp` — 7,262 bytes
+- GitHub branch comparison: **7 commits ahead**, **0 behind** `main`. Only new Visual 2.0 media, style, loader, manifests, QA and two HTML linker additions; no server, rule, audio or original asset files changed.
+- Local npm test + build: **PASS** (22/22 automated tests, 0 failures, built in local review copy before upload).
+- Local visual static checks: **PASS** (6/6).
+- Original 24 agent files retained: **PASS** in local review copy.
+- Native pixel dimensions and WebP decoding: **PASS** in local review copy.
+- Live host + WebSocket smoke: **NOT RUN** — npm `ws` dependency unavailable in sandbox.
+- Live browser viewport screenshots: **NOT RUN** — Chromium navigation denied by sandbox administrator (including local HTTP URL).
+- TV + 2 phone, role secrecy, 5×5, reveal/replay and audio across rounds: **NOT RUN** — real end-to-end acceptance required.
+- Merge: **NOT AUTHORISED**. Render deployment: **NOT AUTHORISED**.
 
-Final pre-merge acceptance requires loading the branch with the binary assets, testing all target viewports, joining with TV and two phones, verifying secrecy and reveal states, replaying a match, rechecking audio across rounds, and reviewing actual screenshots.
+All four production media files now exist on the development branch; the loader activates the Visual 2.0 skin only after they decode. Do not infer visually correct positioning or playable multiplayer from presence checks.
+
+## Remaining sign-off tasks
+
+Run actual screenshots at TV 1920×1080, desktop 1366×768, tablet 1024×768, phone 390×844 and narrow 320 px. Verify QR, lobby, 25 game cells and live words, operator secrecy, Zero Day reveal and text overlay, portraits/identity and crop, audio controls, cinematic results, tutorial navigation and full multiplayer. Investigate any failures on this branch; owner must explicitly approve any merge/deployment.
