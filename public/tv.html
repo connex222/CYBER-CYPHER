@@ -1011,6 +1011,9 @@ var QR = (function () {
   // ================= binding =================
   function go(w) {
     AUDIO.unlock(); AUDIO.sfx('ui_tap');
+    // The first pointer event may have queued the title voice 500ms ahead.
+    // Cancel it before opening Training (or any other non-title screen).
+    if (w !== 'title' && titleVoiceTimer !== null) { clearTimeout(titleVoiceTimer); titleVoiceTimer = null; }
     if (w === 'start') {
       // The first user gesture unlocks audio. Crossfade off title immediately.
       AUDIO.playMusic('lobby');
@@ -1046,6 +1049,7 @@ var QR = (function () {
     scene.querySelectorAll('[data-seg]').forEach(function (b) { b.onclick = function () { var v = b.dataset.val; settings[b.dataset.seg] = v === 'true' ? true : v === 'false' ? false : +v; saveSettings(); S.lastKey = ''; render(); }; });
   }
   // One-off skippable title treatment. No route, role or gameplay state changes.
+  var titleVoiceTimer = null;
   var titleIntroDone=false;
   function finishTitleIntro(){if(titleIntroDone)return;titleIntroDone=true;stage.classList.add('intro-done');}
   setTimeout(finishTitleIntro,2500);
@@ -1055,7 +1059,17 @@ var QR = (function () {
   }
   addEventListener('click',skipTitleIntro,true);
   addEventListener('keydown',skipTitleIntro,true);
-  addEventListener('pointerdown', function first() { removeEventListener('pointerdown', first, true); AUDIO.unlock(); if (S.screen === 'title') { AUDIO.playMusic('title'); setTimeout(function () { AUDIO.say('vo_title'); }, 500); } }, true);
+  addEventListener('pointerdown', function first() {
+    removeEventListener('pointerdown', first, true); AUDIO.unlock();
+    if (S.screen === 'title') {
+      AUDIO.playMusic('title');
+      titleVoiceTimer = setTimeout(function () {
+        titleVoiceTimer = null;
+        // Never start a second voice after the player has opened Training.
+        if (S.screen === 'title') AUDIO.say('vo_title');
+      }, 500);
+    }
+  }, true);
   addEventListener('keydown', function (e) {
     AUDIO.unlock();
     if (S.screen === 'tutorial' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { var b = scene.querySelector('[data-tut="' + (e.key === 'ArrowRight' ? 1 : -1) + '"]'); if (b) b.click(); }
