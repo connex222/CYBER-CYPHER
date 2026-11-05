@@ -1,15 +1,17 @@
-# CYBER CYPHER — Visual 2.0 review branch
+# CYBER CYPHER — Visual 2.0 production slice (5 November 2026)
 
-Started from Alpha main `299e6901bf958c09c60242dc3e7ff1f0c6425af3` on 5 November 2026.
+Branch: `visual-2.0/approved-art-integration` from Alpha SHA `299e6901bf958c09c60242dc3e7ff1f0c6425af3`.
 
-Approved samples: #1 lobby, #2 5×5 game environment, #3 original avatar presentation (CSS frame only), #4 Zero Day and #5 results. This is a **cosmetics-only, pre-merge review branch**.
+## Asset batches and approvals
 
-The new CSS and gated loader link to four separately delivered files:
-- `public/assets/visual2/lobby.webp` (1920×1080 native-centred composite from approved 1672×941 art)
-- `public/assets/visual2/board.webp` (1920×1080)
-- `public/assets/visual2/results.webp` (1920×1080 native-centred composite from approved 1672×941 art)
-- `public/assets/visual2/zero-day.webp` (474×300)
+- Batch A backgrounds: Sample #1 operations lobby, Sample #2 game environment, Sample #5 results chamber. New WebP paths in `public/assets/visual2/`.
+- Batch B Zero Day: approved Sample #4 raster downsampled to 474×300 and kept as **new file**, original `public/assets/cards/zero.webp` untouched.
+- Batch C portraits: Sample #3 approved **presentation style only**. Existing 24 native 256×256 agent images and identity keys unchanged; additive CSS framing avoids upscaling/replacing faces.
 
-**IMPORTANT: the approved binary WebP files are NOT YET ON THIS GITHUB BRANCH.** The local downloadable production package contains them and an optional Windows BAT to upload these to this branch only. The loader deliberately leaves all original Alpha imagery intact until the four binaries are present. Do NOT merge or deploy in this intermediate state.
+Sample #1 and #5 were originally 1672×941: they are not authentic 1920×1080 generated pictures. The 1920×1080 WebP production canvases use the **original 1672×941 pixels at native scale** centred over a blurred ambient extension. Do not claim newly rendered detail in those edge pixels.
 
-No original avatars, card art, narration, audio files, rules, server logic or 5×5 geometry are changed. Full live browser and multiplayer acceptance remain required after all binaries are uploaded.
+The reference 5×5 board remains live HTML and its exact existing coordinate/grid rules are unchanged; art is an independent CSS background. Winner and scores remain live markup. The original VO, MP3s, cards and avatars remain unmodified.
+
+`visual2-loader.js` enables the style only once all four files have loaded; otherwise the existing approved Alpha artwork remains in place. This is intentional because the branch's text changes may be committed before its binary files are present.
+
+Do not merge or deploy without independent QA and owner approval.
