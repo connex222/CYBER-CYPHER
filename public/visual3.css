@@ -1,0 +1,43 @@
+/* CYBER CYPHER: Premium first-page upgrade; CSS presentation only.
+   QR, session code, buttons, player identity and gameplay remain live DOM. */
+#stage[data-screen="title"]{
+ background-image:linear-gradient(90deg,rgba(2,5,13,.03),rgba(2,5,13,.10) 33%,rgba(2,5,13,.38) 53%,rgba(2,5,13,.62) 100%),url('/assets/visual2/lobby.webp');
+ background-position:center;background-size:cover;
+}
+.v3-front{position:absolute;inset:0;overflow:hidden;isolation:isolate}
+.v3-front::before{content:"";position:absolute;inset:0;border:3px solid rgba(0,240,255,.13);box-shadow:inset 0 0 120px rgba(0,0,0,.35);pointer-events:none}
+.v3-front::after{content:"";position:absolute;left:40px;bottom:46px;width:570px;height:4px;background:linear-gradient(90deg,#00f0ff,rgba(255,46,136,.6),transparent);box-shadow:0 0 20px rgba(0,240,255,.6);pointer-events:none}
+.v3-hero{position:absolute;left:735px;top:55px;width:1115px;height:962px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 55px 42px;
+ border:2px solid rgba(0,240,255,.46);border-radius:28px;
+ background:linear-gradient(155deg,rgba(8,19,38,.90),rgba(5,8,19,.90) 62%,rgba(23,9,29,.88));
+ box-shadow:0 24px 115px rgba(0,0,0,.86),inset 0 1px 1px rgba(255,255,255,.16),inset 0 -3px 20px rgba(255,46,136,.10);
+ backdrop-filter:blur(11px)}
+.v3-hero::before,.v3-hero::after{content:"";position:absolute;width:125px;height:5px;top:0;box-shadow:0 0 20px currentColor}
+.v3-hero::before{left:40px;background:#00f0ff;color:#00f0ff}
+.v3-hero::after{right:40px;background:#ff2e88;color:#ff2e88}
+.v3-topline{font-family:Orbitron,Atkinson,sans-serif;font-size:18px;letter-spacing:.3em;color:#95dbea;white-space:nowrap}
+.v3-topline strong{color:#ff69bb}
+.v3-brand{width:100%;height:492px;position:relative;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-6px}
+.v3-brand::before{content:"";position:absolute;width:430px;height:430px;top:16px;left:calc(50% - 215px);border-radius:50%;background:conic-gradient(from -90deg,#00f0ff 0deg,#008fa5 162deg,transparent 163deg 180deg,#ff2e88 181deg,#ba1561 342deg,transparent 343deg 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 8px));mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 8px));opacity:.93;filter:drop-shadow(0 0 15px rgba(0,240,255,.35));pointer-events:none}
+.v3-brand::after{content:"";position:absolute;width:460px;height:460px;top:1px;left:calc(50% - 230px);border:2px dashed rgba(0,240,255,.27);border-radius:50%;pointer-events:none}
+.v3-logo-word{position:relative;z-index:1;font-family:Orbitron,Atkinson,sans-serif;font-style:italic;font-weight:900;line-height:1;letter-spacing:.005em;text-transform:uppercase;white-space:nowrap;filter:drop-shadow(0 9px 0 #091322) drop-shadow(0 0 9px rgba(0,240,255,.25))}
+.v3-logo-word.cyber{font-size:140px;background:linear-gradient(#fff 0%,#c7f8ff 17%,#4e91b1 40%,#fff 53%,#60758f 72%,#c7fcff 92%,#627895);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px #9df4ff;text-shadow:0 0 12px rgba(0,240,255,.12)}
+.v3-logo-word.cypher{font-size:131px;margin-top:-10px;background:linear-gradient(#ffdcf4,#ff89c2 27%,#ac0d59 49%,#fbc2e5 55%,#ff3e98 72%,#59012a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px #ff7fbb;text-shadow:0 0 15px rgba(255,46,136,.12)}
+.v3-year{position:relative;z-index:1;color:#eaf9ff;font-family:Orbitron,Atkinson,sans-serif;font-size:48px;font-style:italic;letter-spacing:.42em;margin-top:10px;text-shadow:-3px 0 12px rgba(0,240,255,.8),3px 0 12px rgba(255,46,136,.8)}
+.v3-line{position:absolute;left:9%;right:9%;bottom:46px;height:3px;background:linear-gradient(90deg,transparent,#00f0ff 28%,#f4fdff 50%,#ff2e88 72%,transparent);box-shadow:0 0 14px rgba(0,240,255,.55)}
+.v3-tagline{font-family:Orbitron,Atkinson,sans-serif;font-size:25px;font-weight:600;letter-spacing:.09em;line-height:1.4;color:#e3f7ff;margin-top:3px;text-shadow:0 3px 7px #000}
+.v3-subtitle{font-size:23px;letter-spacing:.11em;color:#aabdd7;margin-top:15px}
+.v3-menu{display:flex;gap:18px;align-items:stretch;width:100%;margin-top:42px}
+.v3-menu .btn{min-height:111px;min-width:0;flex:1;flex-direction:column;gap:7px;font-family:Orbitron,Atkinson,sans-serif;font-size:23px;line-height:1.1;padding:15px 10px;border-radius:16px;box-shadow:inset 0 1px rgba(255,255,255,.12),0 15px 35px rgba(0,0,0,.4)}
+.v3-menu .btn.primary{color:#00171d;box-shadow:0 0 25px rgba(0,240,255,.23),0 15px 35px rgba(0,0,0,.4)}
+.v3-menu .btn.amber{border-color:#ff2e88;background:linear-gradient(160deg,#1c0c2b,#120c20);color:#fff}
+.v3-btn-icon{font-family:Atkinson,sans-serif;font-size:28px;line-height:1;opacity:.95}
+.v3-footer{display:flex;justify-content:space-between;align-items:center;gap:25px;width:100%;margin-top:auto;padding:18px 0 0;border-top:1px solid rgba(0,240,255,.22);font-family:Orbitron,sans-serif;font-size:18px;letter-spacing:.1em;color:#bdd1e2}
+.v3-footer span:first-child{color:#00f0ff}
+#stage[data-screen="title"] .v3-menu button:focus-visible{outline:5px solid white;outline-offset:5px}
+#stage[data-screen="lobby"] .joinp .v3-back{margin-top:auto;width:100%;min-height:72px;border-color:#ff2e88;background:rgba(36,9,34,.92);font-size:23px;padding:11px 12px;letter-spacing:.02em}
+#stage[data-screen="lobby"] .joinp .v3-back:hover{box-shadow:0 0 20px rgba(255,46,136,.55)}
+.hc #stage[data-screen="title"]{background-image:linear-gradient(#01040b,#01040b)}
+.hc .v3-hero{background:#01040b;border-color:#fff}
+.hc .v3-tagline,.hc .v3-subtitle,.hc .v3-footer{color:#fff}
+@media(prefers-reduced-motion:reduce){.v3-logo-word,.v3-hero{animation:none!important}}
