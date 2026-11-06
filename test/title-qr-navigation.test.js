@@ -41,9 +41,9 @@ test('new game still creates only one real room',()=>{
  assert.deepEqual(JSON.parse(JSON.stringify(f.actions.filter(x=>x[0]==='net'))),[['net','tvCreate',{}]]);
 });
 test('QR lobby has working Back to Lobby action and keeps QR encoder',()=>{
- assert.match(lobbySource,/class=\\"qr\\"/);assert.match(lobbySource,/qrSvg\(url\)/);
+ assert.ok(lobbySource.includes('class="qr"'));assert.match(lobbySource,/qrSvg\(url\)/);
  assert.match(lobbySource,/BACK TO LOBBY/);
- assert.match(lobbySource,/data-go=\\"title\\"/);
+ assert.ok(lobbySource.includes('data-go="title"'));
  assert.match(tv,/scene\.querySelectorAll\('\[data-go\]'\)/);
  const f=context({room:'ABCD',token:'opaque'});f.S.screen='room';f.ctx.go('title');
  assert.equal(f.S.screen,'title');
