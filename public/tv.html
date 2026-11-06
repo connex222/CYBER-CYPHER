@@ -180,6 +180,7 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 </style>
 <link rel="stylesheet" href="/visual2.css?v=2">
 <script defer src="/visual2-loader.js?v=2"></script>
+<link rel="stylesheet" href="/visual3.css?v=1">
 </head>
 <body>
 <div id="stage" data-screen="title">
@@ -823,9 +824,16 @@ var QR = (function () {
 
   // ----- title / settings -----
   function titleHtml() {
-    return '<div class="logo enter"><div class="logo-fallback">CYBER<br>CYPHER<small>LONDON \u00b7 2035</small></div></div>' +
-      '<div class="tagline enter2">ONE WORD. ONE NUMBER. TRUST YOUR CREW.</div>' +
-      '<div class="menu enter3"><button class="btn primary" data-go="start">START A ROOM</button><button class="btn" data-go="tutorial">TRAINING</button><button class="btn amber" data-go="settings">SETTINGS</button></div>';
+    return '<main class="v3-front"><section class="v3-hero" aria-label="Cyber Cypher main menu">' +
+      '<div class="v3-topline">ENCRYPTED OPERATIONS &nbsp; / &nbsp; <strong>LONDON 2035</strong></div>' +
+      '<div class="v3-brand" role="img" aria-label="CYBER CYPHER 2035"><span class="v3-logo-word cyber">CYBER</span><span class="v3-logo-word cypher">CYPHER</span><span class="v3-year">2035</span><span class="v3-line"></span></div>' +
+      '<div class="v3-tagline">ONE WORD. ONE NUMBER. TRUST YOUR CREW.</div>' +
+      '<div class="v3-subtitle">CRACK THE GRID &nbsp;&middot;&nbsp; OUTTHINK THE OTHER CREW</div>' +
+      '<nav class="v3-menu" aria-label="Main game options">' +
+      '<button class="btn primary" data-go="start"><span class="v3-btn-icon" aria-hidden="true">&#9654;</span>' + (S.session ? 'RETURN TO ROOM' : 'START A ROOM') + '</button>' +
+      '<button class="btn" data-go="tutorial"><span class="v3-btn-icon" aria-hidden="true">&#9678;</span>TRAINING</button>' +
+      '<button class="btn amber" data-go="settings"><span class="v3-btn-icon" aria-hidden="true">&#9881;</span>SETTINGS</button>' +
+      '</nav><div class="v3-footer"><span>VOLT / FLARE</span><span>2–10 OPERATIVES</span><span>CYBER CYPHER &nbsp; 2035</span></div></section></main>';
   }
   function settingsHtml() {
     function rng(n, l) { return '<div class="setrow"><label>' + l + '</label><input type="range" min="0" max="1" step="0.05" value="' + settings[n] + '" data-range="' + n + '"></div>'; }
@@ -942,7 +950,7 @@ var QR = (function () {
     var label = { family: 'FAMILY DECK', adult: 'ADULT DECK 18+' }[s.deck];
     var set = ['<span class="chip">' + label + '</span>', '<span class="chip">' + (coop ? 'CO-OP vs ICE' : 'VERSUS') + '</span>', '<span class="chip">TIMER: ' + s.timer.toUpperCase() + '</span>',
       coop ? '<span class="chip">ICE: ' + s.ice.toUpperCase() + '</span>' : '<span class="chip">' + (s.match === 3 ? 'BEST OF 3' : 'SINGLE GAME') + '</span>', s.mole && !coop ? '<span class="chip" style="border-color:var(--zero);color:var(--zero)">MOLE MODE</span>' : ''].join('');
-    return '<div class="panel joinp enter"><div class="orb muted" style="font-size:24px">JOIN ON YOUR PHONE</div><div class="code">' + esc(r.code) + '</div><div class="qr">' + qrSvg(url) + '</div><div style="font-size:26px">' + esc(location.host) + '/<b>' + esc(r.code) + '</b></div><div class="muted" style="font-size:22px">2\u201310 players. 4+ for crew versus crew.</div></div>' +
+    return '<div class="panel joinp enter"><div class="orb muted" style="font-size:24px">JOIN ON YOUR PHONE</div><div class="code">' + esc(r.code) + '</div><div class="qr">' + qrSvg(url) + '</div><div style="font-size:26px">' + esc(location.host) + '/<b>' + esc(r.code) + '</b></div><div class="muted" style="font-size:22px">2\u201310 players. 4+ for crew versus crew.</div><button class="btn v3-back" data-go="title" aria-label="Back to main lobby without closing this room">&#8592; BACK TO LOBBY</button></div>' +
       '<div class="crews' + (coop ? ' coop' : '') + '">' + crews + '</div>' +
       '<div class="panel lobbybar enter3"><div class="set">' + set + '</div><button class="btn" data-go="tutorial">TRAINING</button><button class="btn primary" data-host="start"' + (r.players.length >= 2 ? '' : ' disabled') + '>START</button></div>';
   }
