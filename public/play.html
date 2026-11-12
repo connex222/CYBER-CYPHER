@@ -30,6 +30,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .hdr .s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hdr .s{font-size:13px;color:var(--muted)}
 .hdr .grow{flex:1;min-width:0}
+@media (max-width:360px){.hdr{gap:6px;padding:6px 8px}.hdr .t{font-size:13px;letter-spacing:0}.hdr .s{font-size:11px}.hdr .av{width:36px;height:36px}.hdr .iconbtn{width:44px;height:44px}}
 .iconbtn{width:48px;height:48px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);display:grid;place-items:center}
 .body{flex:1;display:flex;flex-direction:column;gap:12px;padding:14px 14px 24px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
@@ -79,7 +80,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .board.list{grid-template-columns:1fr 1fr;gap:6px}.board.list .node{min-height:52px;justify-content:flex-start;padding-left:12px}.board.list .node .s{left:auto;right:8px;bottom:50%;transform:translateY(50%)}
 .node .w{display:block;max-width:100%}
 .node.mine{border:2px solid var(--tc);box-shadow:0 0 12px var(--tc);background:color-mix(in srgb,var(--tc) 18%,var(--surface))}
-.node.mates::after{content:attr(data-n);position:absolute;top:2px;right:3px;font-size:11px;font-weight:900;color:var(--tc)}
+.node.mates::after{content:attr(data-n);position:absolute;top:2px;right:3px;font-size:10px;font-weight:900;color:var(--tc);background:var(--surface);border-radius:4px;padding:1px 2px}
 .node.breach{animation:pulse .35s ease-in-out infinite alternate}
 @keyframes pulse{to{filter:brightness(1.4)}}
 .node.rv{opacity:1;color:#fff;border-color:transparent}
@@ -99,6 +100,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .node.def::before{content:"?";position:absolute;top:2px;left:4px;font-size:11px;color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:6px}.legend span{display:inline-flex;align-items:center;gap:4px;font-size:13px}
 .legend .ico{width:16px;height:16px}
+.risk-hint{margin:0;padding:7px 10px;border-left:3px solid var(--zero);border-radius:5px;background:var(--surface);color:var(--muted);font-size:13px;line-height:1.35}
 .numpick{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
 .numpick button{min-height:50px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-family:Orbitron,sans-serif;font-weight:800;font-size:20px}
 .numpick button.on{background:var(--tc);color:#021018;border-color:var(--tc)}
@@ -352,7 +354,7 @@ var CC = (function () {
   function send(t, d) { net.send(t, d); }
   function onMsg(t, d) {
     switch (t) {
-      case 'joined': S.session = { room: d.room, playerId: d.playerId, token: d.token, spectator: d.spectator }; try { sessionStorage.setItem('cybercypher.session', JSON.stringify(S.session)); } catch (e) { /* ignore */ } break;
+      case 'joined': if (!S.session || S.session.playerId !== d.playerId) S.secret = null; S.session = { room: d.room, playerId: d.playerId, token: d.token, spectator: d.spectator }; try { sessionStorage.setItem('cybercypher.session', JSON.stringify(S.session)); } catch (e) { /* ignore */ } break;
       case 'room': S.room = d; break;
       case 'game': onGame(d); break;
       case 'secret': S.secret = d; break;
@@ -370,7 +372,7 @@ var CC = (function () {
   }
   function onGame(g) {
     var prev = S.game; S.game = g;
-    if (g && (!prev || (prev.phase === 'OVER' && g.phase !== 'OVER'))) { S.clue = { word: '', number: null, err: '' }; S.briefPending = true; }
+    if (!g || (g && (!prev || (prev.phase === 'OVER' && g.phase !== 'OVER')))) { S.secret = null; S.clue = { word: '', number: null, err: '' }; S.briefPending = !!g; }
     if (g && prev && g.clue && (!prev.clue || prev.clue.word !== g.clue.word)) { S.clue = { word: '', number: null, err: '' }; }
   }
   function onEvent(e) {
@@ -488,7 +490,11 @@ var CC = (function () {
     if (o.mates && o.mates[i]) cls += ' mates';
     if (o.breach === i) cls += ' breach';
     if (c.def) cls += ' def';
-    return '<button class="' + cls + '"' + (o.mates && o.mates[i] ? ' data-n="' + o.mates[i] + '"' : '') + ' data-node="' + i + '"' + (o.disabled || c.revealed ? ' aria-disabled="true"' : '') + '><span class="w" style="font-size:' + size + 'px">' + (settings.view === 'list' ? esc(c.word) : fit.html) + '</span>' + (owner && (c.revealed || o.key || c.unrevealed) ? '<span class="s">' + CC.shape(owner, 'ico') + '</span>' : '') + '</button>';
+    var coord = 'ABCDE'[Math.floor(i / 5)] + (i % 5 + 1);
+    var label = coord + ': ' + c.word + (c.revealed ? ', revealed ' + TEAM[c.owner].name : o.key ? ', secret ' + TEAM[o.key[i]].name : '') +
+      (o.mine === i ? ', your ping' : '') + (o.mates && o.mates[i] ? ', ' + o.mates[i] + ' crew pings of ' + S.game.needed + ' needed' : '') +
+      (o.disabled || c.revealed ? ', read only' : ', tap to ping');
+    return '<button class="' + cls + '" aria-label="' + esc(label) + '" aria-pressed="' + (o.mine === i) + '"' + (o.mates && o.mates[i] ? ' data-n="' + o.mates[i] + '/' + S.game.needed + '"' : '') + ' data-node="' + i + '"' + (o.disabled || c.revealed ? ' aria-disabled="true"' : '') + '><span class="w" style="font-size:' + size + 'px">' + (settings.view === 'list' ? esc(c.word) : fit.html) + '</span>' + (owner && (c.revealed || o.key || c.unrevealed) ? '<span class="s">' + CC.shape(owner, 'ico') + '</span>' : '') + '</button>';
   }
   // Grid cells are narrow: words of 8+ letters split over two lines with a hyphen so text stays readable.
   function fitWord(word) {
@@ -511,7 +517,7 @@ var CC = (function () {
     if (s.mole) h += '<div class="banner mole">' + CC.icon('mole', 'ico') + ' You are the MOLE. Help your crew lose without being caught.</div>';
     h += '<div class="timer" id="tbar"><i style="width:100%"></i></div>';
     if (op) {
-      h += clueBox(g) + '<div class="board' + (settings.view === 'list' ? ' list' : '') + '">' + g.cards.map(function (c, i) { return nodeHtml(c, i, { key: s.key }); }).join('') + '</div>' + legend();
+      h += clueBox(g) + '<div class="board' + (settings.view === 'list' ? ' list' : '') + '">' + g.cards.map(function (c, i) { return nodeHtml(c, i, { key: s.key, disabled: true }); }).join('') + '</div>' + legend() + '<p class="risk-hint">PRIVATE OPERATOR KEY · Keep this screen hidden from the other crew. Zero Day ends the game.</p>';
       if (mine && g.phase === 'CLUE') {
         h += '<div class="card stack"><b>Send a clue</b><input class="input" id="clueIn" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ONE WORD" value="' + esc(S.clue.word) + '">' +
           '<div class="numpick">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'inf'].map(function (n) { return '<button data-num="' + n + '" class="' + (S.clue.number === n ? 'on' : '') + '">' + (n === 'inf' ? '\u221E' : n) + '</button>'; }).join('') + '</div>' +
@@ -524,6 +530,7 @@ var CC = (function () {
       var mates = {}; Object.keys(g.pings || {}).forEach(function (t) { if (t !== 'pass') mates[t] = g.pings[t].length; });
       var canPing = mine && g.phase === 'GUESS';
       h += clueBox(g);
+      if (canPing) h += '<p class="risk-hint">SCAN A WORD TO PING · Zero Day loses instantly. Noise or a rival node ends this turn.</p>';
       if (canPing) h += '<div class="row muted" style="font-size:14px"><span id="needInfo"></span><span class="grow"></span><span id="guessInfo"></span></div>';
       h += '<div class="board' + (settings.view === 'list' ? ' list' : '') + '">' + g.cards.map(function (c, i) { return nodeHtml(c, i, { mine: mPing, mates: canPing ? mates : null, breach: g.breach ? g.breach.target : null, disabled: !canPing }); }).join('') + '</div>';
       if (canPing) {
@@ -543,6 +550,10 @@ var CC = (function () {
     var g = S.game, s = S.secret || {}, r = S.room, coop = g.mode === 'coop', win = g.winner;
     var title = coop ? (win === 'volt' ? 'GRID SECURED' : 'ICE WINS') : TEAM[win].name + ' WINS';
     var h = header(win === 'ice' ? 'ice' : win, title, coop ? 'Co-op result' : 'Score ' + r.score.volt + ' : ' + r.score.flare) + '<main class="body enter">';
+    if (g.phase === 'OVER') {
+      var reasons = {zero:'ZERO DAY TRIGGERED · instant defeat',allFound:'ALL NODES SECURED · clean victory',gifted:'RIVAL BREACHED YOUR FINAL NODE',iceComplete:'ICE CONTROLLED EVERY FIREWALL NODE'};
+      h += '<div class="card center" role="status"><b class="orb">' + esc(reasons[g.reason] || 'MATCH COMPLETE') + '</b></div>';
+    }
     if (g.phase === 'MOLEVOTE' && s.moleVote) {
       h += '<div class="card stack"><p class="title" style="color:var(--zero)">NAME THE MOLE</p><p class="sub">Who in your crew was sabotaging?' + (s.mole ? ' (You\u2019re the mole \u2014 vote to blend in!)' : '') + '</p>' +
         s.moleVote.candidates.map(function (id) { return '<button class="btn' + (s.moleVote.voted === id ? ' primary' : '') + '" data-mole="' + id + '">' + esc(nameOf(id)) + '</button>'; }).join('') + '</div>';

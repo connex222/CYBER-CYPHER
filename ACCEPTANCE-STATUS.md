@@ -1,5 +1,18 @@
 # CYBER CYPHER — Live multiplayer acceptance status
 
+## 12 November 2026 — Gameplay clarity release candidate
+
+- **Latest code QA:** [Actions run #44](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335) passed: 40/40 tests, build, 17/17 real WebSocket checks, 26/26 multiplayer/rejoin checks, browser HALO/QR/phone/TV acceptance, and complete six-player simulation + next game.
+- **Screenshots:** [TV QR, TV 5×5, private Operator and public Runner](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335/artifacts/13945576234).
+- **Production target identified:** Render service `CYBER-CYPHER` (`srv-dbl39nmc6qcc73br7kj0`) in My Workspace, on `main`, automatic deployment enabled, health check `/healthz`; URL `https://cyber-cypher-j2ry.onrender.com`.
+- **Approval:** Owner authorised merge, deployment and consolidation on 12 November 2026. A new Render deploy must be verified separately after merging.
+- **Physical-device sign-off:** Not rerun for this update. Human team pacing and physical TV/phone HALO audibility remain outstanding.
+
+The sections below are historical 3 November acceptance records, not the current deploy status.
+
+---
+
+
 **Recorded:** 3 November 2026  
 **Repository:** [connex222/CYBER-CYPHER](https://github.com/connex222/CYBER-CYPHER)
 

@@ -83,6 +83,34 @@ async function main() {
         return m && !m.paused && m.currentTime < 1;
       });
     });
+    await check('Tutorial mute and stop never start competing HALO speech', async () => {
+      const mute = tv.locator('[data-tut-mute]'), stop = tv.locator('[data-tut-stop]');
+      assert.equal(await mute.isVisible(), true);
+      assert.equal(await stop.isVisible(), true);
+      await mute.click();
+      assert.equal(await mute.getAttribute('aria-pressed'), 'true');
+      assert.equal(await tv.evaluate(() => window.__tutorialMedia.at(-1).muted), true);
+      const before = await tv.evaluate(() => ({
+        caption: document.querySelector('#subs').innerHTML,
+        shown: document.querySelector('#subs').classList.contains('on')
+      }));
+      await tv.evaluate(() => window.AUDIO.say('vo_join_1', true));
+      await tv.waitForTimeout(200);
+      const after = await tv.evaluate(() => ({
+        caption: document.querySelector('#subs').innerHTML,
+        shown: document.querySelector('#subs').classList.contains('on')
+      }));
+      assert.deepEqual(after, before, 'Live HALO voice changed subtitles over Training');
+      assert.equal(after.shown, false, 'Gameplay HALO subtitles appeared during Training');
+      await mute.click();
+      assert.equal(await mute.getAttribute('aria-pressed'), 'false');
+      await stop.click();
+      assert.equal(await tv.evaluate(() => window.__tutorialMedia.at(-1).paused), true);
+      await tv.locator('[data-tut-play]').click();
+      await tv.waitForFunction(() => {
+        const m = window.__tutorialMedia.at(-1); return m && !m.paused;
+      });
+    });
     await check('All 11 tutorial chapters and button navigation', async () => {
       const seen = new Set();
       for (let i = 0; i < 11; i++) {
@@ -124,6 +152,69 @@ async function main() {
         assert.ok(layout.html <= layout.viewport + 2 && layout.body <= layout.viewport + 2,
           'Phone scroll width exceeds viewport: ' + JSON.stringify(layout));
       } finally { await phone.close(); }
+    });
+    await check('Actual TV and phone screenshots, QR return, roles, 25-cell board', async () => {
+      const fs = require('node:fs');
+      const path = require('node:path');
+      const out = path.join(__dirname, '../qa/screenshots');
+      fs.mkdirSync(out,{recursive:true});
+      await tv.setViewportSize({width:1920,height:1080});
+      await tv.locator('[data-go="start"]').click();
+      await tv.locator('.joinp .code').waitFor({timeout:8000});
+      const code=(await tv.locator('.joinp .code').innerText()).trim();
+      assert.match(code,/^[BCDFGHJKLMNPQRSTVWXZ]{4}$/);
+      await tv.locator('.joinp [data-go="title"]').waitFor({state:'visible'});
+      await tv.waitForTimeout(850); // capture settled controls, not the first frame of the entrance animation
+      assert.equal(await tv.locator('.joinp .qr svg').isVisible(),true);
+      await tv.screenshot({path:path.join(out,'review-tv-qr.png')});
+      await tv.locator('.joinp [data-go="title"]').click();
+      await tv.locator('[data-go="start"]').click();
+      assert.equal((await tv.locator('.joinp .code').innerText()).trim(),code,
+        'Back to Lobby must not destroy the QR room');
+      const phones=[];
+      try {
+        for(const [name,avatar,width] of [['OperatorQA',2,390],['RunnerQA',7,320]]){
+          const p=await browser.newPage({viewport:{width,height:844},isMobile:true,deviceScaleFactor:1});
+          phones.push(p);
+          await p.goto(base+'/play.html?room='+code,{waitUntil:'domcontentloaded'});
+          await p.locator('#nameIn').fill(name);
+          await p.locator('[data-act="nameNext"]').click();
+          await p.locator('[data-av="'+avatar+'"]').click();
+          await p.locator('[data-act="join"]').click();
+          await p.locator('.hdr .t').filter({hasText:'LOBBY'}).waitFor({timeout:12000});
+        }
+        await tv.waitForFunction(()=>document.querySelector('.lobbybar [data-host="start"]')?.disabled===false);
+        await tv.locator('.lobbybar [data-host="start"]').click();
+        await tv.waitForFunction(()=>document.querySelectorAll('#scene .grid .card').length===25);
+        for (const p of phones) {
+          await p.locator('[data-brief]').waitFor({timeout:12000});
+          await p.locator('[data-brief]').click();
+          assert.equal(await p.locator('.board .node').count(),25);
+        }
+        assert.match(await phones[0].locator('.hdr .t').innerText(),/OPERATOR/);
+        assert.match(await phones[1].locator('.hdr .t').innerText(),/RUNNER/);
+        assert.equal(await phones[0].locator('.board .node.key').count(),25);
+        assert.equal(await phones[1].locator('.board .node.key').count(),0,'Runner received secret grid');
+        await phones[0].locator('#clueIn').fill('ZZTOP');
+        await phones[0].locator('[data-num="2"]').click();
+        await phones[0].locator('[data-act="sendClue"]').click();
+        await phones[1].locator('.risk-hint').waitFor({timeout:10000});
+        assert.match(await phones[1].locator('.risk-hint').innerText(),/Zero Day/);
+        assert.match(await tv.locator('#scanInfo').innerText(),/CREW SCAN/);
+        await tv.waitForTimeout(1850); // capture the settled 5×5 grid
+        const croppedWords = await tv.locator('.grid .card .front .w').evaluateAll(nodes =>
+          nodes.filter(node => node.scrollWidth > node.clientWidth + 2).map(node => node.getAttribute('aria-label')));
+        assert.deepEqual(croppedWords, [], 'TV board words crop beyond their cells');
+        for(const p of phones) {
+          const clipped=await p.locator('.hdr .t').evaluate(el=>el.scrollWidth>el.clientWidth+2);
+          assert.equal(clipped,false,'Phone role heading is truncated');
+          const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+          assert.ok(overflow <= 2,'In-game phone board overflows '+overflow+'px');
+        }
+        await tv.screenshot({path:path.join(out,'review-tv-5x5.png')});
+        await phones[0].screenshot({path:path.join(out,'review-phone-operator-390.png')});
+        await phones[1].screenshot({path:path.join(out,'review-phone-runner-320.png')});
+      } finally { await Promise.all(phones.map(p=>p.close())); }
     });
     await check('Browser JavaScript errors absent', async () => assert.deepEqual(errors, []));
     await tv.close();

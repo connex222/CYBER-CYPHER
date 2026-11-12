@@ -1,4 +1,19 @@
-# CHANGELOG — CYBER CYPHER audio staging
+# CYBER CYPHER — CHANGELOG
+
+## 12 November 2026 — Game clarity, HALO and navigation consolidation
+
+- Preserved the 25-cell 5×5 board, all team/word rules, Visual 2.0 assets, 24 avatar bindings, and 73 audio assets.
+- HALO: single tutorial voice at a time; start, pause, stop, replay and mute controls; no game narration during tutorial; cleaned stale subtitles.
+- QR/join: Back to Lobby keeps the session and lets the host return to the same four-letter room.
+- TV/phone: scan/majority thresholds, accessible word cells, private Operator key protection, long-word fitting, small-screen heading readability, and clearer risk and winning explanations.
+- Removed board-obscuring turn banner and whole-board Zero Day glitch in favour of brief, restrained, local effects.
+- New QA covers 40 unit tests, build, 17 independent WebSocket checks, 26 multiplayer matrices, actual Chromium TV/phone screenshots and complete simulated team match/rematch.
+- Latest verified branch QA: [Actions run #44](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335), all checks passed. Real-device acceptance for this update remains separate.
+- Owner explicitly authorised merge and deployment on 12 November 2026.
+
+---
+
+# Historical audio production notes
 
 ## 2026-11-03 — Premium audio production staging
 

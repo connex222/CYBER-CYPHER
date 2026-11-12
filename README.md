@@ -1,6 +1,6 @@
 # CYBER CYPHER Alpha
 
-**Signed-off Alpha version:** `1.0.0-alpha` (4 November 2026). Real-device testing is reported complete by the project owner. See [`production/ALPHA-FINAL-SIGNOFF.md`](production/ALPHA-FINAL-SIGNOFF.md) for the acceptance record, constraints and rollback guidance.
+**Current Alpha version:** `1.0.0-alpha`. Previous Alpha owner sign-off is recorded in [`production/ALPHA-FINAL-SIGNOFF.md`](production/ALPHA-FINAL-SIGNOFF.md). The **12 November 2026 gameplay-clarity update** passed its new automated QA, but has not received an independent physical-device acceptance on that specific commit. See [`CYBER-CYPHER-PLAY-REVIEW.md`](CYBER-CYPHER-PLAY-REVIEW.md) for evidence and remaining checks.
 
 A 2035 cyberpunk team word-spy party game for a TV and phones, for 2–10 players. Two hacker crews race to find their own words on a **5 × 5 grid of 25**. Only each crew's Operator knows which word is which, and they may say just one word and a number. Hit the Zero Day and you lose.
 
@@ -40,11 +40,17 @@ Free services can sleep while idle. Open the TV page before a session to wake th
 |---|---|---|
 | TV | Click / remote | Menus, Training, Start |
 | TV | **← →** | Step through Training |
-| TV | **Play / Pause / Replay / Back / Next** | Control HALO's eleven recorded tutorial chapters |
+| TV | **Play / Pause / Stop / Replay / Mute / Back / Next** | Control HALO's eleven recorded tutorial chapters without competing narration |
 | TV | **Space** | Pause or resume a game |
 | TV | **F** | Full screen |
 | Phone | ⓘ button | Rules summary |
 | Phone | ⚙ button | Theme, text size, Grid or List board, vibration, pause (host) |
+
+## November 2026 gameplay-clarity update
+
+The approved 5 × 5 rules, word decks, 24 avatars, Visual 2.0 backgrounds and recorded HALO voice are unchanged. The TV shows active vote thresholds and locks, long words fit their nodes, and the QR **Back to Lobby** preserves the existing room. Handsets show votes needed, risk consequences, accessible cell details and role-specific keys. The Zero Day effect stays on its cell instead of obstructing the whole board.
+
+[Branch-head QA](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335): 40 unit tests, build, 17 real WebSocket acceptance checks, 26 multiplayer/rejoin checks, Chromium tutorial and 25-cell screenshots, and a complete six-player simulated match/rematch all passed. The [four-screen screenshot package](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335/artifacts/13945576234) is attached to that run. This is **automated evidence only**, not a new claim of live-device sound quality or multiplayer acceptance.
 
 ## Checks
 
