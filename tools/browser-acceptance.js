@@ -90,10 +90,18 @@ async function main() {
       await mute.click();
       assert.equal(await mute.getAttribute('aria-pressed'), 'true');
       assert.equal(await tv.evaluate(() => window.__tutorialMedia.at(-1).muted), true);
-      const before = await tv.evaluate(() => window.__ccAudioQA.starts);
+      const before = await tv.evaluate(() => ({
+        caption: document.querySelector('#subs').innerHTML,
+        shown: document.querySelector('#subs').classList.contains('on')
+      }));
       await tv.evaluate(() => window.AUDIO.say('vo_join_1', true));
       await tv.waitForTimeout(200);
-      assert.equal(await tv.evaluate(() => window.__ccAudioQA.starts), before, 'Live narration played over training');
+      const after = await tv.evaluate(() => ({
+        caption: document.querySelector('#subs').innerHTML,
+        shown: document.querySelector('#subs').classList.contains('on')
+      }));
+      assert.deepEqual(after, before, 'Live HALO voice changed subtitles over Training');
+      assert.equal(after.shown, false, 'Gameplay HALO subtitles appeared during Training');
       await mute.click();
       assert.equal(await mute.getAttribute('aria-pressed'), 'false');
       await stop.click();
