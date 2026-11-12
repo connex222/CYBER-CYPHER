@@ -25,6 +25,12 @@ test('the shipped packs load cleanly', () => {
   for (const p of r.packs) assert.ok(p.words.length >= packs.LIMITS.MIN_WORDS, p.id);
 });
 
+test('shipped packs are big enough to play (at least 100 words, the bigger ones 175+)', () => {
+  const by = Object.fromEntries(packs.loadPacks(packs.PACK_DIR).packs.map(p => [p.id, p.words.length]));
+  for (const id of ['football-night', 'britain', 'future-2035']) assert.ok(by[id] >= 175, id + ' has ' + by[id]);
+  assert.ok(by['christmas-2026'] >= 100);
+});
+
 test('shipped pack words never repeat a main-deck word', () => {
   const main = new Set([].concat(WORDS.family, WORDS.adult).map(w => w.toLowerCase()));
   for (const p of packs.loadPacks(packs.PACK_DIR).packs) for (const w of p.words) assert.ok(!main.has(w.toLowerCase()), p.id + ': ' + w);
