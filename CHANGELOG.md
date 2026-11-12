@@ -1,5 +1,16 @@
 # CYBER CYPHER — CHANGELOG
 
+## 12 November 2026 — Expansion packs
+
+- New `packs/` folder: each `.json` file is a word pack that appears in the host's lobby under **Expansion packs**. See `packs/README.md`.
+- New `src/packs.js` reads and checks packs at start-up. A broken pack is skipped with a `[cc] pack warning`; it cannot stop the server.
+- Host settings gain `packs` (which packs are on) and `packsOnly` (mixed into the deck, or pack words only). Family packs work with both decks; adult packs only with the Adult deck.
+- First pack: Christmas Chaos (122 family words, free).
+- Phone lobby: new Expansion packs section. TV lobby: new chip showing the active pack.
+- The main Family and Adult decks, game rules, secrecy rules and message protocol are unchanged. 9 new tests in `test/packs.test.js`.
+- **Not yet deployed.** Pushing to `main` restarts the server and ends live games.
+
+---
 ## 12 November 2026 — Game clarity, HALO and navigation consolidation
 
 - Preserved the 25-cell 5×5 board, all team/word rules, Visual 2.0 assets, 24 avatar bindings, and 73 audio assets.

@@ -19,6 +19,7 @@ Cyber Cypher is a 2035 cyberpunk team word-spy party game for a TV and phones, 2
 | Game rules and state | `src/game.js` |
 | Timers, board makeup, limits | `src/config.js` |
 | Word decks | `src/words.json` |
+| Expansion word packs (one `.json` each) and loader | `packs/`, `src/packs.js` - see `packs/README.md` |
 | TV and phone pages | `public/tv.html`, `public/play.html` |
 | Shared network code, icons, avatars | `tools/shared.js` (then run the build) |
 | Production records and asset scripts | `production/` |

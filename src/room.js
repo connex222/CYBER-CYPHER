@@ -4,6 +4,7 @@ const { WORDS, TEAMS, T, LIMITS, ROOM_LETTERS, DEFAULT_SETTINGS, TIMERS } = requ
 const { Game, checkClue } = require('./game');
 const { makeRng } = require('./rng');
 const views = require('./views');
+const packs = require('./packs');
 
 const rooms = new Map();
 const BOT_NAMES = ['Byte', 'Nyx', 'Patch', 'Vex', 'Glitch', 'Kilo', 'Rook', 'Juno', 'Echo', 'Zed'];
@@ -54,7 +55,7 @@ class Room {
       players: this.players.map(p => ({ id: p.id, name: p.name, avatar: p.avatar, team: p.team, wantsOperator: !!p.wantsOperator, connected: p.bot || p.connected, bot: !!p.bot })),
       spectators: this.spectators.length, settings: this.settings, adultConfirmed: this.adultConfirmed,
       mode: this.effectiveMode(), score: this.score, gameNo: this.gameNo, lastResult: this.lastResult,
-      timers: TIMERS, serverTime: Date.now()
+      timers: TIMERS, serverTime: Date.now(), packs: packs.catalogue()
     };
   }
 
@@ -130,7 +131,7 @@ class Room {
 
   // ---------- starting a game ----------
   pickWords(rng) {
-    const deck = this.settings.deck, list = WORDS[deck], used = this.used[deck];
+    const deck = this.settings.deck, list = packs.wordPool(deck, this.settings.packs, this.settings.packsOnly), used = this.used[deck];
     let pool = list.filter(w => !used.has(w));
     if (pool.length < 25) { used.clear(); pool = list.slice(); }
     const words = rng.shuffle(pool).slice(0, 25);
@@ -222,6 +223,9 @@ class Room {
         if (['normal', 'hard'].includes(v.ice)) s.ice = v.ice;
         if (typeof v.lockOperators === 'boolean') s.lockOperators = v.lockOperators;
         if (v.adultConfirm === true && s.deck === 'adult') this.adultConfirmed = true;
+        if (Array.isArray(v.packs)) s.packs = v.packs;
+        if (typeof v.packsOnly === 'boolean') s.packsOnly = v.packsOnly;
+        s.packs = packs.cleanSelection(s.packs, s.deck);   // unknown packs, or adult packs on the Family deck, are dropped
         break;
       }
       case 'shuffleTeams': {

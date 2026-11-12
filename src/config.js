@@ -42,6 +42,6 @@ const FAMILY_BLOCK = ['fuck', 'shit', 'cunt', 'bitch', 'bastard', 'dick', 'cock'
   'prick', 'slut', 'whore', 'tits', 'boob', 'boobs', 'penis', 'vagina', 'sex', 'sexy', 'porn', 'nude', 'naked', 'drunk', 'booze', 'damn', 'hell', 'crap', 'bloody'];
 const ALWAYS_BLOCK = ['cunt', 'whore', 'slut', 'porn'];
 
-const DEFAULT_SETTINGS = { deck: 'family', mode: 'auto', mole: false, timer: 'standard', match: 3, definitions: true, ice: 'normal', lockOperators: false };
+const DEFAULT_SETTINGS = { deck: 'family', mode: 'auto', mole: false, timer: 'standard', match: 3, definitions: true, ice: 'normal', lockOperators: false, packs: [], packsOnly: false };
 
 module.exports = { WORDS, TEAMS, TEAM_INFO, TIMERS, BOARD, T, LIMITS, ROOM_LETTERS, FAMILY_BLOCK, ALWAYS_BLOCK, DEFAULT_SETTINGS };

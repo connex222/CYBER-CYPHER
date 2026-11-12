@@ -451,6 +451,17 @@ var CC = (function () {
 
   // ----- lobby -----
   function seg(name, opts, cur) { return '<div class="seg">' + opts.map(function (o) { return '<button data-set="' + name + '" data-val="' + o[0] + '" class="' + (String(cur) === String(o[0]) ? 'on' : '') + '">' + o[1] + '</button>'; }).join('') + '</div>'; }
+  // Expansion packs: host taps a pack to switch it on or off. Adult packs only show with the Adult deck.
+  function packsBlock(r, s) {
+    var list = (r.packs || []).filter(function (p) { return p.rating === 'family' || s.deck === 'adult'; });
+    if (!list.length) return '';
+    var on = s.packs || [];
+    return '<div><div class="muted" style="font-size:14px">Expansion packs</div><div class="stack">' + list.map(function (p) {
+      var sel = on.indexOf(p.id) >= 0;
+      return '<button class="btn' + (sel ? ' primary' : '') + '" data-pack="' + esc(p.id) + '" aria-pressed="' + sel + '">' + (sel ? '✓ ' : '') + esc(p.name) + ' · ' + p.count + ' words</button>';
+    }).join('') + '</div></div>' +
+      (on.length ? '<div><div class="muted" style="font-size:14px">Pack words</div>' + seg('packsOnly', [[false, 'Mixed into deck'], [true, 'Pack words only']], s.packsOnly) + '</div>' : '');
+  }
   function viewLobby() {
     var r = S.room, m = me(), coop = r.mode === 'coop', s = r.settings;
     var h = header(m && !coop ? m.team : 'volt', 'LOBBY', 'Room ' + r.code + ' \u00b7 ' + r.players.length + ' agents') + '<main class="body enter">';
@@ -469,6 +480,7 @@ var CC = (function () {
       h += '<div class="card stack"><b>Host settings</b>' +
         '<div><div class="muted" style="font-size:14px">Word deck</div>' + seg('deck', [['family', 'Family'], ['adult', 'Adult 18+']], s.deck) + '</div>' +
         (s.deck === 'adult' && !r.adultConfirmed ? '<button class="btn danger" data-act="adultOk">Confirm everyone playing is 18+</button>' : '') +
+        packsBlock(r, s) +
         '<div><div class="muted" style="font-size:14px">Mode</div>' + seg('mode', [['auto', 'Auto'], ['versus', 'Versus'], ['coop', 'Co-op']], s.mode) + '</div>' +
         '<div><div class="muted" style="font-size:14px">Timer</div>' + seg('timer', [['off', 'Off'], ['relaxed', 'Relaxed'], ['standard', 'Standard'], ['overclock', 'Overclock']], s.timer) + '</div>' +
         (coop ? '<div><div class="muted" style="font-size:14px">ICE difficulty</div>' + seg('ice', [['normal', 'Normal'], ['hard', 'Hard']], s.ice) + '</div>'
@@ -631,6 +643,7 @@ var CC = (function () {
     app.querySelectorAll('[data-host]').forEach(function (b) { b.onclick = function () { send('host', { cmd: b.dataset.host }); tap(); }; });
     app.querySelectorAll('[data-kick]').forEach(function (b) { b.onclick = function () { if (confirm('Remove this agent?')) send('host', { cmd: 'kick', target: b.dataset.kick }); }; });
     app.querySelectorAll('[data-set]').forEach(function (b) { b.onclick = function () { var v = b.dataset.val, o = {}; o[b.dataset.set] = v === 'true' ? true : v === 'false' ? false : isNaN(+v) ? v : +v; send('host', { cmd: 'settings', value: o }); tap(); }; });
+    app.querySelectorAll('[data-pack]').forEach(function (b) { b.onclick = function () { var id = b.dataset.pack, cur = ((S.room.settings && S.room.settings.packs) || []).slice(), i = cur.indexOf(id); if (i >= 0) cur.splice(i, 1); else cur.push(id); send('host', { cmd: 'settings', value: { packs: cur } }); tap(); }; });
     app.querySelectorAll('[data-num]').forEach(function (b) { b.onclick = function () { S.clue.number = b.dataset.num === 'inf' ? 'inf' : +b.dataset.num; S.clue.err = ''; tap(); render(); }; });
     app.querySelectorAll('[data-react]').forEach(function (b) { b.onclick = function () { send('react', { kind: b.dataset.react }); tap(); }; });
     app.querySelectorAll('[data-mole]').forEach(function (b) { b.onclick = function () { send('moleVote', { suspect: b.dataset.mole }); tap(); }; });

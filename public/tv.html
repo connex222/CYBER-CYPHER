@@ -967,7 +967,9 @@ var QR = (function () {
         (ms.length ? '' : '<div class="muted" style="font-size:26px">Waiting for agents\u2026</div>') + '</div>';
     }).join('');
     var label = { family: 'FAMILY DECK', adult: 'ADULT DECK 18+' }[s.deck];
-    var set = ['<span class="chip">' + label + '</span>', '<span class="chip">' + (coop ? 'CO-OP vs ICE' : 'VERSUS') + '</span>', '<span class="chip">TIMER: ' + s.timer.toUpperCase() + '</span>',
+    var pk = (s.packs || []).map(function (id) { var p = (r.packs || []).find(function (x) { return x.id === id; }); return p ? p.name : null; }).filter(Boolean);
+    var packChip = pk.length ? '<span class="chip">' + (s.packsOnly ? '' : '+ ') + esc((pk.length === 1 ? pk[0] : pk.length + ' PACKS').toUpperCase()) + (s.packsOnly ? ' ONLY' : '') + '</span>' : '';
+    var set = ['<span class="chip">' + label + '</span>', packChip, '<span class="chip">' + (coop ? 'CO-OP vs ICE' : 'VERSUS') + '</span>', '<span class="chip">TIMER: ' + s.timer.toUpperCase() + '</span>',
       coop ? '<span class="chip">ICE: ' + s.ice.toUpperCase() + '</span>' : '<span class="chip">' + (s.match === 3 ? 'BEST OF 3' : 'SINGLE GAME') + '</span>', s.mole && !coop ? '<span class="chip" style="border-color:var(--zero);color:var(--zero)">MOLE MODE</span>' : ''].join('');
     return '<div class="panel joinp enter"><div class="orb muted" style="font-size:24px">JOIN ON YOUR PHONE</div><div class="code">' + esc(r.code) + '</div><div class="qr">' + qrSvg(url) + '</div><div style="font-size:26px">' + esc(location.host) + '/<b>' + esc(r.code) + '</b></div><div class="muted" style="font-size:22px">2\u201310 players. 4+ for crew versus crew.</div><button class="btn v3-back" data-go="title" aria-label="Back to main lobby without closing this room">&#8592; BACK TO LOBBY</button></div>' +
       '<div class="crews' + (coop ? ' coop' : '') + '">' + crews + '</div>' +
