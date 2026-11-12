@@ -163,6 +163,9 @@ async function main() {
       await tv.locator('.joinp .code').waitFor({timeout:8000});
       const code=(await tv.locator('.joinp .code').innerText()).trim();
       assert.match(code,/^[BCDFGHJKLMNPQRSTVWXZ]{4}$/);
+      await tv.locator('.joinp [data-go="title"]').waitFor({state:'visible'});
+      await tv.waitForTimeout(850); // capture settled controls, not the first frame of the entrance animation
+      assert.equal(await tv.locator('.joinp .qr svg').isVisible(),true);
       await tv.screenshot({path:path.join(out,'review-tv-qr.png')});
       await tv.locator('.joinp [data-go="title"]').click();
       await tv.locator('[data-go="start"]').click();
@@ -198,7 +201,10 @@ async function main() {
         await phones[1].locator('.risk-hint').waitFor({timeout:10000});
         assert.match(await phones[1].locator('.risk-hint').innerText(),/Zero Day/);
         assert.match(await tv.locator('#scanInfo').innerText(),/CREW SCAN/);
+        await tv.waitForTimeout(1850); // let the 1.6s turn banner and clue glitch finish
         for(const p of phones) {
+          const clipped=await p.locator('.hdr .t').evaluate(el=>el.scrollWidth>el.clientWidth+2);
+          assert.equal(clipped,false,'Phone role heading is truncated');
           const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
           assert.ok(overflow <= 2,'In-game phone board overflows '+overflow+'px');
         }
