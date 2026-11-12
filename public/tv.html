@@ -865,6 +865,7 @@ var QR = (function () {
       if (player) { player.onended = null; player.onerror = null; player.pause(); player.removeAttribute('src'); player.load(); player = null; }
       chapter = -1; paused = true;
       AUDIO.tutorialDuck(false);
+      update(); // STOP must immediately re-enable PLAY without a chapter change
     }
     function update() {
       if (S.screen !== 'tutorial') return;
