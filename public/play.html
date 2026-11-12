@@ -549,6 +549,10 @@ var CC = (function () {
     var g = S.game, s = S.secret || {}, r = S.room, coop = g.mode === 'coop', win = g.winner;
     var title = coop ? (win === 'volt' ? 'GRID SECURED' : 'ICE WINS') : TEAM[win].name + ' WINS';
     var h = header(win === 'ice' ? 'ice' : win, title, coop ? 'Co-op result' : 'Score ' + r.score.volt + ' : ' + r.score.flare) + '<main class="body enter">';
+    if (g.phase === 'OVER') {
+      var reasons = {zero:'ZERO DAY TRIGGERED · instant defeat',allFound:'ALL NODES SECURED · clean victory',gifted:'RIVAL BREACHED YOUR FINAL NODE',iceComplete:'ICE CONTROLLED EVERY FIREWALL NODE'};
+      h += '<div class="card center" role="status"><b class="orb">' + esc(reasons[g.reason] || 'MATCH COMPLETE') + '</b></div>';
+    }
     if (g.phase === 'MOLEVOTE' && s.moleVote) {
       h += '<div class="card stack"><p class="title" style="color:var(--zero)">NAME THE MOLE</p><p class="sub">Who in your crew was sabotaging?' + (s.mole ? ' (You\u2019re the mole \u2014 vote to blend in!)' : '') + '</p>' +
         s.moleVote.candidates.map(function (id) { return '<button class="btn' + (s.moleVote.voted === id ? ' primary' : '') + '" data-mole="' + id + '">' + esc(nameOf(id)) + '</button>'; }).join('') + '</div>';
