@@ -685,6 +685,9 @@ var QR = (function () {
       if (currentVoice) { try { currentVoice.stop(); } catch (e) {} currentVoice = null; }
       try { speechSynthesis.cancel(); } catch (e) {}
       speaking = false; duck(false);
+      // Do not leave a stale gameplay subtitle covering the tutorial or results.
+      var captions = $('#subs'); if (captions) captions.classList.remove('on');
+      clearTimeout(subT);
     }
     return { unlock: unlock, sfx: sfx, say: say, stopVoice: stopVoice, tutorialDuck: duck, variant: variant, playMusic: playMusic, setTension: setTension, sting: sting, setVolumes: setVolumes, get unlocked() { return unlocked; } };
   })();
