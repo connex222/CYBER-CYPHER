@@ -90,3 +90,24 @@ test('secret key is never broadcast in the public view or to Runners', () => {
   assert.equal(secretFor(g,'fr1').key,undefined);
   assert.equal(pub.moles,undefined);
 });
+
+test('numeric, zero and infinity clues keep the established guess caps', () => {
+  for (const number of [0, 1, 9, 'inf']) {
+    const g = makeGame();
+    assert.equal(g.giveClue('vo', 'ZZTOP', number), null);
+    assert.equal(g.guessesLeft, number === 'inf' || number === 0 ? null : number + 1);
+  }
+});
+
+test('a tied Mole accusation never convicts an agent', () => {
+  const g = makeGame({mole:true, teams:{
+    volt:{operator:'vo',runners:['vr1','vr2']},
+    flare:{operator:'fo',runners:['fr1','fr2']}
+  }});
+  const zero = g.cards.findIndex(c => c.owner === 'zero');
+  g.reveal(zero,'volt');
+  assert.equal(g.phase,'MOLEVOTE');
+  assert.equal(g.voteMole('vo','vr1'),null);
+  assert.equal(g.voteMole('vr1','vr2'),null);
+  assert.equal(g.result().moles.volt.caught,false);
+});
