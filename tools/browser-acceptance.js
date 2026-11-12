@@ -184,7 +184,12 @@ async function main() {
         assert.match(await phones[1].locator('.hdr .t').innerText(),/RUNNER/);
         assert.equal(await phones[0].locator('.board .node.key').count(),25);
         assert.equal(await phones[1].locator('.board .node.key').count(),0,'Runner received secret grid');
+        await phones[0].locator('#clueIn').fill('ZZTOP');
+        await phones[0].locator('[data-num="2"]').click();
+        await phones[0].locator('[data-act="sendClue"]').click();
+        await phones[1].locator('.risk-hint').waitFor({timeout:10000});
         assert.match(await phones[1].locator('.risk-hint').innerText(),/Zero Day/);
+        assert.match(await tv.locator('#scanInfo').innerText(),/CREW SCAN/);
         for(const p of phones) {
           const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
           assert.ok(overflow <= 2,'In-game phone board overflows '+overflow+'px');
