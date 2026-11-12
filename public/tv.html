@@ -134,6 +134,9 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 .card.heat .front{border-color:var(--tc);box-shadow:0 0 0 2px var(--tc),0 0 26px var(--tc)}
 .card .bar{position:absolute;left:0;bottom:0;height:6px;background:var(--tc);border-radius:0 0 0 14px;width:0;z-index:3}
 .card.breach .front{animation:pulse .4s ease-in-out infinite alternate}
+.card.zero-flash .back{animation:zeroPulse .55s ease-out 1}
+@keyframes zeroPulse{0%,100%{filter:brightness(1)}40%{filter:brightness(1.7)}}
+.turn-flash{position:absolute;left:360px;right:360px;top:190px;height:26px;display:flex;align-items:center;justify-content:center;background:rgba(4,9,20,.94);border:1px solid var(--tc);border-radius:7px;color:var(--tc);font-size:19px;font-weight:800;letter-spacing:.14em;z-index:6;pointer-events:none}
 @keyframes pulse{to{filter:brightness(1.35)}}
 .passbox{position:absolute;left:366px;right:366px;bottom:12px;height:0}
 .defbar{position:absolute;left:366px;right:366px;bottom:14px;padding:10px 20px;font-size:24px;border-radius:12px;opacity:0;transition:opacity .3s}
@@ -744,7 +747,7 @@ var QR = (function () {
       case 'breachCancel': AUDIO.sfx('breach_cancel'); break;
       case 'reveal':
         AUDIO.sfx('reveal_' + e.owner);
-        if (e.owner === 'zero') { AUDIO.say('vo_zero', true); glitch(); }
+        if (e.owner === 'zero') { AUDIO.say('vo_zero', true); glitch(e.index); }
         else if (e.owner === e.team) AUDIO.say(AUDIO.variant('vo_correct', 4));
         else if (e.owner === 'noise') AUDIO.say(AUDIO.variant('vo_noise', 3));
         else if (e.owner === 'ice') AUDIO.say('vo_ice_wrong'); else AUDIO.say(AUDIO.variant('vo_wrong', 3));
@@ -763,11 +766,17 @@ var QR = (function () {
       default: break;
     }
   }
-  function glitch() { if (settings.rm) return; scene.classList.remove('glitch'); void scene.offsetWidth; scene.classList.add('glitch'); }
+  function glitch(index) { // Signal a Zero Day on its own cell: never clip or shift the whole board.
+    if (settings.rm) return;
+    var card = document.getElementById('card' + index);
+    if (!card) return;
+    card.classList.remove('zero-flash'); void card.offsetWidth; card.classList.add('zero-flash');
+    setTimeout(function () { card.classList.remove('zero-flash'); }, 650);
+  }
   function flashBanner(team) {
     if (settings.rm) return;
-    var b = document.createElement('div'); b.className = 'banner orb'; b.style.setProperty('--tc', TEAM[team].colour); b.textContent = TEAM[team].name + ' TURN';
-    stage.appendChild(b); b.animate([{ opacity: 0, transform: 'scale(1.2)' }, { opacity: 1, transform: 'scale(1)', offset: .2 }, { opacity: 1, offset: .7 }, { opacity: 0 }], { duration: 1600 }); setTimeout(function () { b.remove(); }, 1650);
+    var b = document.createElement('div'); b.className = 'turn-flash orb'; b.style.setProperty('--tc', TEAM[team].colour); b.textContent = TEAM[team].name + ' TURN';
+    stage.appendChild(b); b.animate([{ opacity: 0 }, { opacity: 1, offset: .15 }, { opacity: 1, offset: .65 }, { opacity: 0 }], { duration: 900 }); setTimeout(function () { b.remove(); }, 950);
   }
   function react(kind) { var c = document.createElement('div'); c.className = 'react'; c.textContent = CC.REACTS[kind] || '\u2605'; c.style.left = (200 + Math.random() * 1520) + 'px'; $('#reacts').appendChild(c); AUDIO.sfx('react'); setTimeout(function () { c.remove(); }, 3100); }
   function host(cmd, value) { AUDIO.sfx('ui_tap'); net.send('host', value ? { cmd: cmd, value: value } : { cmd: cmd }); }
