@@ -2,7 +2,7 @@
 
 **Branch:** `improvement/cyber-cypher-play`, from the confirmed `main` baseline `7f028b21a8fcad9fc79cebb9bb08ef37e4ac6693`.
 
-**Release restriction:** **NO MERGE OR DEPLOY WITHOUT USER APPROVAL.** This branch is a review candidate.
+**Release authorisation:** On 12 November 2026 the project owner explicitly requested **merge, deploy and consolidate**. Continue to distinguish automated acceptance from physical-device sign-off.
 
 ## Verified starting point
 
@@ -25,15 +25,15 @@
 
 | Test | Purpose | Status |
 |---|---|---|
-| `npm test` | Existing unit suite plus `test/cyber-cypher-play.test.js` | **Pending current-branch CI run** |
-| `npm run build` | JS/CSS build and distributable verification | **Pending current-branch CI run** |
-| `node tools/live-acceptance.js` | Independent real WebSocket clients, secret isolation, joining and reconnect | **Pending current-branch CI run** |
-| `node tools/stage25-multiplayer.js` | 2/3/4/6/10 players, spectators, reconnect and roles | **Pending current-branch CI run** |
-| `npm run smoke` | Bot-driven full match and rematch | **Pending current-branch CI run** |
-| `node tools/browser-acceptance.js` | QR return, 11 chapters, mute/stop, 5×5 TV board and phone live UI | **Pending current-branch CI run** |
-| `qa/screenshots/review-*.png` | Fresh actual Chromium captures after browser QA | **Pending artifact generation** |
+| `npm test` | Rules, clue limits, privacy, navigation and audio checks | **PASS — 40/40, no failures** |
+| `npm run build` | Static/client build | **PASS** |
+| `node tools/live-acceptance.js` | Independent WebSocket clients, privacy and reconnect | **PASS — 17/17** |
+| `node tools/stage25-multiplayer.js` | 2/3/4/6/10 players, spectators and reconnection | **PASS — 26/26** |
+| `npm run smoke` | Entire six-player simulated versus game, secrecy and rematch | **PASS — finished with winner, rematch started** |
+| `node tools/browser-acceptance.js` | HALO chapter, voice controls, QR, 25 cells, mobile and cropped-word tests | **PASS — all checks** |
+| `qa/screenshots/review-*.png` | Real 1920px TV, 390px Operator and 320px Runner screenshots | **Captured as CI artifact** |
 
-Earlier successful runs on `main` are not evidence that this new branch has passed.
+**Evidence:** [successful branch-head acceptance run #44 (commit d94c61d9)](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335). Screenshot ZIP: [GitHub Actions artifact 13945576234](https://github.com/connex222/CYBER-CYPHER/actions/runs/43219537335/artifacts/13945576234). The historical browser/physical-device limits remain.
 
 ## Acceptance evidence to review
 
@@ -44,7 +44,7 @@ The Chromium browser acceptance script is configured to capture:
 - `review-phone-operator-390.png` — 390 px private Operator grid
 - `review-phone-runner-320.png` — 320 px Runner controls, clue and public-only grid
 
-**Still required before release:** verify the screenshots visually, play all HALO audio on a physical TV, manually check phone taps at 320/390 px, complete a full match with humans on at least two real handsets, confirm reconnections, and record observed clue/guess and idle times. Automated bot matches cannot replace real-room acceptance. One team wins or loses under the existing rules; ties only apply to the separate Mole identification vote.
+**Still required for physical-device acceptance:** play HALO audio on a physical TV, manually check phone taps at 320/390 px, complete a full match with humans on at least two real handsets, confirm reconnects, and measure observed clue/guess and idle times. The owner has authorised deployment without waiting for this separate sign-off. Automated bot matches cannot replace real-room acceptance. One team wins or loses under the existing rules; ties only apply to the separate Mole identification vote.
 
 ## Social pacing targets (not measured results)
 
