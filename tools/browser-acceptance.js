@@ -201,7 +201,10 @@ async function main() {
         await phones[1].locator('.risk-hint').waitFor({timeout:10000});
         assert.match(await phones[1].locator('.risk-hint').innerText(),/Zero Day/);
         assert.match(await tv.locator('#scanInfo').innerText(),/CREW SCAN/);
-        await tv.waitForTimeout(1850); // let the 1.6s turn banner and clue glitch finish
+        await tv.waitForTimeout(1850); // capture the settled 5×5 grid
+        const croppedWords = await tv.locator('.grid .card .front .w').evaluateAll(nodes =>
+          nodes.filter(node => node.scrollWidth > node.clientWidth + 2).map(node => node.getAttribute('aria-label')));
+        assert.deepEqual(croppedWords, [], 'TV board words crop beyond their cells');
         for(const p of phones) {
           const clipped=await p.locator('.hdr .t').evaluate(el=>el.scrollWidth>el.clientWidth+2);
           assert.equal(clipped,false,'Phone role heading is truncated');
