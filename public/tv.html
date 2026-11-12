@@ -107,6 +107,7 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 .cluebar .word{font-family:Orbitron,sans-serif;font-weight:800;font-size:72px;letter-spacing:.08em;color:#fff;text-shadow:0 0 18px var(--tc)}
 .cluebar .n{font-family:Orbitron,sans-serif;font-weight:900;font-size:72px;color:var(--tc);min-width:80px;text-align:center}
 .cluebar .state{font-size:30px;color:var(--muted);letter-spacing:.12em}
+.cluebar .scan-state{position:absolute;right:20px;bottom:5px;font-size:19px;font-weight:700;letter-spacing:.09em;color:var(--volt);pointer-events:none}
 .ring{position:relative;width:110px;height:110px;flex:none}.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:Orbitron,sans-serif;font-size:34px}
 .grid{position:absolute;left:366px;top:216px;width:1188px;height:768px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:12px;perspective:1400px}
@@ -612,7 +613,8 @@ var QR = (function () {
     function variant(base, n) { var v; do { v = 1 + Math.floor(Math.random() * n); } while (n > 1 && v === lastVar[base]); lastVar[base] = v; return base + '_' + v; }
     var queue = [], speaking = false, currentVoice = null, voiceGeneration = 0;
     function say(id, priority) {
-      if (!VO[id]) return;
+      // Training owns HALO exclusively; drop gameplay announcements rather than queue them over a chapter.
+      if (!VO[id] || (S && S.screen === 'tutorial')) return;
       if (speaking && !priority) { if (queue.length < 2) queue.push(id); return; }
       if (priority) {
         queue = []; voiceGeneration++;
@@ -854,7 +856,7 @@ var QR = (function () {
   // Separate HTMLMediaElement preserves true pause/resume and audio position.
   // The existing game SFX/music/VO pipeline is left unchanged.
   var TUTORIAL_AUDIO = (function () {
-    var player = null, sequence = 0, chapter = -1, paused = true;
+    var player = null, sequence = 0, chapter = -1, paused = true, muted = false;
     function stop() {
       sequence++;
       if (player) { player.onended = null; player.onerror = null; player.pause(); player.removeAttribute('src'); player.load(); player = null; }
@@ -863,7 +865,8 @@ var QR = (function () {
     }
     function update() {
       if (S.screen !== 'tutorial') return;
-      var play = scene.querySelector('[data-tut-play]'), pause = scene.querySelector('[data-tut-pause]');
+      var play = scene.querySelector('[data-tut-play]'), pause = scene.querySelector('[data-tut-pause]'), mute = scene.querySelector('[data-tut-mute]');
+      if (mute) { mute.textContent = muted ? 'UNMUTE HALO' : 'MUTE HALO'; mute.setAttribute('aria-pressed', String(muted)); }
       if (play) { play.disabled = !paused; play.setAttribute('aria-pressed', String(!paused)); }
       if (pause) pause.disabled = paused;
     }
@@ -876,7 +879,7 @@ var QR = (function () {
       chapter = index;
       var ticket = sequence;
       player = new window.Audio('/audio/' + TUT[index].vo + '.mp3?rev=halo-full-20261103');
-      player.preload = 'auto'; player.volume = Math.max(0, Math.min(1, settings.voice));
+      player.preload = 'auto'; player.volume = Math.max(0, Math.min(1, settings.voice)); player.muted = muted || settings.voice <= 0;
       player.onended = function () {
         if (ticket !== sequence || S.screen !== 'tutorial') return;
         paused = true; AUDIO.tutorialDuck(false);
@@ -899,11 +902,12 @@ var QR = (function () {
       });
       update();
     }
+    function toggleMute() { muted = !muted; if (player) player.muted = muted || settings.voice <= 0; update(); }
     function pause() {
       if (!player) return;
       player.pause(); paused = true; AUDIO.tutorialDuck(false); update();
     }
-    return { play: play, pause: pause, stop: stop, update: update };
+    return { play: play, pause: pause, stop: stop, update: update, toggleMute: toggleMute };
   })();
   var DEMO_WORDS = ['WHALE', 'ANCHOR', 'ROCKET', 'PEARL', 'TORCH', 'SHARK', 'CROWN', 'DESERT', 'PIANO'];
   var DEMO_KEY = ['volt', 'flare', 'noise', 'volt', 'noise', 'volt', 'flare', 'zero', 'flare'];
@@ -933,7 +937,7 @@ var QR = (function () {
     } else if (d === 'modes') demo = '<div style="display:flex;gap:40px;margin-top:40px"><div class="panel" style="padding:30px;width:600px;--tc:var(--ice)"><h2 class="orb" style="color:var(--ice);margin:0 0 10px">CO-OP vs ICE</h2><p style="margin:0">2\u20133 players. One crew. ICE grabs one of its 8 nodes every turn. Find your 9 first.</p></div><div class="panel" style="padding:30px;width:600px"><h2 class="orb" style="color:var(--zero);margin:0 0 10px">MOLE MODE</h2><p style="margin:0">One Runner per crew is secretly sabotaging. After the game, each crew votes to unmask them.</p></div></div>';
     else demo = '<div class="orb" style="font-size:110px;margin-top:120px;color:var(--volt);text-shadow:0 0 30px var(--volt)">READY?</div>';
     var steps = TUT.map(function (x, i) { return '<i class="' + (i <= S.tut ? 'on' : '') + '"></i>'; }).join('');
-    return '<div class="tut"><div class="steps">' + steps + '</div><div class="controls"><button class="btn primary" data-tut-play aria-label="Play or resume HALO narration">PLAY</button><button class="btn" data-tut-pause aria-label="Pause HALO narration">PAUSE</button><button class="btn" data-tut-replay aria-label="Replay this HALO chapter">REPLAY</button></div><button class="btn exit" data-tut-exit>BACK TO ' + (S.session ? 'LOBBY' : 'TITLE') + '</button><div class="nav"><button class="btn" data-tut="-1"' + (S.tut ? '' : ' disabled') + '>BACK</button><button class="btn primary" data-tut="1">' + (S.tut === TUT.length - 1 ? 'FINISH' : 'NEXT') + '</button></div>' +
+    return '<div class="tut"><div class="steps">' + steps + '</div><div class="controls"><button class="btn primary" data-tut-play aria-label="Play or resume HALO narration">PLAY</button><button class="btn" data-tut-pause aria-label="Pause HALO narration">PAUSE</button><button class="btn" data-tut-replay aria-label="Replay this HALO chapter">REPLAY</button><button class="btn" data-tut-mute aria-pressed="false" aria-label="Mute or unmute HALO training voice">MUTE HALO</button></div><button class="btn exit" data-tut-exit>BACK TO ' + (S.session ? 'LOBBY' : 'TITLE') + '</button><div class="nav"><button class="btn" data-tut="-1"' + (S.tut ? '' : ' disabled') + '>BACK</button><button class="btn primary" data-tut="1">' + (S.tut === TUT.length - 1 ? 'FINISH' : 'NEXT') + '</button></div>' +
       '<div class="demo enter">' + demo + '</div><div class="caption panel enter2">' + esc(VO[st.vo]) + '</div></div>';
   }
 
@@ -983,7 +987,7 @@ var QR = (function () {
         (g.phase === 'OVER' ? '<div style="display:flex;gap:14px"><button class="btn primary" data-host="next">' + (S.room.lastResult && S.room.lastResult.matchOver && !coop ? 'NEW MATCH' : 'NEXT GAME') + '</button><button class="btn" data-host="lobby">LOBBY</button></div>' : '<div class="orb" style="font-size:28px;color:var(--zero)">MOLE VOTE\u2026</div>') + '</div>';
     } else {
       top = '<div class="panel cluebar" style="--tc:' + tc + '"><div class="ring" id="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#1B2740" stroke-width="10"/><circle id="ringArc" cx="50" cy="50" r="44" fill="none" stroke="' + tc + '" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg><b id="ringNum">\u221E</b></div>' +
-        (clue ? '<span class="state orb">' + TEAM[g.turnTeam].name + ' CLUE</span><span class="word' + (Date.now() - (S.clueAnim || 0) < 1500 ? ' glitch' : '') + '">' + esc(clue.word) + '</span><span class="n">' + CC.num(clue.number) + '</span><span class="state" id="guessInfo"></span>'
+        (clue ? '<span class="state orb">' + TEAM[g.turnTeam].name + ' CLUE</span><span class="word' + (Date.now() - (S.clueAnim || 0) < 1500 ? ' glitch' : '') + '">' + esc(clue.word) + '</span><span class="n">' + CC.num(clue.number) + '</span><span class="state" id="guessInfo"></span><span class="scan-state" id="scanInfo" aria-live="off"></span>'
               : '<span class="state orb" style="font-size:40px;color:' + tc + '">' + TEAM[g.turnTeam].name + ' OPERATOR IS THINKING\u2026</span>') + '</div>';
     }
     var sides = coop ? sideHtml('volt', g) + sideIce(g) : sideHtml('volt', g) + sideHtml('flare', g);
@@ -1048,6 +1052,7 @@ var QR = (function () {
     var playBtn = scene.querySelector('[data-tut-play]'), pauseBtn = scene.querySelector('[data-tut-pause]'), replayBtn = scene.querySelector('[data-tut-replay]'), exitBtn = scene.querySelector('[data-tut-exit]');
     if (playBtn) playBtn.onclick = function () { AUDIO.unlock(); TUTORIAL_AUDIO.play(S.tut, true); };
     if (pauseBtn) pauseBtn.onclick = function () { TUTORIAL_AUDIO.pause(); };
+    var muteBtn = scene.querySelector('[data-tut-mute]'); if (muteBtn) muteBtn.onclick = function () { TUTORIAL_AUDIO.toggleMute(); };
     if (replayBtn) replayBtn.onclick = function () { AUDIO.unlock(); TUTORIAL_AUDIO.play(S.tut, false); };
     if (exitBtn) exitBtn.onclick = function () {
       TUTORIAL_AUDIO.stop(); S.screen = S.session ? 'room' : 'title'; S.tut = 0; S.lastKey = ''; render();
@@ -1102,6 +1107,14 @@ var QR = (function () {
       } else { rn.textContent = '\u221E'; arc.style.strokeDashoffset = 0; }
     }
     var gi = $('#guessInfo'); if (gi) gi.textContent = g.guessesLeft === null ? 'UNLIMITED' : g.guessesLeft + ' GUESS' + (g.guessesLeft === 1 ? '' : 'ES') + ' LEFT';
+    var scan = $('#scanInfo');
+    if (scan) {
+      var maxVotes = 0;
+      Object.keys(g.pings || {}).forEach(function (target) { if (target !== 'pass') maxVotes = Math.max(maxVotes, g.pings[target].length); });
+      var msg = g.breach ? (g.breach.target === 'pass' ? 'ENDING TURN' : 'LOCKING NODE · HOLD THE VOTE') :
+        (maxVotes ? 'CREW SCAN · ' + maxVotes + '/' + g.needed + ' PINGS' : 'CREW SCAN · ' + g.needed + ' PINGS TO LOCK');
+      if (scan.textContent !== msg) scan.textContent = msg;
+    }
     // pings, heat, breach bars
     var defs = [];
     g.cards.forEach(function (c, i) {
