@@ -177,6 +177,13 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
 #toast{position:absolute;left:50%;top:220px;transform:translateX(-50%);padding:14px 28px;border-radius:14px;background:#EAF2FF;color:#05070D;font-weight:700;opacity:0;transition:opacity .3s;z-index:35;pointer-events:none}
 #toast.on{opacity:1}
 #status{position:absolute;right:20px;bottom:10px;font-size:18px;color:var(--muted);z-index:36}
+#screenTools{position:absolute;right:28px;top:16px;z-index:38;display:flex;gap:12px;align-items:center}
+#stage[data-screen="title"] #screenTools{left:36px;right:auto;top:36px}
+#stage:not([data-screen="title"]):not([data-screen="lobby"]) #screenTools{display:none}
+#screenTools .screen-tool{height:52px;min-height:52px;padding:0 18px;border-radius:10px;border:2px solid rgba(34,228,255,.7);background:rgba(4,13,28,.93);color:#EAF2FF;font:700 20px Orbitron,Atkinson,sans-serif;letter-spacing:.045em;box-shadow:0 4px 18px rgba(0,0,0,.55);cursor:pointer}
+#screenTools .screen-tool:hover{box-shadow:0 0 16px rgba(34,228,255,.4)}
+#screenTools #soundUnlock{border-color:var(--flare)}
+#screenTools #soundUnlock[hidden]{display:none}
 .setrow{display:flex;align-items:center;gap:24px;font-size:30px}.setrow label{width:420px}
 .setrow input[type=range]{width:520px;accent-color:var(--volt)}
 .seg{display:flex;gap:10px}.seg button{min-height:60px;padding:0 24px;border-radius:12px;border:2px solid var(--line);background:var(--panel-2);font-size:26px;font-weight:700}.seg button.on{border-color:var(--volt);background:var(--volt);color:#021018}
@@ -196,6 +203,10 @@ button:focus-visible{outline:4px solid var(--volt);outline-offset:4px}
   <div id="overlay" role="dialog"></div>
   <div id="toast" role="status"></div>
   <div id="status"></div>
+  <div id="screenTools" role="group" aria-label="TV lobby display and audio">
+    <button id="soundUnlock" class="screen-tool" type="button" hidden>ENABLE SOUND</button>
+    <button id="fullscreenToggle" class="screen-tool" type="button" aria-pressed="false" aria-label="Enter fullscreen">FULL SCREEN</button>
+  </div>
   <div id="scan"></div>
 </div>
 <script>
@@ -581,8 +592,19 @@ var QR = (function () {
       ['music', 'sfx', 'voice'].forEach(function (b) { bus[b] = ctx.createGain(); bus[b].connect(master); });
       noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate); var d = noiseBuf.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
       setVolumes();
+      ctx.onstatechange = syncSoundPrompt;
     }
-    function unlock() { init(); if (!ctx) return; if (ctx.state === 'suspended') ctx.resume(); unlocked = true; }
+    function unlock() {
+      init(); if (!ctx) return;
+      unlocked = true;
+      // Try at page load; browsers that disallow audible autoplay will keep
+      // the context suspended until the first user activation.
+      if (ctx.state === 'suspended') {
+        var attempt = ctx.resume();
+        if (attempt && attempt.catch) attempt.catch(syncSoundPrompt);
+      }
+      syncSoundPrompt();
+    }
     function setVolumes() { if (!ctx) return; bus.music.gain.value = settings.music * 0.5; bus.sfx.gain.value = settings.sfx; bus.voice.gain.value = settings.voice; }
     function load(id) {
       if (buffers[id] || missing[id] || !ctx) return Promise.resolve(buffers[id] || null);
@@ -694,9 +716,34 @@ var QR = (function () {
       var captions = $('#subs'); if (captions) captions.classList.remove('on');
       clearTimeout(subT);
     }
-    return { unlock: unlock, sfx: sfx, say: say, stopVoice: stopVoice, tutorialDuck: duck, variant: variant, playMusic: playMusic, setTension: setTension, sting: sting, setVolumes: setVolumes, get unlocked() { return unlocked; } };
+    return { unlock: unlock, sfx: sfx, say: say, stopVoice: stopVoice, tutorialDuck: duck, variant: variant, playMusic: playMusic, setTension: setTension, sting: sting, setVolumes: setVolumes, get unlocked() { return unlocked; }, get state() { return ctx ? ctx.state : 'unavailable'; } };
   })();
   window.AUDIO = AUDIO; applySettings();
+
+  function syncSoundPrompt() {
+    var btn = $('#soundUnlock'); if (!btn || !window.AUDIO) return;
+    btn.hidden = AUDIO.state === 'running' || AUDIO.state === 'unavailable';
+  }
+  function syncFullscreenButton() {
+    var btn = $('#fullscreenToggle'); if (!btn) return;
+    var full = !!document.fullscreenElement;
+    btn.textContent = full ? 'EXIT FULL SCREEN' : 'FULL SCREEN';
+    btn.setAttribute('aria-label', full ? 'Exit fullscreen' : 'Enter fullscreen');
+    btn.setAttribute('aria-pressed', String(full));
+  }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      if (!document.exitFullscreen) return;
+      var exit = document.exitFullscreen();
+      if (exit && exit.catch) exit.catch(function () { toast('Unable to exit full screen'); });
+    } else if (document.documentElement.requestFullscreen) {
+      var enter = document.documentElement.requestFullscreen();
+      if (enter && enter.catch) enter.catch(function () { toast('Full screen is unavailable on this device'); });
+    } else toast('Full screen is unavailable on this device');
+  }
+  document.addEventListener('fullscreenchange', syncFullscreenButton);
+  $('#fullscreenToggle').addEventListener('click', function () { AUDIO.unlock(); toggleFullscreen(); });
+  $('#soundUnlock').addEventListener('click', function () { AUDIO.unlock(); });
 
   var subT = null;
   function subtitle(text) { var el = $('#subs'); if (!settings.subs || S.screen === 'tutorial') return; el.innerHTML = '<span class="halo"></span><b>HALO</b> &nbsp;' + esc(text); el.classList.add('on'); clearTimeout(subT); subT = setTimeout(function () { el.classList.remove('on'); }, 1800 + text.length * 55); }
@@ -1092,6 +1139,9 @@ var QR = (function () {
   setTimeout(finishTitleIntro,2500);
   function skipTitleIntro(e){
     if(titleIntroDone||S.screen!=='title')return;
+    // The display/audio controls work immediately, even during the title reveal.
+    if ((e.target.closest && e.target.closest('#screenTools')) ||
+        (e.type === 'keydown' && (e.key === 'f' || e.key === 'F'))) { finishTitleIntro(); return; }
     AUDIO.unlock();finishTitleIntro();e.preventDefault();e.stopImmediatePropagation();
   }
   addEventListener('click',skipTitleIntro,true);
@@ -1111,7 +1161,7 @@ var QR = (function () {
     AUDIO.unlock();
     if (S.screen === 'tutorial' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { var b = scene.querySelector('[data-tut="' + (e.key === 'ArrowRight' ? 1 : -1) + '"]'); if (b) b.click(); }
     if (e.code === 'Space' && S.game && S.room && !['OVER', 'MOLEVOTE'].includes(S.game.phase)) { e.preventDefault(); host(S.room.paused ? 'resume' : 'pause'); }
-    if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(function () {}); else document.exitFullscreen(); }
+    if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
   });
 
   // ================= live updates =================
@@ -1160,6 +1210,14 @@ var QR = (function () {
   CC.detectArt(function () { S.lastKey = ''; render(); });
   if (S.session) S.screen = 'room';
   render();
+  // Begin the actual title/lobby track as soon as the page is loaded, not
+  // after a Start click. Browsers with autoplay permission play immediately;
+  // otherwise the queued track starts on the first gesture, and the prompt
+  // explains the browser restriction without inserting a splash screen.
+  AUDIO.unlock();
+  AUDIO.playMusic(S.session ? 'lobby' : 'title');
+  syncSoundPrompt();
+  syncFullscreenButton();
 })();
 </script>
 <style>
