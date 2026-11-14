@@ -11,6 +11,13 @@
 - **Not yet deployed.** Pushing to `main` restarts the server and ends live games.
 
 ---
+## 14 November 2026 — Lobby fullscreen and immediate music
+
+- Added a TV fullscreen/exit control to both the title and live QR/join lobby, preserving the existing keyboard shortcut and room state.
+- Start the existing title audio pipeline on page load; the existing lobby and game music still transition with screen/phase changes.
+- Where browser autoplay policy blocks sound, show a small enable-sound control and resume the pending track after user activation. No silent autoplay bypass is possible in these browsers.
+- Add unit and real Chromium checks for fullscreen state, immediate authorised playback and blocked-autoplay recovery. Approved voice, artwork and multiplayer rules are unchanged.
+
 ## 12 November 2026 — Game clarity, HALO and navigation consolidation
 
 - Preserved the 25-cell 5×5 board, all team/word rules, Visual 2.0 assets, 24 avatar bindings, and 73 audio assets.
