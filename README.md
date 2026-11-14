@@ -42,9 +42,16 @@ Free services can sleep while idle. Open the TV page before a session to wake th
 | TV | **← →** | Step through Training |
 | TV | **Play / Pause / Stop / Replay / Mute / Back / Next** | Control HALO's eleven recorded tutorial chapters without competing narration |
 | TV | **Space** | Pause or resume a game |
-| TV | **F** | Full screen |
+| TV title and QR lobby | **FULL SCREEN / EXIT FULL SCREEN** button | Toggle immersive display without losing the current room |
+| TV | **F** | Toggle full screen from the keyboard |
 | Phone | ⓘ button | Rules summary |
 | Phone | ⚙ button | Theme, text size, Grid or List board, vibration, pause (host) |
+
+## November 2026 lobby display and automatic audio
+
+The TV title and join-room lobby now have a visible **FULL SCREEN / EXIT FULL SCREEN** button, and the **F** key also toggles full screen. Neither action reloads or ends an active room.
+
+On opening the TV page the actual title music is queued immediately, and the lobby track takes over when a room is opened. **Audible autoplay is controlled by the browser**: where the browser permits it, music starts without a click; when blocked, an unobtrusive **ENABLE SOUND** button appears and the first user interaction unlocks the already-queued music. The browser may also block automatic fullscreen; the fullscreen button requires user activation. No extra splash screen, new audio files or game-state changes were introduced.
 
 ## November 2026 gameplay-clarity update
 
