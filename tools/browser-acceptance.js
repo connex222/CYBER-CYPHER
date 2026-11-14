@@ -48,6 +48,23 @@ async function main() {
       };
     });
     await tv.goto(base + '/', { waitUntil: 'domcontentloaded' });
+    await check('Music attempts to play on first page load without a click', async () => {
+      await tv.waitForFunction(() => window.AUDIO && AUDIO.state === 'running' &&
+        window.__ccAudioQA.starts > 0, null, { timeout: 15000 });
+      assert.equal(await tv.locator('#soundUnlock').isVisible(), false);
+    });
+    await check('Fullscreen button works on the title lobby even during the intro', async () => {
+      const toggle = tv.locator('#fullscreenToggle');
+      assert.equal(await toggle.isVisible(), true);
+      await toggle.click();
+      await tv.waitForFunction(() => !!document.fullscreenElement);
+      assert.equal(await toggle.getAttribute('aria-pressed'), 'true');
+      assert.match(await toggle.innerText(), /EXIT FULL SCREEN/);
+      await toggle.click();
+      await tv.waitForFunction(() => !document.fullscreenElement);
+      assert.equal(await toggle.getAttribute('aria-pressed'), 'false');
+      assert.match(await toggle.innerText(), /^FULL SCREEN$/);
+    });
     // Title intro intercepts initial clicks for 2.5 seconds.
     await tv.waitForTimeout(2700);
     await check('TV training entry point', async () => {
@@ -164,6 +181,12 @@ async function main() {
       const code=(await tv.locator('.joinp .code').innerText()).trim();
       assert.match(code,/^[BCDFGHJKLMNPQRSTVWXZ]{4}$/);
       await tv.locator('.joinp [data-go="title"]').waitFor({state:'visible'});
+      const qrFull = tv.locator('#fullscreenToggle');
+      assert.equal(await qrFull.isVisible(), true, 'room/QR lobby has no fullscreen toggle');
+      await qrFull.click();
+      await tv.waitForFunction(() => !!document.fullscreenElement);
+      await qrFull.click();
+      await tv.waitForFunction(() => !document.fullscreenElement);
       await tv.waitForTimeout(850); // capture settled controls, not the first frame of the entrance animation
       assert.equal(await tv.locator('.joinp .qr svg').isVisible(),true);
       await tv.screenshot({path:path.join(out,'review-tv-qr.png')});
@@ -215,6 +238,25 @@ async function main() {
         await phones[0].screenshot({path:path.join(out,'review-phone-operator-390.png')});
         await phones[1].screenshot({path:path.join(out,'review-phone-runner-320.png')});
       } finally { await Promise.all(phones.map(p=>p.close())); }
+    });
+    await check('Browser blocks autoplay gracefully until user enables sound', async () => {
+      const restricted = await chromium.launch({ headless: true, args: ['--autoplay-policy=user-gesture-required'] });
+      try {
+        const p = await restricted.newPage({ viewport: { width: 1366, height: 768 } });
+        await p.goto(base + '/', { waitUntil: 'domcontentloaded' });
+        await p.waitForTimeout(800);
+        const state = await p.evaluate(() => window.AUDIO && AUDIO.state);
+        if (state === 'suspended') {
+          assert.equal(await p.locator('#soundUnlock').isVisible(), true, 'blocked audio has no enable control');
+          await p.locator('#soundUnlock').click();
+          await p.waitForFunction(() => window.AUDIO && AUDIO.state === 'running', null, { timeout: 8000 });
+          assert.equal(await p.locator('#soundUnlock').isVisible(), false);
+        } else {
+          // Browsers with pre-authorised sound do not need an enable prompt.
+          assert.equal(state, 'running');
+          assert.equal(await p.locator('#soundUnlock').isVisible(), false);
+        }
+      } finally { await restricted.close(); }
     });
     await check('Browser JavaScript errors absent', async () => assert.deepEqual(errors, []));
     await tv.close();
