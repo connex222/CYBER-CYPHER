@@ -253,6 +253,7 @@ var CC = (function () {
         var s = self.offsets.slice().sort(function (a, b) { return a - b; }); self.offset = s[Math.floor(s.length / 2)];
         return;
       }
+      if (m.t === 'serverRestarting') { self.onStatus('restarting'); return; }
       self.onMessage(m.t, m.d);
     };
     ws.onclose = function (ev) { self.onStatus('closed', ev.code); if (ev.code === 4001 || ev.code === 4002) return; self.later(); };
@@ -754,7 +755,7 @@ var QR = (function () {
   var S = { screen: 'title', room: null, game: null, meters: null, session: null, lastKey: '', lastBase: '', tut: 0, revealed: {}, lastPhase: null, lastTurn: null, lastClue: null, saidLast: {} };
   try { S.session = JSON.parse(sessionStorage.getItem('cybercypher.tv') || 'null'); } catch (e) { S.session = null; }
   var net = new CC.Net(onMsg, function (st) {
-    $('#status').textContent = st === 'open' ? '' : st === 'connecting' ? 'Connecting\u2026' : 'Reconnecting\u2026';
+    $('#status').textContent = st === 'open' ? '' : st === 'connecting' ? 'Connecting\\u2026' : st === 'restarting' ? 'Server restarting\\u2026' : 'Reconnecting\\u2026';
     if (st === 'open' && S.session) net.send('tvRejoin', { room: S.session.room, token: S.session.token });
   });
   fetch('/healthz', { cache: 'no-store' }).catch(function () {});
