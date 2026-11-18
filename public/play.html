@@ -184,6 +184,7 @@ var CC = (function () {
         var s = self.offsets.slice().sort(function (a, b) { return a - b; }); self.offset = s[Math.floor(s.length / 2)];
         return;
       }
+      if (m.t === 'serverRestarting') { self.onStatus('restarting'); return; }
       self.onMessage(m.t, m.d);
     };
     ws.onclose = function (ev) { self.onStatus('closed', ev.code); if (ev.code === 4001 || ev.code === 4002) return; self.later(); };
@@ -350,7 +351,7 @@ var CC = (function () {
     alreadyRevealed: 'Already revealed.', paused: 'The game is paused.', cannotStart: 'Can\u2019t start yet.', botsOff: 'Bots are off on this server.' };
 
   // ---------- network ----------
-  var net = new CC.Net(onMsg, function (st) { S.status = st; if (st === 'open' && S.session) net.send('rejoin', { room: S.session.room, playerId: S.session.playerId, token: S.session.token }); render(); });
+  var net = new CC.Net(onMsg, function (st) { S.status = st; if (st === 'restarting') toast('Server restarting — reconnecting to your saved seat…'); if (st === 'open' && S.session) net.send('rejoin', { room: S.session.room, playerId: S.session.playerId, token: S.session.token }); render(); });
   function send(t, d) { net.send(t, d); }
   function onMsg(t, d) {
     switch (t) {
