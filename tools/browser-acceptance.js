@@ -149,12 +149,16 @@ async function main() {
       await tv.locator('[data-go="tutorial"]').first().waitFor({ state: 'visible' });
     });
     await check('TV stage fits 16:9 viewport', async () => {
-      await tv.setViewportSize({ width: 1366, height: 768 });
-      // The TV fit() handler updates --k asynchronously on browser resize.
-      await tv.waitForFunction(() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--k')) - Math.min(innerWidth / 1920, innerHeight / 1080)) < 0.001);
-      const bounds = await tv.locator('#stage').boundingBox();
-      assert.ok(bounds && bounds.x >= -2 && bounds.y >= -2 && bounds.x + bounds.width <= 1368 && bounds.y + bounds.height <= 770,
-        'TV stage overflows viewport: ' + JSON.stringify(bounds));
+      // Use a fresh window: resizing the previous page just after a
+      // fullscreen toggle fails in newer Chromium (Browser.setWindowBounds).
+      const fitTv = await browser.newPage({ viewport: { width: 1366, height: 768 } });
+      try {
+        await fitTv.goto(base + '/', { waitUntil: 'domcontentloaded' });
+        await fitTv.waitForFunction(() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--k')) - Math.min(innerWidth / 1920, innerHeight / 1080)) < 0.001);
+        const bounds = await fitTv.locator('#stage').boundingBox();
+        assert.ok(bounds && bounds.x >= -2 && bounds.y >= -2 && bounds.x + bounds.width <= 1368 && bounds.y + bounds.height <= 770,
+          'TV stage overflows viewport: ' + JSON.stringify(bounds));
+      } finally { await fitTv.close(); }
     });
     await check('Phone portrait 360px: no horizontal overflow', async () => {
       const phone = await browser.newPage({ viewport: { width: 360, height: 800 }, isMobile: true, deviceScaleFactor: 1 });
