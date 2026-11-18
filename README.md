@@ -28,6 +28,14 @@ In PowerShell, type: `$env:BOTS=1; npm start`
 
 Join on one phone, then press **ADD BOT** in the lobby for each extra seat. Bots play every role, so you can run full games alone. Leave bots off for real game nights.
 
+## WebSocket Origin security
+
+WebSocket upgrades are accepted from `https://cyber-cypher-j2ry.onrender.com`, from `http://localhost:<port>` and `http://127.0.0.1:<port>` for local testing, and from exact additional origins in the `ALLOWED_ORIGINS` environment variable. A rejected upgrade returns HTTP 403 and is logged. Clients omitting the `Origin` header (for example CLI test tools) work only when `NODE_ENV` is not `production`.
+
+To add a custom domain on Render without changing code, set `ALLOWED_ORIGINS=https://games.example.com` under the service's environment variables; multiple entries are comma-separated. Include the scheme and, if non-default, the port. The variable takes **origins**, not paths or wildcard domains.
+
+**Local Wi-Fi hosting:** When phones open a QR link using a computer's private LAN IP (for example `http://192.168.1.23:3000`), this is not a localhost origin. Explicitly set `ALLOWED_ORIGINS=http://192.168.1.23:3000` on the local server for those phones. The default Render QR flow needs no extra setting. Do not point the automated test tools at an active game server.
+
 ## 3. Live hosted game (Render)
 
 The existing live service is **https://cyber-cypher-j2ry.onrender.com**, connected to `connex222/CYBER-CYPHER` branch `main` with automatic deployment, build `npm install`, start `node server.js` and health check `/healthz` (Render Free, Frankfurt). Open it on the TV and scan the lobby QR code on each phone.
