@@ -7,6 +7,7 @@ const { WebSocketServer } = require('ws');
 const { parse, makeLimiter } = require('./src/validate');
 const { rooms, createRoom } = require('./src/room');
 const { LIMITS } = require('./src/config');
+const { isAllowedOrigin } = require('./src/ws-origin');
 
 const PORT = Number(process.env.PORT) || 3000;
 const PUBLIC = path.join(__dirname, 'public');
@@ -32,7 +33,15 @@ const server = http.createServer((req, res) => {
   });
 });
 
-const wss = new WebSocketServer({ server, maxPayload: LIMITS.MAX_MSG_BYTES });
+const wss = new WebSocketServer({ noServer: true, maxPayload: LIMITS.MAX_MSG_BYTES });
+server.on('upgrade', (req, socket, head) => {
+  if (!isAllowedOrigin(req.headers.origin)) {
+    console.warn('[cc] rejected WebSocket upgrade (403), origin=' + JSON.stringify(req.headers.origin ?? '(missing)'));
+    socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\nContent-Length: 0\r\n\r\n');
+    return;
+  }
+  wss.handleUpgrade(req, socket, head, ws => wss.emit('connection', ws, req));
+});
 const send = (ws, t, d) => { if (ws.readyState === 1) ws.send(JSON.stringify({ t, d })); };
 
 wss.on('connection', ws => {
