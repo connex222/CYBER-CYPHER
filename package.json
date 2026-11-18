@@ -11,7 +11,9 @@
     "start": "node server.js",
     "build": "node tools/build.js",
     "smoke": "node tools/smoke.js",
-    "qa:alpha": "node --test && node tools/build.js"
+    "qa:alpha": "node --test && node tools/build.js",
+    "test:deploy": "node test/restart-release-gate.js && npm test",
+    "postinstall": "npm run test:deploy"
   },
   "keywords": [],
   "author": "",
