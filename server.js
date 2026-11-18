@@ -11,10 +11,12 @@ const { isAllowedOrigin } = require('./src/ws-origin');
 
 const PORT = Number(process.env.PORT) || 3000;
 const PUBLIC = path.join(__dirname, 'public');
+let shuttingDown = false;
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json',
   '.mp3': 'audio/mpeg', '.ogg': 'audio/ogg', '.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.mp4': 'video/mp4', '.webm': 'video/webm' };
 
 const server = http.createServer((req, res) => {
+  if (shuttingDown) { res.writeHead(503, {'Content-Type':'text/plain','Retry-After':'2'}); return res.end('Server restarting'); }
   const url = new URL(req.url, 'http://x');
   let p = decodeURIComponent(url.pathname);
   if (p === '/healthz') { res.writeHead(200, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' }); return res.end('ok'); }
@@ -35,6 +37,7 @@ const server = http.createServer((req, res) => {
 
 const wss = new WebSocketServer({ noServer: true, maxPayload: LIMITS.MAX_MSG_BYTES });
 server.on('upgrade', (req, socket, head) => {
+  if (shuttingDown) { socket.end('HTTP/1.1 503 Service Unavailable\r\nConnection: close\r\nContent-Length: 0\r\n\r\n'); return; }
   if (!isAllowedOrigin(req.headers.origin)) {
     console.warn('[cc] rejected WebSocket upgrade (403), origin=' + JSON.stringify(req.headers.origin ?? '(missing)'));
     socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\nContent-Length: 0\r\n\r\n');
@@ -45,10 +48,12 @@ server.on('upgrade', (req, socket, head) => {
 const send = (ws, t, d) => { if (ws.readyState === 1) ws.send(JSON.stringify({ t, d })); };
 
 wss.on('connection', ws => {
+  if (shuttingDown) { ws.close(1012,'Server restarting'); return; }
   ws.isAlive = true; ws.cc = null;
   const limiter = makeLimiter();
   ws.on('pong', () => { ws.isAlive = true; });
   ws.on('message', raw => {
+    if (shuttingDown) return;
     const now = Date.now(), lim = limiter(now);
     if (!lim.allowed) { if (lim.kick) ws.close(4008, 'rate limit'); return; }
     const m = parse(raw);
@@ -79,14 +84,14 @@ function route(ws, type, d, now) {
   rooms.get(v.room).handle(ws, type, d, now);
 }
 
-setInterval(() => {
+const gameTimer = setInterval(() => {
   const now = Date.now();
   for (const [code, room] of rooms) {
     try { room.tick(now); } catch (e) { console.error('[cc] tick error', code, e); }
     if (room.expired(now)) { for (const s of room.sockets()) { try { s.close(4002, 'room closed'); } catch (e) { /* ignore */ } } rooms.delete(code); }
   }
 }, 50);
-setInterval(() => {
+const heartbeatTimer = setInterval(() => {
   const now = Date.now();
   for (const ws of wss.clients) {
     if (!ws.isAlive && now - (ws.lastPingAt || 0) > 20000) { ws.terminate(); continue; }
@@ -95,3 +100,33 @@ setInterval(() => {
 }, 15000);
 
 server.listen(PORT, () => console.log(`Cyber Cypher is running on http://localhost:${PORT}  (TV: /  Phones: /play)${process.env.BOTS && process.env.BOTS !== '0' ? '  [BOTS on]' : ''}`));
+
+// Render's SIGTERM must leave all connected TVs and phones with a clear
+// restart signal. The standard close code 1012 is not mistaken for a kick.
+function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log('CYBER CYPHER: draining multiplayer connections for ' + signal);
+  clearInterval(gameTimer);clearInterval(heartbeatTimer);
+  const deadline = setTimeout(() => {
+    console.error('CYBER CYPHER: shutdown exceeded 9.5 seconds');
+    process.exit(1);
+  }, 9500);
+  const force = setTimeout(() => {
+    for(const ws of wss.clients)try{ws.terminate();}catch{}
+  }, 2500);
+  force.unref?.();
+  for(const ws of wss.clients){
+    send(ws,'serverRestarting',{message:'Server restarting — reconnecting…'});
+    try{ws.close(1012,'Server restarting');}catch{try{ws.terminate();}catch{}}
+  }
+  wss.close();
+  server.close(error=>{
+    clearTimeout(force);clearTimeout(deadline);
+    if(error)console.error('CYBER CYPHER: shutdown failed:',error.message);
+    process.exit(error?1:0);
+  });
+  server.closeIdleConnections?.();
+}
+process.once('SIGTERM',()=>shutdown('SIGTERM'));
+process.once('SIGINT',()=>shutdown('SIGINT'));
